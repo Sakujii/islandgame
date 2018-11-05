@@ -3,6 +3,7 @@
 
 #include "iplayer.hh"
 
+namespace Student{
 
 class Player : public Common::IPlayer
 {
@@ -10,5 +11,6 @@ public:
     Player();
     ~Player();
 };
+}
 
 #endif // PLAYER_HH
