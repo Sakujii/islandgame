@@ -2,9 +2,8 @@
 
 namespace Student{
 
-GameBoard::GameBoard()
-{
+GameBoard::GameBoard() = default;
 
-}
+GameBoard::~GameBoard() = default;
 
 }
