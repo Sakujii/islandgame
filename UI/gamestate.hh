@@ -8,8 +8,8 @@ namespace Student{
 class GameState : public Common::IGameState
 {
 public:
-    GameState();
-    ~GameState();
+    GameState() = default;
+    ~GameState() = default;
 };
 }
 

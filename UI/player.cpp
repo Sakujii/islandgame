@@ -2,14 +2,5 @@
 
 namespace Student{
 
-Player::Player()
-{
-
-}
-
-Player::~Player()
-{
-
-}
 
 }

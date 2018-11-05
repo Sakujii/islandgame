@@ -2,14 +2,6 @@
 
 namespace Student{
 
-GameState::GameState()
-{
 
-}
-
-GameState::~GameState()
-{
-
-}
 
 }

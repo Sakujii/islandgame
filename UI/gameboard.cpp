@@ -7,9 +7,4 @@ GameBoard::GameBoard()
 
 }
 
-GameBoard::~GameBoard()
-{
-
-}
-
 }

@@ -12,6 +12,4 @@ MainWindow::~MainWindow()
 
 }
 
-
-
 }

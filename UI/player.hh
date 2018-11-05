@@ -8,8 +8,8 @@ namespace Student{
 class Player : public Common::IPlayer
 {
 public:
-    Player();
-    ~Player();
+    Player() = default;
+    ~Player() = default;
 };
 }
 
