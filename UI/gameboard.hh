@@ -6,6 +6,11 @@
 
 #include "igameboard.hh"
 
+/**
+ * @file
+ * @brief GameBoard class for the gameboard
+ */
+
 namespace Student{
 
 class GameBoard : public Common::IGameBoard
