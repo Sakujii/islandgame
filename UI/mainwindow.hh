@@ -15,8 +15,12 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+public slots:
+    void numberOfPlayers(int count);
+
 private:
     Ui::MainWindow *ui;
+
 };
 
 #endif // MAINWINDOW_HH
