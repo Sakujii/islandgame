@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
 {
 
     QApplication a(argc, argv);
-    Student::MainWindow w (0);
+    MainWindow w;
     w.show();
     return a.exec();
 }

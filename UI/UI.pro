@@ -17,13 +17,15 @@ SOURCES += main.cc \
     gameboard.cpp \
     gamestate.cpp \
     player.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    dialog.cpp
 
 HEADERS  += \
     gameboard.hh \
     player.hh \
     gamestate.hh \
-    mainwindow.hh
+    mainwindow.hh \
+    dialog.hh
 
 INCLUDEPATH += $$PWD/../GameLogic/Engine
 DEPENDPATH += $$PWD/../GameLogic/Engine
@@ -59,3 +61,7 @@ unix:!macx {
 
 QMAKE_EXTRA_TARGETS += copyfiles
 POST_TARGETDEPS += copyfiles
+
+FORMS += \
+    mainwindow.ui \
+    dialog.ui

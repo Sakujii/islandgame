@@ -1,17 +1,14 @@
 #include "mainwindow.hh"
+#include "ui_mainwindow.h"
 
-#include <QWidget>
-#include <QDebug>
-#include <QLayout>
-
-namespace Student{
-
-MainWindow::MainWindow(QWidget * parent):
-    QMainWindow(parent)
+MainWindow::MainWindow(QWidget *parent) :
+    QMainWindow(parent),
+    ui(new Ui::MainWindow)
 {
-
+    ui->setupUi(this);
 }
 
-MainWindow::~MainWindow() = default;
-
+MainWindow::~MainWindow()
+{
+    delete ui;
 }
