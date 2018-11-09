@@ -76,5 +76,7 @@ void MainWindow::drawboard()
     hexagon3->setPos(dx * 6, side * 1.5 * 6);
     hexagon3->setToolTip(QString::number(5) + "," + QString::number(6));
 
+
+
 }
 

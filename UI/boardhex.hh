@@ -2,6 +2,8 @@
 #define BOARDHEX_HH
 
 #include <QGraphicsPolygonItem>
+#include <QGraphicsSceneHoverEvent>
+#include <QFocusEvent>
 
 namespace Ui{
 
@@ -9,10 +11,16 @@ class BoardHex : public QGraphicsPolygonItem
 {
 
 public:
-    BoardHex(QGraphicsItem *parent = 0);
+    explicit BoardHex(QGraphicsItem *parent = 0);
     ~BoardHex(){}
 
+    void focusInEvent(QFocusEvent*);
+    void focusOutEvent(QFocusEvent*);
+    void hoverEnterEvent(QGraphicsSceneHoverEvent*);
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent*);
+
 private:
+
 };
 }
 
