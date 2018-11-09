@@ -16,8 +16,13 @@ namespace Student{
 class GameBoard : public Common::IGameBoard
 {
 public:
+
     GameBoard();
     ~GameBoard();
+
+    void initializeBoard();
+
+
 
 };
 }
