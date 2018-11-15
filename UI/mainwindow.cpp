@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include "dialog.hh"
 #include "boardhex.hh"
+#include "gameboard.hh"
 
 #include <QGraphicsView>
 #include <QHBoxLayout>
@@ -22,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent) :
     dialog.setModal(true);
     dialog.exec();
 
+    Student::GameBoard gb;
     drawboard();
 
 }

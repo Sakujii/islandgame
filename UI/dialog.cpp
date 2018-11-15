@@ -2,6 +2,8 @@
 #include "ui_dialog.h"
 #include "mainwindow.hh"
 
+#include <iostream>
+
 Dialog::Dialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Dialog)
