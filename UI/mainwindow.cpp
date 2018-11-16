@@ -10,6 +10,7 @@
 #include <QPolygonF>
 #include <qmath.h>
 
+namespace Student{
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -19,11 +20,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // Open dialog and connect the number of players to mainwindow
     Dialog dialog;
-    connect(&dialog, &Dialog::accept, this, &MainWindow::numberOfPlayers);
+    connect(&dialog, &Dialog::acceptSignal, this, &MainWindow::numberOfPlayers);
     dialog.setModal(true);
     dialog.exec();
 
-    Student::GameBoard gb;
+    GameBoard gb;
     drawboard();
 
 }
@@ -42,15 +43,18 @@ void MainWindow::drawboard()
 {
     QWidget *sceneWidget = new QWidget(this);
     sceneWidget->show();
-    sceneWidget->setGeometry(50, 50, 700, 500);
+    int width = 700;
+    int height = 500;
+    int border= 50;
+    sceneWidget->setGeometry(border, border, width, height);
 
     QGraphicsView * view = new QGraphicsView(sceneWidget);
     QGraphicsScene * scene = new QGraphicsScene(view);
+    scene->setSceneRect(0, 0, width, height);
     view->setScene(scene);
-    scene->setSceneRect(sceneWidget->x(), sceneWidget->y(), sceneWidget->width(), sceneWidget->height());
 
     QPolygonF polygon;
-    double side = 25;
+    double side = 20;
     double dx = qSqrt(3)/2 * side;
     polygon
             << QPointF(dx, -side/2)
@@ -63,22 +67,21 @@ void MainWindow::drawboard()
     Ui::BoardHex * hexagon = new Ui::BoardHex();
     hexagon->setPolygon(polygon);
     scene->addItem(hexagon);
-    hexagon->setPos(dx * 5, side * 1.5 * 5);
+    hexagon->setPos(dx * 0, side * 1.5 * 0);
     hexagon->setToolTip(QString::number(0) + "," + QString::number(0));
 
     Ui::BoardHex * hexagon2 = new Ui::BoardHex();
     hexagon2->setPolygon(polygon);
     scene->addItem(hexagon2);
-    hexagon2->setPos(dx * 7, side * 1.5 * 5);
-    hexagon2->setToolTip(QString::number(6) + "," + QString::number(5));
+    hexagon2->setPos(dx * 2, side * 1.5 * 0);
+    hexagon2->setToolTip(QString::number(1) + "," + QString::number(0));
 
     Ui::BoardHex * hexagon3 = new Ui::BoardHex();
     hexagon3->setPolygon(polygon);
     scene->addItem(hexagon3);
-    hexagon3->setPos(dx * 6, side * 1.5 * 6);
-    hexagon3->setToolTip(QString::number(5) + "," + QString::number(6));
+    hexagon3->setPos(dx * 1, side * 1.5 * 1);
+    hexagon3->setToolTip(QString::number(0) + "," + QString::number(1));
 
-
-
+}
 }
 

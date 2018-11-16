@@ -8,9 +8,9 @@
 
 namespace Student{
 
-GameBoard::GameBoard(){}
+GameBoard::GameBoard() = default;
 
-GameBoard::~GameBoard(){}
+GameBoard::~GameBoard() = default;
 
 
 
@@ -70,6 +70,7 @@ void GameBoard::removeActor(int actorId)
 void GameBoard::addHex(std::shared_ptr<Common::Hex> newHex)
 {
     newHex->getPawns();
+    std::cout << "jeejee muumipeikko jeejeejee" << std::endl;
 }
 
 void GameBoard::addTransport(std::shared_ptr<Common::Transport> transport, Common::CubeCoordinate coord)

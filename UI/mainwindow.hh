@@ -7,6 +7,8 @@ namespace Ui {
 class MainWindow;
 }
 
+namespace Student{
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -23,5 +25,7 @@ private:
     void drawboard();
 
 };
+}
+
 
 #endif // MAINWINDOW_HH
