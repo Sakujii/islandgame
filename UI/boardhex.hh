@@ -12,7 +12,7 @@ class BoardHex : public QGraphicsPolygonItem
 
 public:
     explicit BoardHex(QGraphicsItem *parent = 0);
-    ~BoardHex(){}
+    ~BoardHex() = default;
 
     void focusInEvent(QFocusEvent*);
     void focusOutEvent(QFocusEvent*);

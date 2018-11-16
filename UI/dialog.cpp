@@ -4,6 +4,8 @@
 
 #include <iostream>
 
+namespace Student{
+
 Dialog::Dialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Dialog)
@@ -21,8 +23,9 @@ Dialog::~Dialog()
 void Dialog::playersSignal()
 {
     int count = ui->spinBox->value();
-    emit accept(count);
+    emit acceptSignal(count);
     this->reject();
+}
 }
 
 

@@ -8,6 +8,8 @@ namespace Ui {
 class Dialog;
 }
 
+namespace Student {
+
 class Dialog : public QDialog
 {
     Q_OBJECT
@@ -20,7 +22,7 @@ public slots:
     virtual void playersSignal();
 
 signals:
-    void accept(int);
+    void acceptSignal(int);
 
 
 private:
@@ -28,6 +30,7 @@ private:
     void setPlayers();
     MainWindow *main;
 };
+}
 
 
 #endif // DIALOG_HH
