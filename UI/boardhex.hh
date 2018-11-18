@@ -1,9 +1,9 @@
 #ifndef BOARDHEX_HH
 #define BOARDHEX_HH
 
-#include <QGraphicsPolygonItem>
-#include <QGraphicsSceneHoverEvent>
-#include <QFocusEvent>
+#include <QtWidgets/QGraphicsPolygonItem>
+#include <QtWidgets/QGraphicsSceneHoverEvent>
+#include <QtGui/QFocusEvent>
 
 namespace Ui{
 

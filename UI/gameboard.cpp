@@ -5,6 +5,7 @@
 #include "boardhex.hh"
 
 #include <iostream>
+#include <QtWidgets/QMainWindow>
 
 
 namespace Student{
