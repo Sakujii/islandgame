@@ -19,7 +19,8 @@ SOURCES += main.cc \
     player.cpp \
     mainwindow.cpp \
     dialog.cpp \
-    boardhex.cpp
+    boardhex.cpp \
+    coordinateconvert.cpp
 
 HEADERS  += \
     gameboard.hh \
@@ -27,7 +28,8 @@ HEADERS  += \
     gamestate.hh \
     mainwindow.hh \
     dialog.hh \
-    boardhex.hh
+    boardhex.hh \
+    coordinateconvert.hh
 
 INCLUDEPATH += $$PWD/../GameLogic/Engine
 DEPENDPATH += $$PWD/../GameLogic/Engine
