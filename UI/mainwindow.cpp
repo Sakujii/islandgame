@@ -3,6 +3,7 @@
 #include "dialog.hh"
 #include "boardhex.hh"
 #include "gameboard.hh"
+#include "coordinateconvert.hh"
 
 #include <QGraphicsView>
 #include <QHBoxLayout>
@@ -82,23 +83,24 @@ void MainWindow::drawHex()
             << QPointF(0, side)
             << QPointF(dx, side/2);
 
+    Common::CubeCoordinate cube = Common::CubeCoordinate(0, 0, 0);
+
+    QPointF axial = cubeToAxial(cube, side);
+
     Ui::BoardHex * hexagon = new Ui::BoardHex();
     hexagon->setPolygon(polygon);
     boardScene->addItem(hexagon);
-    hexagon->setPos(halfWidth + dx * 0, halfHeight + side * 1.5 * 0);
+    hexagon->setPos(halfWidth + axial.x(), halfHeight + axial.y());
     hexagon->setToolTip(QString::number(0) + "," + QString::number(0));
+
+    Common::CubeCoordinate cube1 = Common::CubeCoordinate (0, 0, 1);
+    QPointF axial1 = cubeToAxial(cube1, side);
 
     Ui::BoardHex * hexagon2 = new Ui::BoardHex();
     hexagon2->setPolygon(polygon);
     boardScene->addItem(hexagon2);
-    hexagon2->setPos(halfWidth + dx * 2, halfHeight + side * 1.5 * 0);
+    hexagon2->setPos(halfWidth + axial1.x(), halfHeight + axial1.y());
     hexagon2->setToolTip(QString::number(1) + "," + QString::number(0));
-
-    Ui::BoardHex * hexagon3 = new Ui::BoardHex();
-    hexagon3->setPolygon(polygon);
-    boardScene->addItem(hexagon3);
-    hexagon3->setPos(halfWidth + dx * 1, halfHeight + side * 1.5 * 1);
-    hexagon3->setToolTip(QString::number(0) + "," + QString::number(1));
 
 }
 }
