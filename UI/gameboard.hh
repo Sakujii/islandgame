@@ -5,6 +5,7 @@
 #include <unordered_map>
 
 #include "igameboard.hh"
+#include "cubecoordinate.hh"
 
 /**
  * @file
@@ -139,6 +140,10 @@ public:
      */
     void removeTransport(int id);
 
+private:
+    std::unordered_map<int, std::shared_ptr<Common::Pawn>> pawnMap_;
+    std::map<Common::CubeCoordinate, std::shared_ptr<Common::Hex>> hexMap_;
+    std::map<int, Common::CubeCoordinate> actorMap_;
 
 };
 }

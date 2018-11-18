@@ -2,6 +2,7 @@
 #define MAINWINDOW_HH
 
 #include <QMainWindow>
+#include <QGraphicsScene>
 
 namespace Ui {
 class MainWindow;
@@ -16,13 +17,18 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    static MainWindow* getInstance(QWidget* parent = 0);
+
+    void drawHex();
 
 public slots:
     void numberOfPlayers(int count);
 
 private:
     Ui::MainWindow *ui;
-    void drawboard();
+    static MainWindow *mainInstance;
+    QGraphicsScene *boardScene;
+    void initScene();
 
 };
 }

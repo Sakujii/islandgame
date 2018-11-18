@@ -12,8 +12,7 @@ BoardHex::BoardHex(QGraphicsItem * parent): QGraphicsPolygonItem(parent)
     setAcceptHoverEvents(true);
 
     setFlag(QGraphicsItem::ItemIsFocusable);
-    setFlag(QGraphicsItem::ItemIsSelectable);
-
+    setFlag(QGraphicsItem::ItemIsSelectable);   
 }
 
 void BoardHex::focusInEvent(QFocusEvent *){

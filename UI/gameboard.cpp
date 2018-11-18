@@ -2,6 +2,7 @@
 #include "mainwindow.hh"
 #include "actor.hh"
 #include "transport.hh"
+#include "boardhex.hh"
 
 #include <iostream>
 
@@ -11,7 +12,6 @@ namespace Student{
 GameBoard::GameBoard() = default;
 
 GameBoard::~GameBoard() = default;
-
 
 
 int GameBoard::checkTileOccupation(Common::CubeCoordinate tileCoord) const
@@ -69,8 +69,12 @@ void GameBoard::removeActor(int actorId)
 
 void GameBoard::addHex(std::shared_ptr<Common::Hex> newHex)
 {
-    newHex->getPawns();
-    std::cout << "jeejee muumipeikko jeejeejee" << std::endl;
+    Common::CubeCoordinate coord = newHex->getCoordinates();
+    // TODO: Koordinaattimuunnos ruudulle
+    Student::MainWindow* win = Student::MainWindow::getInstance();
+    win->drawHex();
+    hexMap_.insert(std::make_pair(coord, newHex));
+
 }
 
 void GameBoard::addTransport(std::shared_ptr<Common::Transport> transport, Common::CubeCoordinate coord)
