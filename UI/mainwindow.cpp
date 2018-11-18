@@ -68,6 +68,9 @@ void MainWindow::initScene()
 
 void MainWindow::drawHex()
 {
+    int halfWidth = (boardScene->width())/2;
+    int halfHeight = (boardScene->height()/2);
+
     QPolygonF polygon;
     double side = 20;
     double dx = qSqrt(3)/2 * side;
@@ -82,19 +85,19 @@ void MainWindow::drawHex()
     Ui::BoardHex * hexagon = new Ui::BoardHex();
     hexagon->setPolygon(polygon);
     boardScene->addItem(hexagon);
-    hexagon->setPos(dx * 0, side * 1.5 * 0);
+    hexagon->setPos(halfWidth + dx * 0, halfHeight + side * 1.5 * 0);
     hexagon->setToolTip(QString::number(0) + "," + QString::number(0));
 
     Ui::BoardHex * hexagon2 = new Ui::BoardHex();
     hexagon2->setPolygon(polygon);
     boardScene->addItem(hexagon2);
-    hexagon2->setPos(dx * 2, side * 1.5 * 0);
+    hexagon2->setPos(halfWidth + dx * 2, halfHeight + side * 1.5 * 0);
     hexagon2->setToolTip(QString::number(1) + "," + QString::number(0));
 
     Ui::BoardHex * hexagon3 = new Ui::BoardHex();
     hexagon3->setPolygon(polygon);
     boardScene->addItem(hexagon3);
-    hexagon3->setPos(dx * 1, side * 1.5 * 1);
+    hexagon3->setPos(halfWidth + dx * 1, halfHeight + side * 1.5 * 1);
     hexagon3->setToolTip(QString::number(0) + "," + QString::number(1));
 
 }
