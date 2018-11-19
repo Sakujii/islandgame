@@ -17,19 +17,44 @@ GameBoard::~GameBoard() = default;
 
 int GameBoard::checkTileOccupation(Common::CubeCoordinate tileCoord) const
 {
-    return tileCoord.x;
+    if (hexMap_.find(tileCoord) == hexMap_.end()){
+        return -1;
+    }
+    else {
+        auto it = hexMap_.find(tileCoord);
+        std::shared_ptr<Common::Hex> hex = it->second;
+        int result = hex->getPawnAmount();
+
+        return result;
+    }
 }
 
 bool GameBoard::isWaterTile(Common::CubeCoordinate tileCoord) const
 {
-    std::cout << tileCoord.x << std::endl;
-    return true;
+    std::shared_ptr<Common::Hex> hex = getHex(tileCoord);
+
+    if (hex != nullptr){
+        auto it = hexMap_.find(tileCoord);
+        std::shared_ptr<Common::Hex> hex = it->second;
+        bool answer = hex->isWaterTile();
+        return answer;
+    }
+    else{
+        return false;
+    }
+
 }
 
 std::shared_ptr<Common::Hex> GameBoard::getHex(Common::CubeCoordinate hexCoord) const
 {
-    std::cout << hexCoord.x << std::endl;
-    return std::shared_ptr<Common::Hex>();
+    if (hexMap_.find(hexCoord) == hexMap_.end()){
+        return nullptr;
+    }
+    else{
+        auto it = hexMap_.find(hexCoord);
+        std::shared_ptr<Common::Hex> hex = it->second;
+        return hex;
+    }
 }
 
 void GameBoard::addPawn(int playerId, int pawnId)
@@ -55,7 +80,7 @@ void GameBoard::removePawn(int pawnId)
 void GameBoard::addActor(std::shared_ptr<Common::Actor> actor, Common::CubeCoordinate actorCoord)
 {
     int id = actor->getId();
-    std::cout << id << actorCoord.x << std::endl;
+    actorMap_.insert(std::make_pair(id, actorCoord));
 }
 
 void GameBoard::moveActor(int actorId, Common::CubeCoordinate actorCoord)
@@ -72,9 +97,16 @@ void GameBoard::addHex(std::shared_ptr<Common::Hex> newHex)
 {
     Common::CubeCoordinate coord = newHex->getCoordinates();
     // TODO: Koordinaattimuunnos ruudulle
-    Student::MainWindow* win = Student::MainWindow::getInstance();
-    win->drawHex(coord);
-    hexMap_.insert(std::make_pair(coord, newHex));
+    //Student::MainWindow* win = Student::MainWindow::getInstance();
+    //win->drawHex(coord);
+
+    auto it = hexMap_.find(coord);
+    if (it == hexMap_.end() ){
+        hexMap_.insert(std::make_pair(coord, newHex));
+    }
+    else{
+        it->second = newHex;
+    }
 
 }
 
