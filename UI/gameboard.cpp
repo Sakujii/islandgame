@@ -72,8 +72,8 @@ void GameBoard::addHex(std::shared_ptr<Common::Hex> newHex)
 {
     Common::CubeCoordinate coord = newHex->getCoordinates();
     // TODO: Koordinaattimuunnos ruudulle
-    //Student::MainWindow* win = Student::MainWindow::getInstance();
-    //win->drawHex();
+    Student::MainWindow* win = Student::MainWindow::getInstance();
+    win->drawHex(coord);
     hexMap_.insert(std::make_pair(coord, newHex));
 
 }

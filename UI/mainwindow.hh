@@ -1,6 +1,8 @@
 #ifndef MAINWINDOW_HH
 #define MAINWINDOW_HH
 
+#include "cubecoordinate.hh"
+
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QGraphicsScene>
 
@@ -17,9 +19,9 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    static MainWindow* getInstance(QWidget* parent = 0);
+    static MainWindow* getInstance();
 
-    void drawHex();
+    void drawHex(Common::CubeCoordinate);
 
 public slots:
     void numberOfPlayers(int count);

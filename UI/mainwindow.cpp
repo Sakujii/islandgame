@@ -28,15 +28,21 @@ MainWindow::MainWindow(QWidget *parent) :
     dialog.setModal(true);
     dialog.exec();
 
-    GameBoard* boardPtr;
+    GameBoard* boardPtr = new GameBoard;
 
     initScene();
-    drawHex();
+
+    for (int i = -3; i < 4; ++i ){
+        Common::CubeCoordinate coord = Common::CubeCoordinate(i, 0, 0);
+        std::shared_ptr<Common::Hex> newHex = std::make_shared<Common::Hex>();
+        newHex->setCoordinates(coord);
+        boardPtr->addHex(newHex);
+    }
 
 }
 
 
-MainWindow* MainWindow::getInstance(QWidget *parent)
+MainWindow* MainWindow::getInstance()
 {
     return mainInstance;
 }
@@ -53,7 +59,7 @@ void MainWindow::numberOfPlayers(int count)
 
 void MainWindow::initScene()
 {
-    QWidget *sceneWidget = new QWidget(this);
+    QWidget *sceneWidget = new QWidget(ui->centralwidget);
     sceneWidget->show();
     int width = 700;
     int height = 500;
@@ -67,40 +73,17 @@ void MainWindow::initScene()
 
 }
 
-void MainWindow::drawHex()
+void MainWindow::drawHex(Common::CubeCoordinate cube)
 {
-    int halfWidth = (boardScene->width())/2;
-    int halfHeight = (boardScene->height()/2);
+    double halfWidth = (boardScene->width())/2;
+    double halfHeight = (boardScene->height()/2);
 
-    QPolygonF polygon;
-    double side = 20;
-    double dx = qSqrt(3)/2 * side;
-    polygon
-            << QPointF(dx, -side/2)
-            << QPointF(0, -side)
-            << QPointF(-dx, -side/2)
-            << QPointF(-dx, side/2)
-            << QPointF(0, side)
-            << QPointF(dx, side/2);
-
-    Common::CubeCoordinate cube = Common::CubeCoordinate(0, 0, 0);
-
-    QPointF axial = cubeToAxial(cube, side);
+    QPointF axial = cubeToAxial(cube, 20);
 
     Ui::BoardHex * hexagon = new Ui::BoardHex();
-    hexagon->setPolygon(polygon);
     boardScene->addItem(hexagon);
     hexagon->setPos(halfWidth + axial.x(), halfHeight + axial.y());
-    hexagon->setToolTip(QString::number(0) + "," + QString::number(0));
-
-    Common::CubeCoordinate cube1 = Common::CubeCoordinate (0, 0, 1);
-    QPointF axial1 = cubeToAxial(cube1, side);
-
-    Ui::BoardHex * hexagon2 = new Ui::BoardHex();
-    hexagon2->setPolygon(polygon);
-    boardScene->addItem(hexagon2);
-    hexagon2->setPos(halfWidth + axial1.x(), halfHeight + axial1.y());
-    hexagon2->setToolTip(QString::number(1) + "," + QString::number(0));
+    hexagon->setToolTip(QString::number(cube.x) + "," + QString::number(cube.z));
 
 }
 }

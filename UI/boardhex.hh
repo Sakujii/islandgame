@@ -13,6 +13,7 @@ class BoardHex : public QGraphicsPolygonItem
 public:
     explicit BoardHex(QGraphicsItem *parent = 0);
     ~BoardHex() = default;
+    int getSize() const;
 
     void focusInEvent(QFocusEvent*);
     void focusOutEvent(QFocusEvent*);
@@ -20,7 +21,7 @@ public:
     void hoverLeaveEvent(QGraphicsSceneHoverEvent*);
 
 private:
-
+    int size_;
 };
 }
 
