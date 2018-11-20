@@ -4,6 +4,10 @@
 #include "boardhex.hh"
 #include "gameboard.hh"
 #include "coordinateconvert.hh"
+#include "gamestate.hh"
+#include "player.hh"
+#include "igamerunner.hh"
+#include "initialize.hh"
 
 #include <QGraphicsView>
 #include <QHBoxLayout>
@@ -28,7 +32,12 @@ MainWindow::MainWindow(QWidget *parent) :
     dialog.setModal(true);
     dialog.exec();
 
-    GameBoard* boardPtr = new GameBoard;
+    std::shared_ptr<GameBoard> boardPtr = std::make_shared <GameBoard>();
+    std::shared_ptr<Common::IGameState> statePtr = std::make_shared<GameState>();
+    std::vector<std::shared_ptr<Common::IPlayer>> playerVector;
+
+    std::shared_ptr<Common::IGameRunner> game_ =
+            Common::Initialization::getGameRunner(boardPtr, statePtr, playerVector);
 
     initScene();
 
