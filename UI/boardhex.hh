@@ -8,7 +8,7 @@
 
 namespace Ui{
 
-class BoardHex : public QGraphicsPolygonItem
+class BoardHex : public QGraphicsPolygonItem, std::enable_shared_from_this<BoardHex>
 {
 
 public:
@@ -20,8 +20,6 @@ public:
 
     void focusInEvent(QFocusEvent*);
     void focusOutEvent(QFocusEvent*);
-    void hoverEnterEvent(QGraphicsSceneHoverEvent*);
-    void hoverLeaveEvent(QGraphicsSceneHoverEvent*);
 
 private:
     int size_;

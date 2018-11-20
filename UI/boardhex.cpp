@@ -85,15 +85,5 @@ void BoardHex::focusOutEvent(QFocusEvent*)
     qDebug() << this->toolTip() << Q_FUNC_INFO;
 }
 
-void BoardHex::hoverEnterEvent(QGraphicsSceneHoverEvent*)
-{
-
-}
-
-void BoardHex::hoverLeaveEvent(QGraphicsSceneHoverEvent*)
-{
-
-}
-
 
 }
