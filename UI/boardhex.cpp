@@ -76,6 +76,7 @@ void BoardHex::colorHex(std::shared_ptr<Common::Hex> hexPtr)
 }
 
 void BoardHex::focusInEvent(QFocusEvent*){
+    this->setSelected(true);
     qDebug() << this->toolTip() << Q_FUNC_INFO;
 }
 
