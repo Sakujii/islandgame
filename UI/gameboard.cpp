@@ -207,4 +207,9 @@ void GameBoard::removeTransport(int id)
     }
 }
 
+std::map<Common::CubeCoordinate, std::shared_ptr<Common::Hex> > GameBoard::getHexMap()
+{
+    return hexMap_;
+}
+
 }

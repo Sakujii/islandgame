@@ -9,7 +9,7 @@ namespace Ui{
 
 BoardHex::BoardHex(QGraphicsItem * parent): QGraphicsPolygonItem(parent)
 {
-    int size_ = 20;
+    int size_ = 15;
 
     QPolygonF polygon;
     double dx = qSqrt(3)/2 * size_;
@@ -36,21 +36,21 @@ int BoardHex::getSize() const
     return size_;
 }
 
-void BoardHex::focusInEvent(QFocusEvent *){
+void BoardHex::focusInEvent(QFocusEvent * e){
     qDebug() << this->toolTip() << Q_FUNC_INFO;
 }
 
-void BoardHex::focusOutEvent(QFocusEvent*)
+void BoardHex::focusOutEvent(QFocusEvent* e)
 {
     qDebug() << this->toolTip() << Q_FUNC_INFO;
 }
 
-void BoardHex::hoverEnterEvent(QGraphicsSceneHoverEvent*)
+void BoardHex::hoverEnterEvent(QGraphicsSceneHoverEvent* e)
 {
     this->setBrush(QBrush(Qt::cyan));
 }
 
-void BoardHex::hoverLeaveEvent(QGraphicsSceneHoverEvent*)
+void BoardHex::hoverLeaveEvent(QGraphicsSceneHoverEvent* e)
 {
     this->setBrush(QBrush());
 }

@@ -140,6 +140,8 @@ public:
      */
     void removeTransport(int id);
 
+    std::map<Common::CubeCoordinate, std::shared_ptr<Common::Hex>> getHexMap();
+
 private:
     std::unordered_map<int, std::shared_ptr<Common::Pawn>> pawnMap_;
     std::map<Common::CubeCoordinate, std::shared_ptr<Common::Hex>> hexMap_;

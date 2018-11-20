@@ -2,6 +2,7 @@
 #define MAINWINDOW_HH
 
 #include "cubecoordinate.hh"
+#include "hex.hh"
 
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QGraphicsScene>
@@ -21,7 +22,7 @@ public:
     ~MainWindow();
     static MainWindow* getInstance();
 
-    void drawHex(Common::CubeCoordinate);
+    void drawHex(std::shared_ptr<Common::Hex> hexPtr);
 
 public slots:
     void numberOfPlayers(int count);
