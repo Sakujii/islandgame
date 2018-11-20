@@ -25,7 +25,7 @@ public:
      * @return The phase of the game.
      * @post Exception quarantee: nothrow
      */
-    Common::GamePhase currentGamePhase();
+    Common::GamePhase currentGamePhase() const;
 
     /**
      * @brief currentPlayer tells the player in turn.

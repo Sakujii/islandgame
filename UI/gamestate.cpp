@@ -13,7 +13,7 @@ GameState::~GameState()
 
 }
 
-Common::GamePhase GameState::currentGamePhase()
+Common::GamePhase GameState::currentGamePhase() const
 {
     return _gamePhaseId;
 }
