@@ -65,7 +65,9 @@ void GameBoard::addPawn(int playerId, int pawnId)
     newPawn->setId(pawnId, playerId);
     auto it = pawnMap_.find(pawnId);
     if (it == pawnMap_.end()){
-        pawnMap_.insert(std::make_pair(pawnId, newPawn));
+        // Change to const id for unordered map
+        const int id = pawnId;
+        pawnMap_.insert(std::make_pair(id, newPawn));
     }
 }
 
@@ -79,7 +81,9 @@ void GameBoard::addPawn(int playerId, int pawnId, Common::CubeCoordinate coord)
     if (it == pawnMap_.end()){
         std::shared_ptr<Common::Hex> hex = getHex(coord);
         hex->addPawn(newPawn);
-        pawnMap_.insert(std::make_pair(pawnId, newPawn));
+        // Change to const id for unordered map
+        const int id = pawnId;
+        pawnMap_.insert(std::make_pair(id, newPawn));
     }
 }
 
