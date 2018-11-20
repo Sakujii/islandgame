@@ -144,6 +144,7 @@ private:
     std::unordered_map<int, std::shared_ptr<Common::Pawn>> pawnMap_;
     std::map<Common::CubeCoordinate, std::shared_ptr<Common::Hex>> hexMap_;
     std::map<int, std::shared_ptr<Common::Actor>> actorMap_;
+    std::map<int, std::shared_ptr<Common::Transport>> transportMap_;
 
 };
 }

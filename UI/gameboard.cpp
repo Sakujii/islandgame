@@ -172,17 +172,39 @@ void GameBoard::addHex(std::shared_ptr<Common::Hex> newHex)
 
 void GameBoard::addTransport(std::shared_ptr<Common::Transport> transport, Common::CubeCoordinate coord)
 {
-    std::cout << transport->getId() << coord.x << coord.y << coord.z << std::endl;
+    int transportId = transport->getId();
+
+    auto it = transportMap_.find(transportId);
+    if (it == transportMap_.end()){
+        std::shared_ptr<Common::Hex> hex = getHex(coord);
+        transport->addHex(hex);
+        transportMap_.insert(std::make_pair(transportId, transport));
+    }
 }
 
 void GameBoard::moveTransport(int id, Common::CubeCoordinate coord)
 {
-    std::cout << id << coord.x << coord.y << coord.z << std::endl;
+    // If hex exists, move Transport
+    if (hexMap_.find(coord) != hexMap_.end()){
+        auto it = transportMap_.find(id);
+        if (it != transportMap_.end()){
+            std::shared_ptr<Common::Transport> transport = it->second;
+            std::shared_ptr<Common::Hex> newHex = getHex(coord);
+            transport->move(newHex);
+        }
+    }
 }
 
 void GameBoard::removeTransport(int id)
 {
-    std::cout << id << std::endl;
+    auto it = transportMap_.find(id);
+    if (it != transportMap_.end()){
+        std::shared_ptr<Common::Transport> transport = it->second;
+        std::shared_ptr<Common::Hex> hex = transport->getHex();
+        hex->removeTransport(transport);
+
+        transportMap_.erase(it);
+    }
 }
 
 }
