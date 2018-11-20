@@ -46,9 +46,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     for (auto x : hexMap){
         std::shared_ptr<Common::Hex> hex = x.second;
-        drawHex(hex);
+        Ui::BoardHex * hexagon = new Ui::BoardHex();
+        hexagon->drawHex(hex, boardScene);
     }
-
 }
 
 
