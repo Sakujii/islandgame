@@ -119,17 +119,39 @@ void GameBoard::removePawn(int pawnId)
 
 void GameBoard::addActor(std::shared_ptr<Common::Actor> actor, Common::CubeCoordinate actorCoord)
 {
+    int actorId = actor->getId();
 
+    auto it = actorMap_.find(actorId);
+    if (it == actorMap_.end()){
+        std::shared_ptr<Common::Hex> hex = getHex(actorCoord);
+        actor->addHex(hex);
+        actorMap_.insert(std::make_pair(actorId, actor));
+    }
 }
 
 void GameBoard::moveActor(int actorId, Common::CubeCoordinate actorCoord)
 {
-    std::cout << actorId << actorCoord.x << std::endl;
+    // If Hex exists, move Actor
+    if (hexMap_.find(actorCoord) != hexMap_.end()){
+        auto it = actorMap_.find(actorId);
+        if (it != actorMap_.end()){
+            std::shared_ptr<Common::Actor> actor = it->second;
+            std::shared_ptr<Common::Hex> newHex = getHex(actorCoord);
+            actor->move(newHex);
+        }
+    }
 }
 
 void GameBoard::removeActor(int actorId)
 {
-    std::cout << actorId << std::endl;
+    auto it = actorMap_.find(actorId);
+    if (it != actorMap_.end()){
+        std::shared_ptr<Common::Actor> actor = it->second;
+        std::shared_ptr<Common::Hex> hex = actor->getHex();
+        hex->removeActor(actor);
+
+        actorMap_.erase(it);
+    }
 }
 
 void GameBoard::addHex(std::shared_ptr<Common::Hex> newHex)
