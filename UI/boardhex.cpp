@@ -1,10 +1,13 @@
 #include "boardhex.hh"
 #include "coordinateconvert.hh"
+#include "mainwindow.hh"
+#include "gameexception.hh"
 
 #include <QDebug>
 #include <QBrush>
 #include <QGraphicsScene>
 #include <qmath.h>
+#include <iostream>
 
 namespace Ui{
 
@@ -39,22 +42,23 @@ int BoardHex::getSize() const
 
 void BoardHex::drawHex(std::shared_ptr<Common::Hex> hexPtr, QGraphicsScene *boardScene)
 {
+    hexPtr_ = hexPtr;
     double halfWidth = (boardScene->width())/2;
     double halfHeight = (boardScene->height()/2);
 
-    Common::CubeCoordinate cube = hexPtr->getCoordinates();
+    hexCoord_ = hexPtr_->getCoordinates();
 
-    QPointF axial = Student::cubeToAxial(cube, 15);
+    QPointF axial = Student::cubeToAxial(hexCoord_, size_);
 
     boardScene->addItem(this);
     this->setPos(halfWidth + axial.x(), halfHeight + axial.y());
-    this->setToolTip(QString::number(cube.x) + "," + QString::number(cube.z));
-    colorHex(hexPtr);
+    this->setToolTip(QString::number(hexCoord_.x) + "," + QString::number(hexCoord_.z));
+    colorHex();
 }
 
-void BoardHex::colorHex(std::shared_ptr<Common::Hex> hexPtr)
+void BoardHex::colorHex()
 {
-    std::string type = hexPtr->getPieceType();
+    std::string type = hexPtr_->getPieceType();
     if (type == "Water"){
         this->setBrush(QBrush(Qt::cyan));
     }
@@ -70,20 +74,22 @@ void BoardHex::colorHex(std::shared_ptr<Common::Hex> hexPtr)
     else if (type == "Peak"){
         this->setBrush(QBrush(Qt::darkGray));
     }
-    else {
+    else if (type == "Coral") {
         this->setBrush(QBrush(Qt::magenta));
     }
 }
 
-void BoardHex::focusInEvent(QFocusEvent*){
-    this->setSelected(true);
-    qDebug() << this->toolTip() << Q_FUNC_INFO;
-}
-
-void BoardHex::focusOutEvent(QFocusEvent*)
+void BoardHex::mousePressEvent(QGraphicsSceneMouseEvent*)
 {
-    qDebug() << this->toolTip() << Q_FUNC_INFO;
+    Student::MainWindow *win = Student::MainWindow::getInstance();
+    std::shared_ptr<Common::IGameRunner> game = win->getGame();
+    try {
+        game->flipTile(hexCoord_);
+        colorHex();
+    }
+    catch (Common::GameException& e) {
+        std::cout<< e.msg() <<std::endl;
+    }
 }
-
 
 }

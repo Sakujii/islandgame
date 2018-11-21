@@ -37,8 +37,7 @@ MainWindow::MainWindow(QWidget *parent) :
     std::shared_ptr<Common::IGameState> statePtr = std::make_shared<GameState>();
     std::vector<std::shared_ptr<Common::IPlayer>> playerVector;
 
-    std::shared_ptr<Common::IGameRunner> game_ =
-            Common::Initialization::getGameRunner(boardPtr, statePtr, playerVector);
+    game_ = Common::Initialization::getGameRunner(boardPtr, statePtr, playerVector);
 
     initScene();
 
@@ -57,6 +56,11 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow* MainWindow::getInstance()
 {
     return mainInstance;
+}
+
+std::shared_ptr<Common::IGameRunner> MainWindow::getGame()
+{
+    return game_;
 }
 
 MainWindow::~MainWindow()

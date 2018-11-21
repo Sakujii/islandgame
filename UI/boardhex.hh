@@ -3,7 +3,7 @@
 
 #include <QtWidgets/QGraphicsPolygonItem>
 #include <QtWidgets/QGraphicsSceneHoverEvent>
-#include <QtGui/QFocusEvent>
+#include <QtEvents>
 #include <hex.hh>
 
 namespace Ui{
@@ -16,13 +16,14 @@ public:
     ~BoardHex() = default;
     int getSize() const;
     void drawHex(std::shared_ptr<Common::Hex>, QGraphicsScene*);
-    void colorHex(std::shared_ptr<Common::Hex>);
+    void colorHex();
 
-    void focusInEvent(QFocusEvent*);
-    void focusOutEvent(QFocusEvent*);
+    void mousePressEvent(QGraphicsSceneMouseEvent*);
 
 private:
     int size_;
+    Common::CubeCoordinate hexCoord_;
+    std::shared_ptr<Common::Hex> hexPtr_;
 };
 }
 
