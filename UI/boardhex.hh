@@ -1,12 +1,15 @@
 #ifndef BOARDHEX_HH
 #define BOARDHEX_HH
 
-#include <QtWidgets/QGraphicsPolygonItem>
 #include <hex.hh>
+
+#include <QtWidgets/QGraphicsPolygonItem>
+#include <memory>
+
 
 namespace Ui{
 
-class BoardHex : public QGraphicsPolygonItem, public std::enable_shared_from_this<BoardHex>
+class BoardHex : public QGraphicsPolygonItem
 {
 
 public:
@@ -15,7 +18,10 @@ public:
     void drawHex(std::shared_ptr<Common::Hex>, QGraphicsScene*);
     void colorHex();
 
-    void mousePressEvent(QGraphicsSceneMouseEvent*);
+    void mousePressEvent(QGraphicsSceneMouseEvent *) override;
+    void dragEnterEvent(QGraphicsSceneDragDropEvent *event) override;
+    void dragLeaveEvent(QGraphicsSceneDragDropEvent *event) override;
+    void dropEvent(QGraphicsSceneDragDropEvent *event) override;
 
 private:
     int size_;

@@ -46,8 +46,9 @@ MainWindow::MainWindow(QWidget *parent) :
     for (auto x : hexMap){
         std::shared_ptr<Common::Hex> hex = x.second;
         Ui::BoardHex * boardHex = new Ui::BoardHex();
-        // Why this shared_ptr does not work?
-        //std::shared_ptr<Ui::BoardHex> boardHex = std::make_shared<Ui::BoardHex>();
+        // Shared pointer goes out from scope at the end of MainWindow constructor
+        // Should we use smart pointers here or not?
+        // std::shared_ptr<Ui::BoardHex> boardHex = std::make_shared<Ui::BoardHex>();
         boardHex->drawHex(hex, boardScene);
     }
 }

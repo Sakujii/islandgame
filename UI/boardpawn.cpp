@@ -1,6 +1,8 @@
 #include "boardpawn.hh"
 
 #include <QGraphicsScene>
+#include <QDrag>
+
 
 namespace Ui{
 
@@ -21,6 +23,15 @@ void BoardPawn::drawPawn()
 {
     this->setRect(0,0, 10, 10);
     this->setBrush(QBrush(Qt::black));
+}
+
+void BoardPawn::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{/* //Not working for some reason
+    if (event->button() == Qt::LeftButton) {
+        QDrag *drag = new QDrag(event->widget());
+        Qt::DropAction dropAction = drag->exec();
+
+    }*/
 }
 
 }

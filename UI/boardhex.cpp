@@ -11,11 +11,12 @@
 #include <qmath.h>
 #include <iostream>
 
+
 namespace Ui{
 
 BoardHex::BoardHex(QGraphicsItem * parent): QGraphicsPolygonItem(parent)
 {
-    size_ = 15;
+    size_ = 18;
 
     QPolygonF polygon;
     double dx = qSqrt(3)/2 * size_;
@@ -57,10 +58,11 @@ void BoardHex::drawHex(std::shared_ptr<Common::Hex> hexPtr, QGraphicsScene *boar
     this->setToolTip(QString::number(hexCoord_.x) + "," + QString::number(hexCoord_.z));
     colorHex();
 
-    //std::shared_ptr<BoardPawn> boardPawn = std::make_shared<BoardPawn>();
-    BoardPawn * boardPawn = new BoardPawn(this);
-    boardPawn->drawPawn();
-    boardPawn->setPos(0, 0);
+    if (hexCoord_.x < 2 && hexCoord_.x > -2 && hexCoord_.z < 2 && hexCoord_.z > -2){
+        BoardPawn * boardPawn = new BoardPawn(this);
+        boardPawn->drawPawn();
+        boardPawn->setPos(0, 0);
+    }
 }
 
 void BoardHex::colorHex()
@@ -103,4 +105,20 @@ void BoardHex::mousePressEvent(QGraphicsSceneMouseEvent*)
     }
 }
 
+void BoardHex::dragEnterEvent(QGraphicsSceneDragDropEvent *)
+{
+
+}
+
+void BoardHex::dragLeaveEvent(QGraphicsSceneDragDropEvent *)
+{
+
+}
+
+void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
+{
+    event->acceptProposedAction();
+    qDebug() << "Got a drop!";
+
+}
 }
