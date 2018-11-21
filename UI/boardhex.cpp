@@ -4,12 +4,16 @@
 #include "gameexception.hh"
 #include "boardpawn.hh"
 #include "actor.hh"
+#include "transport.hh"
 
 #include <QDebug>
 #include <QBrush>
 #include <QGraphicsScene>
+#include <QGraphicsSimpleTextItem>
 #include <qmath.h>
 #include <iostream>
+#include <string>
+
 
 
 namespace Ui{
@@ -95,14 +99,33 @@ void BoardHex::mousePressEvent(QGraphicsSceneMouseEvent*)
     try {
         game->flipTile(hexCoord_);
         colorHex();
+
+        // Get actors under the tile and draw first letter on the hex
+        std::vector<std::shared_ptr<Common::Actor>> actors = hexPtr_->getActors();
+        for (auto x : actors){
+            std::string text = (x->getActorType());
+            text = std::toupper(text[0]);
+            QString qtext = QString::fromStdString(text);
+            QGraphicsSimpleTextItem *textItem = new QGraphicsSimpleTextItem(qtext, this);
+            textItem->setFont(QFont("Colibri", 25));
+            textItem->setPos(-7, -15);
+        }
+
+        // Get transports under the tile and draw first letter on the hex
+        std::vector<std::shared_ptr<Common::Transport>> transports = hexPtr_->getTransports();
+        for (auto x : transports){
+            std::string text = (x->getTransportType());
+            text = std::toupper(text[0]);
+            QString qtext = QString::fromStdString(text);
+            QGraphicsSimpleTextItem *textItem = new QGraphicsSimpleTextItem(qtext, this);
+            textItem->setFont(QFont("Colibri", 25));
+            textItem->setPos(-10, -15);
+        }
     }
     catch (Common::GameException& e) {
         std::cout<< e.msg() <<std::endl;
     }
-    std::vector<std::shared_ptr<Common::Actor>> actors = hexPtr_->getActors();
-    for (auto x : actors){
-        std::cout << x->getActorType() << std::endl;
-    }
+
 }
 
 void BoardHex::dragEnterEvent(QGraphicsSceneDragDropEvent *)
