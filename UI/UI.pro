@@ -20,7 +20,8 @@ SOURCES += main.cc \
     mainwindow.cpp \
     dialog.cpp \
     boardhex.cpp \
-    coordinateconvert.cpp
+    coordinateconvert.cpp \
+    boardpawn.cpp
 
 HEADERS  += \
     gameboard.hh \
@@ -29,7 +30,8 @@ HEADERS  += \
     mainwindow.hh \
     dialog.hh \
     boardhex.hh \
-    coordinateconvert.hh
+    coordinateconvert.hh \
+    boardpawn.hh
 
 INCLUDEPATH += $$PWD/../GameLogic/Engine
 DEPENDPATH += $$PWD/../GameLogic/Engine

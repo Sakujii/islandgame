@@ -2,6 +2,8 @@
 #include "coordinateconvert.hh"
 #include "mainwindow.hh"
 #include "gameexception.hh"
+#include "boardpawn.hh"
+#include "actor.hh"
 
 #include <QDebug>
 #include <QBrush>
@@ -54,6 +56,11 @@ void BoardHex::drawHex(std::shared_ptr<Common::Hex> hexPtr, QGraphicsScene *boar
     this->setPos(halfWidth + axial.x(), halfHeight + axial.y());
     this->setToolTip(QString::number(hexCoord_.x) + "," + QString::number(hexCoord_.z));
     colorHex();
+
+    //std::shared_ptr<BoardPawn> boardPawn = std::make_shared<BoardPawn>();
+    BoardPawn * boardPawn = new BoardPawn(this);
+    boardPawn->drawPawn();
+    boardPawn->setPos(0, 0);
 }
 
 void BoardHex::colorHex()
@@ -89,6 +96,10 @@ void BoardHex::mousePressEvent(QGraphicsSceneMouseEvent*)
     }
     catch (Common::GameException& e) {
         std::cout<< e.msg() <<std::endl;
+    }
+    std::vector<std::shared_ptr<Common::Actor>> actors = hexPtr_->getActors();
+    for (auto x : actors){
+        std::cout << x->getActorType() << std::endl;
     }
 }
 

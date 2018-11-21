@@ -6,11 +6,13 @@
 
 namespace Ui {
 
-class BoardPawn: public QGraphicsEllipseItem
+class BoardPawn: public QGraphicsEllipseItem, public std::enable_shared_from_this<BoardPawn>
 {
 public:
     explicit BoardPawn(QGraphicsItem *parent = 0);
     ~BoardPawn() = default;
+
+    void drawPawn();
 };
 
 }
