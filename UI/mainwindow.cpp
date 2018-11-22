@@ -89,6 +89,8 @@ void MainWindow::initScene()
     view->setFixedSize(width, height);
     boardScene->setSceneRect(0, 0, width-border, height-border);
     view->setScene(boardScene);
+    view->setMouseTracking(true);
+
 
 }
 

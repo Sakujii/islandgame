@@ -64,8 +64,8 @@ void BoardHex::drawHex(std::shared_ptr<Common::Hex> hexPtr, QGraphicsScene *boar
 
     if (hexCoord_.x < 2 && hexCoord_.x > -2 && hexCoord_.z < 2 && hexCoord_.z > -2){
         BoardPawn * boardPawn = new BoardPawn(this);
-        boardPawn->drawPawn();
-        boardPawn->setPos(0, 0);
+        //boardPawn->drawPawn();
+        //boardPawn->setPos(0, 0);
     }
 }
 
@@ -128,20 +128,11 @@ void BoardHex::mousePressEvent(QGraphicsSceneMouseEvent*)
 
 }
 
-void BoardHex::dragEnterEvent(QGraphicsSceneDragDropEvent *)
-{
-
-}
-
-void BoardHex::dragLeaveEvent(QGraphicsSceneDragDropEvent *)
-{
-
-}
 
 void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
 {
     event->acceptProposedAction();
-    qDebug() << "Got a drop!";
+    qDebug() << "Got a drop! " << hexCoord_.x << hexCoord_.z ;
 
 }
 }

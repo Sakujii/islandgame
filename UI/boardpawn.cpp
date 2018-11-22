@@ -1,37 +1,63 @@
 #include "boardpawn.hh"
+#include "mainwindow.hh"
 
 #include <QGraphicsScene>
+#include <QGraphicsObject>
 #include <QDrag>
+#include <QPainter>
+#include <QMimeData>
+#include <QDebug>
+
 
 
 namespace Ui{
 
+
 BoardPawn::BoardPawn(QGraphicsItem* parent): QGraphicsEllipseItem (parent)
 {
-
-
+    drawPawn();
     setAcceptedMouseButtons(Qt::LeftButton);
 
-    setFlag(QGraphicsItem::ItemIsFocusable);
-    setFlag(QGraphicsItem::ItemIsSelectable);
-    setFlag(QGraphicsItem::ItemIsMovable);
-    setFlag(QGraphicsItem::ItemSendsGeometryChanges);
-    setFlag(QGraphicsItem::ItemSendsScenePositionChanges);
 }
 
 void BoardPawn::drawPawn()
 {
-    this->setRect(0,0, 10, 10);
+    this->setRect(boundingRect());
     this->setBrush(QBrush(Qt::black));
 }
 
 void BoardPawn::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{/* //Not working for some reason
-    if (event->button() == Qt::LeftButton) {
-        QDrag *drag = new QDrag(event->widget());
-        Qt::DropAction dropAction = drag->exec();
+{
+    this->hide();
+    Student::MainWindow *win = Student::MainWindow::getInstance();
 
-    }*/
+    if (event->button() == Qt::LeftButton) {
+        QMimeData *mime = new QMimeData;
+        QDrag *drag = new QDrag(win);
+        drag->setMimeData(mime);
+
+        QPixmap pixmap(boundingRect().size().toSize());
+        pixmap.fill(Qt::transparent);
+
+        QPainter painter(&pixmap);
+        painter.setRenderHint(QPainter::HighQualityAntialiasing);
+        painter.setBrush(QBrush(Qt::black));
+        painter.drawEllipse(boundingRect());
+        painter.end();
+
+        drag->setHotSpot(QPoint(5, 7));
+
+        drag->setPixmap(pixmap);
+
+        drag->exec();
+    }
+this->show();
+}
+
+
+QRectF BoardPawn::boundingRect() const
+{
+    return QRectF(0, 0, 10, 10);
 }
 
 }

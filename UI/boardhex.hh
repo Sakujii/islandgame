@@ -19,8 +19,6 @@ public:
     void colorHex();
 
     void mousePressEvent(QGraphicsSceneMouseEvent *) override;
-    void dragEnterEvent(QGraphicsSceneDragDropEvent *event) override;
-    void dragLeaveEvent(QGraphicsSceneDragDropEvent *event) override;
     void dropEvent(QGraphicsSceneDragDropEvent *event) override;
 
 private:
