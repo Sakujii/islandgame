@@ -1,5 +1,6 @@
 #include "boardpawn.hh"
 #include "mainwindow.hh"
+#include "boardhex.hh"
 
 #include <QGraphicsScene>
 #include <QGraphicsObject>
@@ -45,7 +46,6 @@ void BoardPawn::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
         QPixmap pixmap(boundingRect().size().toSize());
         pixmap.fill(Qt::transparent);
-
         QPainter painter(&pixmap);
         painter.setRenderHint(QPainter::HighQualityAntialiasing);
 

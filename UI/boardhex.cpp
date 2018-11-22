@@ -69,7 +69,6 @@ void BoardHex::drawHex(std::shared_ptr<Common::Hex> hexPtr, QGraphicsScene *boar
 
     int i = 1;
     for (auto x : pawns){
-        std::cout << x->getId()<< " " << x->getPlayerId() << std::endl;
         BoardPawn *boardPawn = new BoardPawn(this, x->getId(), x->getPlayerId());
         if (i == 1){
             boardPawn->setPos(-5, -15);
@@ -148,6 +147,10 @@ void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
     event->acceptProposedAction();
     int pawnId = event->mimeData()->text().toInt();
     qDebug() << "Got a drop to" << hexCoord_.x << hexCoord_.z << "from pawnId" << pawnId;
+
+    Student::MainWindow *win = Student::MainWindow::getInstance();
+    std::shared_ptr<Common::IGameRunner> game = win->getGame();
+    //int moveLegality = game->movePawn(Common::CubeCoordinate(0,0,0), hexCoord_, pawnId);
 
 }
 }
