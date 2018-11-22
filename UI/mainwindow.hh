@@ -4,6 +4,7 @@
 #include "cubecoordinate.hh"
 #include "hex.hh"
 #include "igamerunner.hh"
+#include "gameboard.hh"
 
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QGraphicsScene>
@@ -35,6 +36,7 @@ private:
     QGraphicsScene *boardScene;
     std::shared_ptr<Common::IGameRunner> game_;
     void initScene();
+    int playerCount_;
 
 };
 }

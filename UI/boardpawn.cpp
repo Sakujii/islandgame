@@ -13,8 +13,10 @@
 namespace Ui{
 
 
-BoardPawn::BoardPawn(QGraphicsItem* parent): QGraphicsEllipseItem (parent)
+BoardPawn::BoardPawn(QGraphicsItem* parent, int id, int playerId): QGraphicsEllipseItem (parent)
 {
+    pawnId_ = id;
+    playerId_ = playerId;
     drawPawn();
     setAcceptedMouseButtons(Qt::LeftButton);
 
@@ -23,7 +25,14 @@ BoardPawn::BoardPawn(QGraphicsItem* parent): QGraphicsEllipseItem (parent)
 void BoardPawn::drawPawn()
 {
     this->setRect(boundingRect());
-    this->setBrush(QBrush(Qt::black));
+
+    if (playerId_ == 1){
+        this->setBrush(QBrush(Qt::black));
+    } else if (playerId_ == 2){
+        this->setBrush(QBrush(Qt::darkGreen));
+    } else if (playerId_ == 3){
+        this->setBrush(QBrush(Qt::red));
+    }
 }
 
 void BoardPawn::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -32,24 +41,27 @@ void BoardPawn::mousePressEvent(QGraphicsSceneMouseEvent *event)
     Student::MainWindow *win = Student::MainWindow::getInstance();
 
     if (event->button() == Qt::LeftButton) {
-        QMimeData *mime = new QMimeData;
-        QDrag *drag = new QDrag(win);
-        drag->setMimeData(mime);
+
 
         QPixmap pixmap(boundingRect().size().toSize());
         pixmap.fill(Qt::transparent);
 
         QPainter painter(&pixmap);
         painter.setRenderHint(QPainter::HighQualityAntialiasing);
+
         painter.setBrush(QBrush(Qt::black));
+
         painter.drawEllipse(boundingRect());
         painter.end();
 
+        QMimeData *mime = new QMimeData;
+        mime->setText(QString::number(pawnId_));
+        QDrag *drag = new QDrag(win);
+        drag->setMimeData(mime);
         drag->setHotSpot(QPoint(5, 7));
-
         drag->setPixmap(pixmap);
-
         drag->exec();
+
     }
 this->show();
 }
@@ -57,7 +69,8 @@ this->show();
 
 QRectF BoardPawn::boundingRect() const
 {
-    return QRectF(0, 0, 10, 10);
+    int size = 10;
+    return QRectF(0, 0, size, size);
 }
 
 }

@@ -5,11 +5,14 @@
 #include "boardpawn.hh"
 #include "actor.hh"
 #include "transport.hh"
+#include "gameboard.hh"
+#include "pawn.hh"
 
 #include <QDebug>
 #include <QBrush>
 #include <QGraphicsScene>
 #include <QGraphicsSimpleTextItem>
+#include <QMimeData>
 #include <qmath.h>
 #include <iostream>
 #include <string>
@@ -62,11 +65,21 @@ void BoardHex::drawHex(std::shared_ptr<Common::Hex> hexPtr, QGraphicsScene *boar
     this->setToolTip(QString::number(hexCoord_.x) + "," + QString::number(hexCoord_.z));
     colorHex();
 
-    if (hexCoord_.x < 2 && hexCoord_.x > -2 && hexCoord_.z < 2 && hexCoord_.z > -2){
-        BoardPawn * boardPawn = new BoardPawn(this);
-        //boardPawn->drawPawn();
-        //boardPawn->setPos(0, 0);
+    std::vector<std::shared_ptr<Common::Pawn>> pawns = hexPtr_->getPawns();
+
+    int i = 1;
+    for (auto x : pawns){
+        std::cout << x->getId()<< " " << x->getPlayerId() << std::endl;
+        BoardPawn *boardPawn = new BoardPawn(this, x->getId(), x->getPlayerId());
+        if (i == 1){
+            boardPawn->setPos(-5, -15);
+        } else if (i == 2){
+            boardPawn->setPos(-13, -5);
+        } else if (i == 3){
+            boardPawn->setPos(3, -5);
+        } ++i;
     }
+
 }
 
 void BoardHex::colorHex()
@@ -90,6 +103,7 @@ void BoardHex::colorHex()
     else if (type == "Coral") {
         this->setBrush(QBrush(Qt::magenta));
     }
+    else{}
 }
 
 void BoardHex::mousePressEvent(QGraphicsSceneMouseEvent*)
@@ -132,7 +146,8 @@ void BoardHex::mousePressEvent(QGraphicsSceneMouseEvent*)
 void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
 {
     event->acceptProposedAction();
-    qDebug() << "Got a drop! " << hexCoord_.x << hexCoord_.z ;
+    int pawnId = event->mimeData()->text().toInt();
+    qDebug() << "Got a drop to" << hexCoord_.x << hexCoord_.z << "from pawnId" << pawnId;
 
 }
 }

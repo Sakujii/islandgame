@@ -15,6 +15,7 @@
 #include <QPolygonF>
 #include <QDesktopWidget>
 #include <qmath.h>
+#include <iostream>
 
 namespace Student{
 
@@ -42,15 +43,24 @@ MainWindow::MainWindow(QWidget *parent) :
     initScene();
 
     std::map<Common::CubeCoordinate, std::shared_ptr<Common::Hex>> hexMap = boardPtr->getHexMap();
-
+    int pawnId = 0;
     for (auto x : hexMap){
+        // Adding pawns to hex
+        if (x.first.x < 2 && x.first.x >= -2 && x.first.z < 2 && x.first.z >= -2){
+            for (int player = 1; player <= playerCount_; ++player){
+                boardPtr->addPawn(player, pawnId, x.first);
+                ++pawnId;
+            }
+        }
         std::shared_ptr<Common::Hex> hex = x.second;
         Ui::BoardHex * boardHex = new Ui::BoardHex();
         // Shared pointer goes out from scope at the end of MainWindow constructor
         // Should we use smart pointers here or not?
         // std::shared_ptr<Ui::BoardHex> boardHex = std::make_shared<Ui::BoardHex>();
         boardHex->drawHex(hex, boardScene);
+
     }
+
 }
 
 
@@ -71,6 +81,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::numberOfPlayers(int count)
 {
+    playerCount_ = count;
     ui->labelNumber->setText(QString::number(count));
 }
 

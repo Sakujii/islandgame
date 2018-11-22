@@ -15,7 +15,7 @@ class BoardPawn: public QGraphicsEllipseItem
 {
 
 public:
-    explicit BoardPawn(QGraphicsItem *parent = 0);
+    explicit BoardPawn(QGraphicsItem *parent = 0, int id = 0, int playerId = 0);
     ~BoardPawn() = default;
 
     QRectF boundingRect() const override;
@@ -24,6 +24,8 @@ public:
 
 
 private:
+    int pawnId_;
+    int playerId_;
 };
 
 }
