@@ -13,6 +13,9 @@
 
 namespace Ui{
 
+QColor color1 = Qt::black;
+QColor color2 = Qt::darkGreen;
+QColor color3 = Qt::red;
 
 BoardPawn::BoardPawn(QGraphicsItem* parent, int id, int playerId): QGraphicsEllipseItem (parent), QMimeData()
 {
@@ -28,11 +31,22 @@ void BoardPawn::drawPawn()
     this->setRect(boundingRect());
 
     if (playerId_ == 1){
-        this->setBrush(QBrush(Qt::black));
+        this->setBrush(QBrush(color1));
     } else if (playerId_ == 2){
-        this->setBrush(QBrush(Qt::darkGreen));
+        this->setBrush(QBrush(color2));
     } else if (playerId_ == 3){
-        this->setBrush(QBrush(Qt::red));
+        this->setBrush(QBrush(color3));
+    }
+}
+
+void BoardPawn::setPosition(int pawnAmount)
+{
+    if (pawnAmount == 1){
+        this->setPos(-5, -15);
+    } else if (pawnAmount == 2){
+        this->setPos(-13, -5);
+    } else if (pawnAmount == 3){
+        this->setPos(3, -5);
     }
 }
 
@@ -45,14 +59,17 @@ void BoardPawn::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
     if (event->button() == Qt::LeftButton) {
 
-
         QPixmap pixmap(boundingRect().size().toSize());
         pixmap.fill(Qt::transparent);
         QPainter painter(&pixmap);
         painter.setRenderHint(QPainter::HighQualityAntialiasing);
-
-        painter.setBrush(QBrush(Qt::black));
-
+        if (playerId_ == 1){
+            painter.setBrush(QBrush(color1));
+        } else if (playerId_ == 2){
+            painter.setBrush(QBrush(color2));
+        } else if (playerId_ == 3){
+            painter.setBrush(QBrush(color3));
+        }
         painter.drawEllipse(boundingRect());
         painter.end();
 

@@ -166,13 +166,15 @@ void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
 
     Student::MainWindow *win = Student::MainWindow::getInstance();
     std::unordered_map<int, std::shared_ptr<Common::Pawn>> pawnMap = boardPtr_->getPawnMap();
+    std::map<Common::CubeCoordinate, std::shared_ptr<Common::Hex> > hexMap = boardPtr_->getHexMap();
     std::unordered_map<int, Ui::BoardPawn*> boardPawnMap =  win->getBoardPawnMap();
 
 
+    // Get pawn origin coordinates from pawn map
     Common::CubeCoordinate origin;
-    auto it = pawnMap.find(pawnId);
-    if (it != pawnMap.end()){
-        origin = it->second->getCoordinates();
+    auto pawnIt = pawnMap.find(pawnId);
+    if (pawnIt != pawnMap.end()){
+        origin = pawnIt->second->getCoordinates();
     }
 
     try {
@@ -183,7 +185,19 @@ void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
         auto iter = boardPawnMap.find(pawnId);
         if (iter != boardPawnMap.end()){
             iter->second->setParentItem(this);
-            iter->second->setPos(-5, -15);
+            iter->second->setPosition(hexPtr_->getPawnAmount());
+        }
+
+        // Get origin hex pawns and update positions
+        auto hexIt = hexMap.find(origin);
+        if (hexIt != hexMap.end()){
+            std::vector<std::shared_ptr<Common::Pawn>> oldPawns = hexIt->second->getPawns();
+            int i = 1;
+            for (auto x : oldPawns){
+                auto pawnIt = boardPawnMap.find(x->getId());
+                pawnIt->second->setPosition(i);
+                ++i;
+            }
         }
     }
     catch (Common::IllegalMoveException& e){
