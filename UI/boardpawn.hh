@@ -6,12 +6,13 @@
 #include <QGraphicsSceneDragDropEvent>
 #include <QGraphicsObject>
 #include <QPainter>
+#include <QMimeData>
 #include <memory>
 
 
 namespace Ui {
 
-class BoardPawn: public QGraphicsEllipseItem
+class BoardPawn: public QGraphicsEllipseItem, public QMimeData
 {
 
 public:

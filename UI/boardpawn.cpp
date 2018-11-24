@@ -14,7 +14,7 @@
 namespace Ui{
 
 
-BoardPawn::BoardPawn(QGraphicsItem* parent, int id, int playerId): QGraphicsEllipseItem (parent)
+BoardPawn::BoardPawn(QGraphicsItem* parent, int id, int playerId): QGraphicsEllipseItem (parent), QMimeData()
 {
     pawnId_ = id;
     playerId_ = playerId;
@@ -35,6 +35,8 @@ void BoardPawn::drawPawn()
         this->setBrush(QBrush(Qt::red));
     }
 }
+
+
 
 void BoardPawn::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {

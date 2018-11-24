@@ -2,11 +2,10 @@
 #include "coordinateconvert.hh"
 #include "mainwindow.hh"
 #include "gameexception.hh"
-#include "boardpawn.hh"
 #include "actor.hh"
 #include "transport.hh"
-#include "gameboard.hh"
 #include "pawn.hh"
+#include "illegalmoveexception.hh"
 
 #include <QDebug>
 #include <QBrush>
@@ -21,8 +20,16 @@
 
 namespace Ui{
 
-BoardHex::BoardHex(QGraphicsItem * parent): QGraphicsPolygonItem(parent)
+
+BoardHex::BoardHex(QGraphicsItem * parent,
+                   std::shared_ptr<Common::Hex> hexPtr,
+                   std::shared_ptr<Student::GameBoard> boardPtr,
+                   std::shared_ptr<Common::IGameRunner> gamePtr): QGraphicsPolygonItem(parent)
 {
+    hexPtr_ = hexPtr;
+    boardPtr_ = boardPtr;
+    hexCoord_ = hexPtr->getCoordinates();
+    gamePtr_ = gamePtr;
     size_ = 18;
 
     QPolygonF polygon;
@@ -50,9 +57,10 @@ int BoardHex::getSize() const
     return size_;
 }
 
-void BoardHex::drawHex(std::shared_ptr<Common::Hex> hexPtr, QGraphicsScene *boardScene)
+void BoardHex::drawHex(std::shared_ptr<Common::Hex> hexPtr,
+                       QGraphicsScene *boardScene,
+                       std::shared_ptr<Student::GameBoard> boardPtr)
 {
-    hexPtr_ = hexPtr;
     double halfWidth = (boardScene->width())/2;
     double halfHeight = (boardScene->height()/2);
 
@@ -77,7 +85,15 @@ void BoardHex::drawHex(std::shared_ptr<Common::Hex> hexPtr, QGraphicsScene *boar
         } else if (i == 3){
             boardPawn->setPos(3, -5);
         } ++i;
+        if (boardPawnMap_.find(x->getId()) == boardPawnMap_.end()){
+            std::cout << x->getId() << std::endl;
+            std::cout << boardPawn << std::endl;
+            boardPawnMap_.insert(std::make_pair(x->getId(), boardPawn));
+            std::cout << boardPawnMap_.size()<<std::endl;
+        }
     }
+
+    boardPtr_ = boardPtr;
 
 }
 
@@ -149,8 +165,30 @@ void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
     qDebug() << "Got a drop to" << hexCoord_.x << hexCoord_.z << "from pawnId" << pawnId;
 
     Student::MainWindow *win = Student::MainWindow::getInstance();
-    std::shared_ptr<Common::IGameRunner> game = win->getGame();
-    //int moveLegality = game->movePawn(Common::CubeCoordinate(0,0,0), hexCoord_, pawnId);
+    std::unordered_map<int, std::shared_ptr<Common::Pawn>> pawnMap = boardPtr_->getPawnMap();
+    std::unordered_map<int, Ui::BoardPawn*> boardPawnMap =  win->getBoardPawnMap();
+
+
+    Common::CubeCoordinate origin;
+    auto it = pawnMap.find(pawnId);
+    if (it != pawnMap.end()){
+        origin = it->second->getCoordinates();
+    }
+
+    try {
+        // This needs player instances in playerVector
+        // gamePtr_->movePawn(origin, hexCoord_, pawnId);
+        boardPtr_->movePawn(pawnId, hexCoord_);
+
+        auto iter = boardPawnMap.find(pawnId);
+        if (iter != boardPawnMap.end()){
+            iter->second->setParentItem(this);
+            iter->second->setPos(-5, -15);
+        }
+    }
+    catch (Common::IllegalMoveException& e){
+        std::cout << e.msg() << std::endl;
+    }
 
 }
 }

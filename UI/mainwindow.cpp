@@ -8,6 +8,7 @@
 #include "player.hh"
 #include "igamerunner.hh"
 #include "initialize.hh"
+#include "boardpawn.hh"
 
 #include <QGraphicsView>
 #include <QHBoxLayout>
@@ -34,7 +35,7 @@ MainWindow::MainWindow(QWidget *parent) :
     dialog.setModal(true);
     dialog.exec();
 
-    std::shared_ptr<GameBoard> boardPtr = std::make_shared <GameBoard>();
+    std::shared_ptr<Student::GameBoard> boardPtr = std::make_shared <GameBoard>();
     std::shared_ptr<Common::IGameState> statePtr = std::make_shared<GameState>();
     std::vector<std::shared_ptr<Common::IPlayer>> playerVector;
 
@@ -43,6 +44,7 @@ MainWindow::MainWindow(QWidget *parent) :
     initScene();
 
     std::map<Common::CubeCoordinate, std::shared_ptr<Common::Hex>> hexMap = boardPtr->getHexMap();
+
     int pawnId = 0;
     for (auto x : hexMap){
         // Adding pawns to hex
@@ -53,14 +55,16 @@ MainWindow::MainWindow(QWidget *parent) :
             }
         }
         std::shared_ptr<Common::Hex> hex = x.second;
-        Ui::BoardHex * boardHex = new Ui::BoardHex();
+         //Ui::BoardHex * boardHex = new Ui::BoardHex();
+
         // Shared pointer goes out from scope at the end of MainWindow constructor
         // Should we use smart pointers here or not?
         // std::shared_ptr<Ui::BoardHex> boardHex = std::make_shared<Ui::BoardHex>();
-        boardHex->drawHex(hex, boardScene);
+
+         //boardHex->drawHex(hex, boardScene, boardPtr_);
+        drawHex(hex, boardPtr);
 
     }
-
 }
 
 
@@ -72,6 +76,11 @@ MainWindow* MainWindow::getInstance()
 std::shared_ptr<Common::IGameRunner> MainWindow::getGame()
 {
     return game_;
+}
+
+std::unordered_map<int, Ui::BoardPawn *> MainWindow::getBoardPawnMap()
+{
+    return boardPawnMap_;
 }
 
 MainWindow::~MainWindow()
@@ -105,19 +114,38 @@ void MainWindow::initScene()
 
 }
 
-void MainWindow::drawHex(std::shared_ptr<Common::Hex> hexPtr)
+void MainWindow::drawHex(std::shared_ptr<Common::Hex> hexPtr, std::shared_ptr<Student::GameBoard> boardPtr)
 {
+    Common::CubeCoordinate hexCoord = hexPtr->getCoordinates();
+
+    Ui::BoardHex * boardHex = new Ui::BoardHex(0, hexPtr, boardPtr, game_);
+
     double halfWidth = (boardScene->width())/2;
     double halfHeight = (boardScene->height()/2);
 
-    Common::CubeCoordinate cube = hexPtr->getCoordinates();
+    QPointF axial = Student::cubeToAxial(hexCoord, 18);
 
-    QPointF axial = cubeToAxial(cube, 15);
+    boardScene->addItem(boardHex);
+    boardHex->setPos(halfWidth + axial.x(), halfHeight + axial.y());
+    boardHex->setToolTip(QString::number(hexCoord.x) + "," + QString::number(hexCoord.z));
+    boardHex->colorHex();
 
-    Ui::BoardHex * hexagon = new Ui::BoardHex();
-    boardScene->addItem(hexagon);
-    hexagon->setPos(halfWidth + axial.x(), halfHeight + axial.y());
-    hexagon->setToolTip(QString::number(cube.x) + "," + QString::number(cube.z));
+    std::vector<std::shared_ptr<Common::Pawn>> pawns = hexPtr->getPawns();
+
+    int i = 1;
+    for (auto x : pawns){
+        Ui::BoardPawn *boardPawn = new Ui::BoardPawn(boardHex, x->getId(), x->getPlayerId());
+        if (i == 1){
+            boardPawn->setPos(-5, -15);
+        } else if (i == 2){
+            boardPawn->setPos(-13, -5);
+        } else if (i == 3){
+            boardPawn->setPos(3, -5);
+        } ++i;
+        if (boardPawnMap_.find(x->getId()) == boardPawnMap_.end()){
+            boardPawnMap_.insert(std::make_pair(x->getId(), boardPawn));
+        }
+    }
 
 }
 }
