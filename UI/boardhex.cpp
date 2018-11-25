@@ -6,6 +6,7 @@
 #include "transport.hh"
 #include "pawn.hh"
 #include "illegalmoveexception.hh"
+#include "boardtransport.hh"
 
 #include <QDebug>
 #include <QBrush>
@@ -101,11 +102,8 @@ void BoardHex::addTransports()
     std::vector<std::shared_ptr<Common::Transport>> transports = hexPtr_->getTransports();
     for (auto x : transports){
         std::string text = (x->getTransportType());
-        text = std::toupper(text[0]);
-        QString qtext = QString::fromStdString(text);
-        QGraphicsSimpleTextItem *textItem = new QGraphicsSimpleTextItem(qtext, this);
-        textItem->setFont(QFont("Colibri", 25));
-        textItem->setPos(-10, -15);
+        BoardTransport *boardTransport = new BoardTransport(this, x->getId(), x->getTransportType());
+
     }
 }
 
@@ -155,7 +153,7 @@ void BoardHex::mousePressEvent(QGraphicsSceneMouseEvent*)
     }
 
     std::unordered_map<int, std::shared_ptr<Common::Pawn>> pawnMap = boardPtr_->getPawnMap();
-    std::cout << pawnMap.size() << std::endl;
+    //std::cout << pawnMap.size() << std::endl;
 
     std::vector<std::shared_ptr<Common::Actor>> actors = hexPtr_->getActors();
     for (auto x : actors){
@@ -166,7 +164,7 @@ void BoardHex::mousePressEvent(QGraphicsSceneMouseEvent*)
     std::vector<std::shared_ptr<Common::Pawn>> pawns = hexPtr_->getPawns();
 
     pawnMap = boardPtr_->getPawnMap();
-    std::cout << pawnMap.size() << std::endl;
+    //std::cout << pawnMap.size() << std::endl;
 
     removePawns();
 
@@ -176,49 +174,59 @@ void BoardHex::mousePressEvent(QGraphicsSceneMouseEvent*)
 void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
 {
     event->acceptProposedAction();
-    int pawnId = event->mimeData()->text().toInt();
-    qDebug() << "Got a drop to" << hexCoord_.x << hexCoord_.z << "from pawnId" << pawnId;
+    QStringList data = event->mimeData()->text().split(";");
+    int id = data[1].toInt();
+    QString type = data[0];
+    qDebug() << "Got a drop to" << hexCoord_.x << hexCoord_.z << "from" << type << "id" << id;
 
     Student::MainWindow *win = Student::MainWindow::getInstance();
     std::unordered_map<int, std::shared_ptr<Common::Pawn>> pawnMap = boardPtr_->getPawnMap();
     std::map<Common::CubeCoordinate, std::shared_ptr<Common::Hex> > hexMap = boardPtr_->getHexMap();
     std::unordered_map<int, Ui::BoardPawn*> boardPawnMap =  win->getBoardPawnMap();
 
-
-    // Get pawn origin coordinates from pawn map
-    Common::CubeCoordinate origin;
-    auto pawnIt = pawnMap.find(pawnId);
-    if (pawnIt != pawnMap.end()){
-        origin = pawnIt->second->getCoordinates();
-    }
-
-    try {
-        // This needs Gamestates to be implemented
-        // gamePtr_->movePawn(origin, hexCoord_, pawnId);
-
-        // This is unneccessary when upper row is executed
-        boardPtr_->movePawn(pawnId, hexCoord_);
-
-        auto iter = boardPawnMap.find(pawnId);
-        if (iter != boardPawnMap.end()){
-            iter->second->setParentItem(this);
-            iter->second->setPosition(hexPtr_->getPawnAmount());
+    if (type == "pawn"){
+        // Get pawn origin coordinates from pawn map
+        Common::CubeCoordinate origin;
+        auto pawnIt = pawnMap.find(id);
+        if (pawnIt != pawnMap.end()){
+            origin = pawnIt->second->getCoordinates();
         }
 
-        // Get origin hex pawns and update positions
-        auto hexIt = hexMap.find(origin);
-        if (hexIt != hexMap.end()){
-            std::vector<std::shared_ptr<Common::Pawn>> oldPawns = hexIt->second->getPawns();
-            int i = 1;
-            for (auto x : oldPawns){
-                auto pawnIt = boardPawnMap.find(x->getId());
-                pawnIt->second->setPosition(i);
-                ++i;
+        try {
+            // This needs Gamestates to be implemented
+            // gamePtr_->movePawn(origin, hexCoord_, pawnId);
+
+            // This is unneccessary when upper row is executed
+            boardPtr_->movePawn(id, hexCoord_);
+
+            auto iter = boardPawnMap.find(id);
+            if (iter != boardPawnMap.end()){
+                iter->second->setParentItem(this);
+                iter->second->setPosition(hexPtr_->getPawnAmount());
+            }
+
+            // Get origin hex pawns and update positions
+            auto hexIt = hexMap.find(origin);
+            if (hexIt != hexMap.end()){
+                std::vector<std::shared_ptr<Common::Pawn>> oldPawns = hexIt->second->getPawns();
+                int i = 1;
+                for (auto x : oldPawns){
+                    auto pawnIt = boardPawnMap.find(x->getId());
+                    pawnIt->second->setPosition(i);
+                    ++i;
+                }
             }
         }
+
+        catch (Common::IllegalMoveException& e){
+            std::cout << e.msg() << std::endl;
+        }
     }
-    catch (Common::IllegalMoveException& e){
-        std::cout << e.msg() << std::endl;
+    else if (type == "boat"){
+
+    }
+    else if (type == "dolphin"){
+
     }
 }
 }

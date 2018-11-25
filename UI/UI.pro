@@ -21,7 +21,8 @@ SOURCES += main.cc \
     dialog.cpp \
     boardhex.cpp \
     coordinateconvert.cpp \
-    boardpawn.cpp
+    boardpawn.cpp \
+    boardtransport.cpp
 
 HEADERS  += \
     gameboard.hh \
@@ -31,7 +32,8 @@ HEADERS  += \
     dialog.hh \
     boardhex.hh \
     coordinateconvert.hh \
-    boardpawn.hh
+    boardpawn.hh \
+    boardtransport.hh
 
 INCLUDEPATH += $$PWD/../GameLogic/Engine
 DEPENDPATH += $$PWD/../GameLogic/Engine

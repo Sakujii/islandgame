@@ -42,11 +42,11 @@ void BoardPawn::drawPawn()
 void BoardPawn::setPosition(int pawnAmount)
 {
     if (pawnAmount == 1){
-        this->setPos(-5, -15);
+        this->setPos(-5, -16);
     } else if (pawnAmount == 2){
-        this->setPos(-13, -5);
+        this->setPos(-14, -9);
     } else if (pawnAmount == 3){
-        this->setPos(3, -5);
+        this->setPos(4, -9);
     }
 }
 
@@ -72,7 +72,10 @@ void BoardPawn::mousePressEvent(QGraphicsSceneMouseEvent *event)
         painter.end();
 
         QMimeData *mime = new QMimeData;
-        mime->setText(QString::number(pawnId_));
+        QString data;
+        data.append("pawn;");
+        data.append(QString::number(pawnId_));
+        mime->setText(data);
         QDrag *drag = new QDrag(win);
         drag->setMimeData(mime);
         drag->setHotSpot(QPoint(5, 7));

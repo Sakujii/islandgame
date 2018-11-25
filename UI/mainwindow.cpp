@@ -9,6 +9,7 @@
 #include "igamerunner.hh"
 #include "initialize.hh"
 #include "boardpawn.hh"
+#include "boardtransport.hh"
 
 #include <QGraphicsView>
 #include <QHBoxLayout>
@@ -147,6 +148,14 @@ void MainWindow::drawHex(std::shared_ptr<Common::Hex> hexPtr, std::shared_ptr<St
             boardPawnMap_.insert(std::make_pair(x->getId(), boardPawn));
         }
     }
+
+    std::vector<std::shared_ptr<Common::Transport>> transports = hexPtr->getTransports();
+
+    for (auto x : transports){
+        Ui::BoardTransport *boardTransport = new Ui::BoardTransport(boardHex, x->getId(), x->getTransportType());
+
+    }
+
 
 }
 }
