@@ -17,7 +17,7 @@ QColor color1 = Qt::black;
 QColor color2 = Qt::darkGreen;
 QColor color3 = Qt::red;
 
-BoardPawn::BoardPawn(QGraphicsItem* parent, int id, int playerId): QGraphicsEllipseItem (parent), QMimeData()
+BoardPawn::BoardPawn(QGraphicsItem* parent, int id, int playerId): QGraphicsEllipseItem (parent)
 {
     pawnId_ = id;
     playerId_ = playerId;
@@ -49,8 +49,6 @@ void BoardPawn::setPosition(int pawnAmount)
         this->setPos(3, -5);
     }
 }
-
-
 
 void BoardPawn::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {

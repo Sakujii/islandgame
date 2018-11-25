@@ -162,7 +162,6 @@ void GameBoard::addHex(std::shared_ptr<Common::Hex> newHex)
     else{
         it->second = newHex;
     }
-
 }
 
 void GameBoard::addTransport(std::shared_ptr<Common::Transport> transport, Common::CubeCoordinate coord)
@@ -174,12 +173,13 @@ void GameBoard::addTransport(std::shared_ptr<Common::Transport> transport, Commo
         std::shared_ptr<Common::Hex> hex = getHex(coord);
         transport->addHex(hex);
         transportMap_.insert(std::make_pair(transportId, transport));
+
     }
 }
 
 void GameBoard::moveTransport(int id, Common::CubeCoordinate coord)
 {
-    // If hex exists, move Transport
+    // If hex exists, move transport and pawns
     if (hexMap_.find(coord) != hexMap_.end()){
         auto it = transportMap_.find(id);
         if (it != transportMap_.end()){
@@ -187,6 +187,7 @@ void GameBoard::moveTransport(int id, Common::CubeCoordinate coord)
             std::shared_ptr<Common::Hex> newHex = getHex(coord);
             transport->move(newHex);
         }
+
     }
 }
 
@@ -210,6 +211,14 @@ std::map<Common::CubeCoordinate, std::shared_ptr<Common::Hex> > GameBoard::getHe
 std::unordered_map<int, std::shared_ptr<Common::Pawn> > GameBoard::getPawnMap()
 {
     return pawnMap_;
+}
+
+void GameBoard::updatePawnMap()
+{
+    for (auto x : hexMap_){
+        std::vector<std::shared_ptr<Common::Pawn>> pawns = x.second->getPawns();
+
+    }
 }
 
 }

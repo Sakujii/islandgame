@@ -57,46 +57,6 @@ int BoardHex::getSize() const
     return size_;
 }
 
-void BoardHex::drawHex(std::shared_ptr<Common::Hex> hexPtr,
-                       QGraphicsScene *boardScene,
-                       std::shared_ptr<Student::GameBoard> boardPtr)
-{
-    double halfWidth = (boardScene->width())/2;
-    double halfHeight = (boardScene->height()/2);
-
-    hexCoord_ = hexPtr_->getCoordinates();
-
-    QPointF axial = Student::cubeToAxial(hexCoord_, size_);
-
-    boardScene->addItem(this);
-    this->setPos(halfWidth + axial.x(), halfHeight + axial.y());
-    this->setToolTip(QString::number(hexCoord_.x) + "," + QString::number(hexCoord_.z));
-    colorHex();
-
-    std::vector<std::shared_ptr<Common::Pawn>> pawns = hexPtr_->getPawns();
-
-    int i = 1;
-    for (auto x : pawns){
-        BoardPawn *boardPawn = new BoardPawn(this, x->getId(), x->getPlayerId());
-        if (i == 1){
-            boardPawn->setPos(-5, -15);
-        } else if (i == 2){
-            boardPawn->setPos(-13, -5);
-        } else if (i == 3){
-            boardPawn->setPos(3, -5);
-        } ++i;
-        if (boardPawnMap_.find(x->getId()) == boardPawnMap_.end()){
-            std::cout << x->getId() << std::endl;
-            std::cout << boardPawn << std::endl;
-            boardPawnMap_.insert(std::make_pair(x->getId(), boardPawn));
-            std::cout << boardPawnMap_.size()<<std::endl;
-        }
-    }
-
-    boardPtr_ = boardPtr;
-
-}
-
 void BoardHex::colorHex()
 {
     std::string type = hexPtr_->getPieceType();
@@ -149,6 +109,36 @@ void BoardHex::addTransports()
     }
 }
 
+void BoardHex::removePawns()
+{
+    Student::MainWindow *win = Student::MainWindow::getInstance();
+    std::unordered_map<int, std::shared_ptr<Common::Pawn>> pawnMap = boardPtr_->getPawnMap();
+    std::unordered_map<int, Ui::BoardPawn*> boardPawnMap =  win->getBoardPawnMap();
+
+    // If pawn does not exist in pawnmap, delete boardpawn
+    /*
+    for (auto x : boardPawnMap){
+        auto pawnIt = pawnMap.find(x.first);
+        if (pawnIt == pawnMap.end()){
+            auto boardPawnIt = boardPawnMap.find(x.first);
+            delete(x.second);
+            boardPawnMap.erase(boardPawnIt);
+        }
+    }*/
+
+    for (auto it = boardPawnMap.cbegin(); it != boardPawnMap.cend();)
+    {
+        auto pawnIt = pawnMap.find(it->first);
+        if (pawnIt == pawnMap.end()){
+            it = boardPawnMap.erase(it);
+            delete(it->second);
+            std::cout <<"kilikiki" << std::endl;
+        } else {
+        ++it;
+        }
+    }
+}
+
 void BoardHex::mousePressEvent(QGraphicsSceneMouseEvent*)
 {
     Student::MainWindow *win = Student::MainWindow::getInstance();
@@ -163,6 +153,22 @@ void BoardHex::mousePressEvent(QGraphicsSceneMouseEvent*)
     catch (Common::GameException& e) {
         std::cout<< e.msg() <<std::endl;
     }
+
+    std::unordered_map<int, std::shared_ptr<Common::Pawn>> pawnMap = boardPtr_->getPawnMap();
+    std::cout << pawnMap.size() << std::endl;
+
+    std::vector<std::shared_ptr<Common::Actor>> actors = hexPtr_->getActors();
+    for (auto x : actors){
+        x->doAction();
+        // Do we really have to call gameboards removepawn for actor action?!
+    }
+
+    std::vector<std::shared_ptr<Common::Pawn>> pawns = hexPtr_->getPawns();
+
+    pawnMap = boardPtr_->getPawnMap();
+    std::cout << pawnMap.size() << std::endl;
+
+    removePawns();
 
 }
 
@@ -187,7 +193,7 @@ void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
     }
 
     try {
-        // This needs player instances in playerVector
+        // This needs Gamestates to be implemented
         // gamePtr_->movePawn(origin, hexCoord_, pawnId);
 
         // This is unneccessary when upper row is executed
@@ -214,6 +220,5 @@ void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
     catch (Common::IllegalMoveException& e){
         std::cout << e.msg() << std::endl;
     }
-
 }
 }

@@ -27,6 +27,7 @@ public:
     void colorHex();
     void addActors();
     void addTransports();
+    void removePawns();
 
     void mousePressEvent(QGraphicsSceneMouseEvent *) override;
     void dropEvent(QGraphicsSceneDragDropEvent *event) override;
@@ -36,7 +37,6 @@ private:
     Common::CubeCoordinate hexCoord_;
     std::shared_ptr<Common::Hex> hexPtr_;
     std::shared_ptr<Student::GameBoard> boardPtr_;
-    std::unordered_map<int, Ui::BoardPawn*> boardPawnMap_;
     std::shared_ptr<Common::IGameRunner> gamePtr_;
 };
 }
