@@ -1,11 +1,8 @@
 #include "gameboard.hh"
-#include "mainwindow.hh"
 #include "actor.hh"
 #include "transport.hh"
-#include "boardhex.hh"
 
 #include <iostream>
-#include <QtWidgets/QMainWindow>
 
 
 namespace Student{
@@ -157,8 +154,6 @@ void GameBoard::removeActor(int actorId)
 void GameBoard::addHex(std::shared_ptr<Common::Hex> newHex)
 {
     Common::CubeCoordinate coord = newHex->getCoordinates();
-    //Student::MainWindow* win = Student::MainWindow::getInstance();
-    //win->drawHex(coord);
 
     auto it = hexMap_.find(coord);
     if (it == hexMap_.end() ){

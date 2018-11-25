@@ -36,8 +36,12 @@ MainWindow::MainWindow(QWidget *parent) :
     dialog.exec();
 
     std::shared_ptr<Student::GameBoard> boardPtr = std::make_shared <GameBoard>();
-    std::shared_ptr<Common::IGameState> statePtr = std::make_shared<GameState>();
+    std::shared_ptr<Common::IGameState> statePtr = std::make_shared <GameState>();
     std::vector<std::shared_ptr<Common::IPlayer>> playerVector;
+    for (int i = 0; i < playerCount_; ++i){
+        std::shared_ptr<Common::IPlayer> player = std::make_shared<Player>(i);
+        playerVector.push_back(player);
+    }
 
     game_ = Common::Initialization::getGameRunner(boardPtr, statePtr, playerVector);
 
@@ -129,6 +133,8 @@ void MainWindow::drawHex(std::shared_ptr<Common::Hex> hexPtr, std::shared_ptr<St
     boardHex->setPos(halfWidth + axial.x(), halfHeight + axial.y());
     boardHex->setToolTip(QString::number(hexCoord.x) + "," + QString::number(hexCoord.z));
     boardHex->colorHex();
+    boardHex->addActors();
+    boardHex->addTransports();
 
     std::vector<std::shared_ptr<Common::Pawn>> pawns = hexPtr->getPawns();
 

@@ -121,6 +121,34 @@ void BoardHex::colorHex()
     else{}
 }
 
+void BoardHex::addActors()
+{
+    // Get actors under the tile and draw first letter on the hex
+    std::vector<std::shared_ptr<Common::Actor>> actors = hexPtr_->getActors();
+    for (auto x : actors){
+        std::string text = (x->getActorType());
+        text = std::toupper(text[0]);
+        QString qtext = QString::fromStdString(text);
+        QGraphicsSimpleTextItem *textItem = new QGraphicsSimpleTextItem(qtext, this);
+        textItem->setFont(QFont("Colibri", 25));
+        textItem->setPos(-7, -15);
+    }
+}
+
+void BoardHex::addTransports()
+{
+    // Get transports under the tile and draw first letter on the hex
+    std::vector<std::shared_ptr<Common::Transport>> transports = hexPtr_->getTransports();
+    for (auto x : transports){
+        std::string text = (x->getTransportType());
+        text = std::toupper(text[0]);
+        QString qtext = QString::fromStdString(text);
+        QGraphicsSimpleTextItem *textItem = new QGraphicsSimpleTextItem(qtext, this);
+        textItem->setFont(QFont("Colibri", 25));
+        textItem->setPos(-10, -15);
+    }
+}
+
 void BoardHex::mousePressEvent(QGraphicsSceneMouseEvent*)
 {
     Student::MainWindow *win = Student::MainWindow::getInstance();
@@ -129,27 +157,8 @@ void BoardHex::mousePressEvent(QGraphicsSceneMouseEvent*)
         game->flipTile(hexCoord_);
         colorHex();
 
-        // Get actors under the tile and draw first letter on the hex
-        std::vector<std::shared_ptr<Common::Actor>> actors = hexPtr_->getActors();
-        for (auto x : actors){
-            std::string text = (x->getActorType());
-            text = std::toupper(text[0]);
-            QString qtext = QString::fromStdString(text);
-            QGraphicsSimpleTextItem *textItem = new QGraphicsSimpleTextItem(qtext, this);
-            textItem->setFont(QFont("Colibri", 25));
-            textItem->setPos(-7, -15);
-        }
-
-        // Get transports under the tile and draw first letter on the hex
-        std::vector<std::shared_ptr<Common::Transport>> transports = hexPtr_->getTransports();
-        for (auto x : transports){
-            std::string text = (x->getTransportType());
-            text = std::toupper(text[0]);
-            QString qtext = QString::fromStdString(text);
-            QGraphicsSimpleTextItem *textItem = new QGraphicsSimpleTextItem(qtext, this);
-            textItem->setFont(QFont("Colibri", 25));
-            textItem->setPos(-10, -15);
-        }
+        this->addActors();
+        this->addTransports();
     }
     catch (Common::GameException& e) {
         std::cout<< e.msg() <<std::endl;
@@ -180,6 +189,8 @@ void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
     try {
         // This needs player instances in playerVector
         // gamePtr_->movePawn(origin, hexCoord_, pawnId);
+
+        // This is unneccessary when upper row is executed
         boardPtr_->movePawn(pawnId, hexCoord_);
 
         auto iter = boardPawnMap.find(pawnId);
