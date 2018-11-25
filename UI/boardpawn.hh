@@ -12,7 +12,7 @@
 
 namespace Ui {
 
-class BoardPawn: public QGraphicsEllipseItem, public QMimeData
+class BoardPawn: public QGraphicsEllipseItem
 {
 
 public:

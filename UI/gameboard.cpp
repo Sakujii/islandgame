@@ -213,12 +213,4 @@ std::unordered_map<int, std::shared_ptr<Common::Pawn> > GameBoard::getPawnMap()
     return pawnMap_;
 }
 
-void GameBoard::updatePawnMap()
-{
-    for (auto x : hexMap_){
-        std::vector<std::shared_ptr<Common::Pawn>> pawns = x.second->getPawns();
-
-    }
-}
-
 }
