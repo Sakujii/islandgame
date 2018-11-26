@@ -6,7 +6,7 @@ namespace Student{
 
 GameState::GameState ()
 {
-    _playerInTurn = 0;
+    _playerInTurn = 1;
     _pawnPerPlayer= 5;
     _gamePhaseId = Common::GamePhase::MOVEMENT;
 
