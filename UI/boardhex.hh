@@ -14,7 +14,7 @@
 
 namespace Ui{
 
-class BoardHex : public QGraphicsPolygonItem
+class BoardHex : public QGraphicsPolygonItem, public std::enable_shared_from_this<BoardHex>
 {
 
 public:

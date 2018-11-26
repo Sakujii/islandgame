@@ -104,12 +104,13 @@ void BoardHex::removePawns()
     std::unordered_map<int, Ui::BoardPawn*> boardPawnMap =  win->getBoardPawnMap();
 
     // If pawn does not exist in pawnmap, delete boardpawn
-    /*
+/*
     for (auto x : boardPawnMap){
         auto pawnIt = pawnMap.find(x.first);
         if (pawnIt == pawnMap.end()){
             auto boardPawnIt = boardPawnMap.find(x.first);
-            delete(x.second);
+            BoardPawn* pawn = x.second;
+            delete pawn;
             boardPawnMap.erase(boardPawnIt);
         }
     }*/
@@ -118,13 +119,15 @@ void BoardHex::removePawns()
     {
         auto pawnIt = pawnMap.find(it->first);
         if (pawnIt == pawnMap.end()){
+            BoardPawn* pawn = it->second;
+            delete pawn;
+            pawn = nullptr;
             it = boardPawnMap.erase(it);
-            delete(it->second);
-            std::cout <<"kilikiki" << std::endl;
         } else {
         ++it;
         }
     }
+
 }
 
 void BoardHex::mousePressEvent(QGraphicsSceneMouseEvent*)
@@ -143,20 +146,43 @@ void BoardHex::mousePressEvent(QGraphicsSceneMouseEvent*)
     }
 
     std::unordered_map<int, std::shared_ptr<Common::Pawn>> pawnMap = boardPtr_->getPawnMap();
-    //std::cout << pawnMap.size() << std::endl;
+    qDebug() << pawnMap.size() << "pawns on board";
 
+    std::vector<std::shared_ptr<Common::Pawn>> oldPawns = hexPtr_->getPawns();
+
+
+    std::vector<Common::CubeCoordinate> neighbours = hexPtr_->getNeighbourVector();
     std::vector<std::shared_ptr<Common::Actor>> actors = hexPtr_->getActors();
     for (auto x : actors){
+        if (x->getActorType() == "vortex"){
+            for(auto x : neighbours){
+                std::vector<std::shared_ptr<Common::Pawn>> pawns = boardPtr_->getHex(x)->getPawns();
+                for (auto y : pawns){
+                    oldPawns.push_back(y);
+                }
+            }
+        }
         x->doAction();
-        // Do we really have to call gameboards removepawn for actor action?!
+
+        std::vector<std::shared_ptr<Common::Pawn>> newPawns = hexPtr_->getPawns();
+        if (x->getActorType() == "vortex"){
+            for(auto x : neighbours){
+                std::vector<std::shared_ptr<Common::Pawn>> pawns = boardPtr_->getHex(x)->getPawns();
+                for (auto y : pawns){
+                    newPawns.push_back(y);
+                }
+            }
+        }
+        for (auto x : oldPawns){
+            if (std::find(newPawns.begin(), newPawns.end(), x) == newPawns.end()){
+                qDebug() << "remove pawn";
+                boardPtr_->removePawn(x->getId());
+            }
+        }
     }
 
-    std::vector<std::shared_ptr<Common::Pawn>> pawns = hexPtr_->getPawns();
-
-    pawnMap = boardPtr_->getPawnMap();
-    //std::cout << pawnMap.size() << std::endl;
-
-    removePawns();
+    // Deleting graphic object is now crashing the program
+    // removePawns();
 
 }
 

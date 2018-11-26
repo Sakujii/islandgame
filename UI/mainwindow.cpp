@@ -123,16 +123,17 @@ void MainWindow::initScene()
 {
     QWidget *sceneWidget = new QWidget(ui->centralwidget);
     sceneWidget->show();
-    int width = 800;
+    int width = 1000;
     int height = 600;
-    int border= 50;
-    sceneWidget->setGeometry(border, border, width, height);
-    this->resize(width + 2*border, height+ 2*border);
+    int xborder = 200;
+    int yborder= 50;
+    sceneWidget->setGeometry(xborder, yborder, width, height);
+    this->resize(width + 2*xborder, height+ 2*yborder);
 
     QGraphicsView * view = new QGraphicsView(sceneWidget);
     boardScene = new QGraphicsScene(view);
     view->setFixedSize(width, height);
-    boardScene->setSceneRect(0, 0, width-border, height-border);
+    boardScene->setSceneRect(0, 0, width-xborder, height-yborder);
     view->setScene(boardScene);
     view->setMouseTracking(true);
 
@@ -143,7 +144,8 @@ void MainWindow::drawHex(std::shared_ptr<Common::Hex> hexPtr, std::shared_ptr<St
 {
     Common::CubeCoordinate hexCoord = hexPtr->getCoordinates();
 
-    Ui::BoardHex * boardHex = new Ui::BoardHex(0, hexPtr, boardPtr, game_);
+    //std::shared_ptr<Ui::BoardHex> boardHex = std::make_shared<BoardHex> (0, hexPtr, boardPtr, game_);
+    Ui::BoardHex *boardHex = new Ui::BoardHex(0, hexPtr, boardPtr, game_);
 
     double halfWidth = (boardScene->width())/2;
     double halfHeight = (boardScene->height()/2);

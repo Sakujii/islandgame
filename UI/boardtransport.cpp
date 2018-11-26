@@ -96,7 +96,6 @@ void BoardTransport::dropEvent(QGraphicsSceneDragDropEvent *event)
     std::map<Common::CubeCoordinate, std::shared_ptr<Common::Hex> > hexMap = boardPtr_->getHexMap();
     std::unordered_map<int, std::shared_ptr<Common::Transport>> transportMap = boardPtr_->getTransportMap();
     std::unordered_map<int, Ui::BoardPawn*> boardPawnMap =  win->getBoardPawnMap();
-    std::unordered_map<int, Ui::BoardTransport*> boardTransportMap = win->getBoardTransportMap();
 
     Common::CubeCoordinate coord;
     int capacity = -1;
