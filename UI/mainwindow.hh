@@ -29,7 +29,9 @@ public:
     std::shared_ptr<Common::IGameRunner> getGame();
     std::unordered_map<int, Ui::BoardPawn*> getBoardPawnMap();
     std::unordered_map<int, Ui::BoardTransport*> getBoardTransportMap();
-    void addBoardTransport(std::shared_ptr<Common::Hex>, Ui::BoardHex*);
+    void addBoardTransport(std::shared_ptr<Common::Hex>,
+                           Ui::BoardHex*,
+                           std::shared_ptr<Student::GameBoard>);
 
     void drawHex(std::shared_ptr<Common::Hex>, std::shared_ptr<Student::GameBoard>);
 

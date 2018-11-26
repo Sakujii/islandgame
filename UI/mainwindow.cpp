@@ -93,12 +93,15 @@ std::unordered_map<int, Ui::BoardTransport *> MainWindow::getBoardTransportMap()
     return boardTransportMap_;
 }
 
-void MainWindow::addBoardTransport(std::shared_ptr<Common::Hex> hexPtr, Ui::BoardHex* boardHex)
+void MainWindow::addBoardTransport(std::shared_ptr<Common::Hex> hexPtr,
+                                   Ui::BoardHex* boardHex,
+                                   std::shared_ptr<Student::GameBoard> boardPtr)
 {
     std::vector<std::shared_ptr<Common::Transport>> transports = hexPtr->getTransports();
 
     for (auto x : transports){
-        Ui::BoardTransport *boardTransport = new Ui::BoardTransport(boardHex, x->getId(), x->getTransportType());
+        Ui::BoardTransport *boardTransport =
+                new Ui::BoardTransport(boardHex, x->getId(), x->getTransportType(), boardPtr);
         if (boardTransportMap_.find(x->getId()) == boardTransportMap_.end()){
             boardTransportMap_.insert(std::make_pair(x->getId(), boardTransport));
         }
@@ -154,18 +157,19 @@ void MainWindow::drawHex(std::shared_ptr<Common::Hex> hexPtr, std::shared_ptr<St
     boardHex->addActors();
 
     std::vector<std::shared_ptr<Common::Pawn>> pawns = hexPtr->getPawns();
+    QString parentType = "hex";
 
     int i = 1;
     for (auto x : pawns){
         Ui::BoardPawn *boardPawn = new Ui::BoardPawn(boardHex, x->getId(), x->getPlayerId());
-        boardPawn->setPosition(i);
+        boardPawn->setPosition(i, parentType);
         ++i;
         if (boardPawnMap_.find(x->getId()) == boardPawnMap_.end()){
             boardPawnMap_.insert(std::make_pair(x->getId(), boardPawn));
         }
     }
 
-    addBoardTransport(hexPtr, boardHex);
+    addBoardTransport(hexPtr, boardHex, boardPtr);
 
 
 

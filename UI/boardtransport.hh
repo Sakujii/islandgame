@@ -1,6 +1,8 @@
 #ifndef BOARDTRANSPORT_HH
 #define BOARDTRANSPORT_HH
 
+#include "gameboard.hh"
+
 #include <QtWidgets/QGraphicsRectItem>
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsSceneDragDropEvent>
@@ -15,17 +17,23 @@ class BoardTransport: public QGraphicsRectItem
 {
 
 public:
-    explicit BoardTransport(QGraphicsItem *parent = 0, int id = 0, std::string transportType = "");
+    explicit BoardTransport(QGraphicsItem *parent = 0,
+                            int id = 0,
+                            std::string transportType = "",
+                            std::shared_ptr<Student::GameBoard> boardPtr = nullptr);
+
     ~BoardTransport() = default;
 
     QRectF boundingRect() const override;
     void drawTransport();
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+    void dropEvent(QGraphicsSceneDragDropEvent *event) override;
 
 
 private:
     int transportId_;
     std::string transportType_;
+    std::shared_ptr<Student::GameBoard> boardPtr_;
 };
 
 }

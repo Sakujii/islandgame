@@ -10,7 +10,6 @@
 #include <QDebug>
 
 
-
 namespace Ui{
 
 QColor color1 = Qt::black;
@@ -39,14 +38,25 @@ void BoardPawn::drawPawn()
     }
 }
 
-void BoardPawn::setPosition(int pawnAmount)
+void BoardPawn::setPosition(int pawnAmount, QString parentType)
 {
-    if (pawnAmount == 1){
-        this->setPos(-5, -16);
-    } else if (pawnAmount == 2){
-        this->setPos(-14, -9);
-    } else if (pawnAmount == 3){
-        this->setPos(4, -9);
+    if (parentType == "hex"){
+        if (pawnAmount == 1){
+            this->setPos(-5, -16);
+        } else if (pawnAmount == 2){
+            this->setPos(-14, -9);
+        } else if (pawnAmount == 3){
+            this->setPos(4, -9);
+        }
+    }
+    else {
+        if (pawnAmount == 3){
+            this->setPos(-1, -6);
+        } else if (pawnAmount == 2){
+            this->setPos(7, -6);
+        } else if (pawnAmount == 1){
+            this->setPos(15, -6);
+        }
     }
 }
 
