@@ -48,6 +48,18 @@ public:
      */
     void changePlayerTurn(int nextPlayer);
 
+    /**
+     * @brief addPointsToPlayer adds points to a given player.
+     * @param playerid The id of the player.
+     * @param points The number of points to add.
+     * @post Points are added to player. Exception quarantee: basic
+     */
+    void addPointsToPlayer(int playerid, int points);
+
+    int getPawnPerPlayer();
+    void deletePawn(int pawn);
+    int playerPawnsLeft(int playerid);
+
 private:
     Common::GamePhase _gamePhaseId;
     int _playerInTurn;
