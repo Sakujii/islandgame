@@ -21,7 +21,7 @@ public:
 
     QRectF boundingRect() const override;
     void drawPawn();
-    void setPosition(int);
+    void setPosition(int, QString parentType);
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 
 
