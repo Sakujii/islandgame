@@ -206,11 +206,9 @@ void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
                 if (hexIt != hexMap.end()){
                     // If pawn was in transport, remove it from there
                     if(hexIt->second->getTransports().size() != 0){
-                        std::vector<std::shared_ptr<Common::Transport>> transports =
-                                hexIt->second->getTransports();
+                        std::vector<std::shared_ptr<Common::Transport>> transports = hexIt->second->getTransports();
                         for(auto x : transports){
-                            std::vector<std::shared_ptr<Common::Pawn>> transportPawns =
-                                    x->getPawnsInTransport();
+                            std::vector<std::shared_ptr<Common::Pawn>> transportPawns = x->getPawnsInTransport();
                             for (auto y : transportPawns){
                                 if (y == pawnPtr){
                                     x->removePawn(pawnPtr);
