@@ -5,7 +5,7 @@ namespace Student{
 Player::Player(int id)
 {
     _playerid=id;
-    _actionsLeft = 0;
+    _actionsLeft = 3;
     _pawnLeft = 1;
     _totalPawnCount = 1;
 }
