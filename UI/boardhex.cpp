@@ -208,13 +208,14 @@ void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
                     if(hexIt->second->getTransports().size() != 0){
                         std::vector<std::shared_ptr<Common::Transport>> transports = hexIt->second->getTransports();
                         for(auto x : transports){
+                            /*
                             std::vector<std::shared_ptr<Common::Pawn>> transportPawns = x->getPawnsInTransport();
                             for (auto y : transportPawns){
                                 if (y == pawnPtr){
                                     x->removePawn(pawnPtr);
                                     parentType = "transport";
                                 }
-                            }
+                            }*/
                             capacity = x->getCapacity();
                         }
                     }
