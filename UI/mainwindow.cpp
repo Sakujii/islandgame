@@ -88,6 +88,11 @@ std::unordered_map<int, Ui::BoardPawn *> MainWindow::getBoardPawnMap()
     return boardPawnMap_;
 }
 
+std::unordered_map<int, Ui::BoardTransport *> MainWindow::getBoardTransportMap()
+{
+    return boardTransportMap_;
+}
+
 MainWindow::~MainWindow()
 {
     delete ui;
@@ -135,7 +140,6 @@ void MainWindow::drawHex(std::shared_ptr<Common::Hex> hexPtr, std::shared_ptr<St
     boardHex->setToolTip(QString::number(hexCoord.x) + "," + QString::number(hexCoord.z));
     boardHex->colorHex();
     boardHex->addActors();
-    boardHex->addTransports();
 
     std::vector<std::shared_ptr<Common::Pawn>> pawns = hexPtr->getPawns();
 
@@ -153,7 +157,9 @@ void MainWindow::drawHex(std::shared_ptr<Common::Hex> hexPtr, std::shared_ptr<St
 
     for (auto x : transports){
         Ui::BoardTransport *boardTransport = new Ui::BoardTransport(boardHex, x->getId(), x->getTransportType());
-
+        if (boardTransportMap_.find(x->getId()) == boardTransportMap_.end()){
+            boardTransportMap_.insert(std::make_pair(x->getId(), boardTransport));
+        }
     }
 
 

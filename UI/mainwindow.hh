@@ -6,6 +6,7 @@
 #include "igamerunner.hh"
 #include "gameboard.hh"
 #include "boardpawn.hh"
+#include "boardtransport.hh"
 
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QGraphicsScene>
@@ -26,6 +27,7 @@ public:
     static MainWindow* getInstance();
     std::shared_ptr<Common::IGameRunner> getGame();
     std::unordered_map<int, Ui::BoardPawn*> getBoardPawnMap();
+    std::unordered_map<int, Ui::BoardTransport*> getBoardTransportMap();
 
     void drawHex(std::shared_ptr<Common::Hex>, std::shared_ptr<Student::GameBoard>);
 
@@ -38,6 +40,7 @@ private:
     QGraphicsScene *boardScene;
     std::shared_ptr<Common::IGameRunner> game_;
     std::unordered_map<int, Ui::BoardPawn*> boardPawnMap_;
+    std::unordered_map<int, Ui::BoardTransport*> boardTransportMap_;
     void initScene();
     int playerCount_;
 

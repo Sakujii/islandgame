@@ -213,4 +213,9 @@ std::unordered_map<int, std::shared_ptr<Common::Pawn> > GameBoard::getPawnMap()
     return pawnMap_;
 }
 
+std::unordered_map<int, std::shared_ptr<Common::Transport> > GameBoard::getTransportMap()
+{
+    return transportMap_;
+}
+
 }
