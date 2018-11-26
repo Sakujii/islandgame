@@ -96,18 +96,6 @@ void BoardHex::addActors()
     }
 }
 
-void BoardHex::addTransports()
-{
-    Student::MainWindow *win = Student::MainWindow::getInstance();
-
-    // Get transport under the tile and create transport instance
-    std::vector<std::shared_ptr<Common::Transport>> transports = hexPtr_->getTransports();
-    for (auto x : transports){
-        std::string text = (x->getTransportType());
-        BoardTransport *boardTransport = new BoardTransport(this, x->getId(), x->getTransportType());
-
-    }
-}
 
 void BoardHex::removePawns()
 {
@@ -148,7 +136,7 @@ void BoardHex::mousePressEvent(QGraphicsSceneMouseEvent*)
         colorHex();
 
         this->addActors();
-        this->addTransports();
+        win->addBoardTransport(hexPtr_, this);
     }
     catch (Common::GameException& e) {
         std::cout<< e.msg() <<std::endl;

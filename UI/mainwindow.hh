@@ -7,6 +7,7 @@
 #include "gameboard.hh"
 #include "boardpawn.hh"
 #include "boardtransport.hh"
+#include "boardhex.hh"
 
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QGraphicsScene>
@@ -28,6 +29,7 @@ public:
     std::shared_ptr<Common::IGameRunner> getGame();
     std::unordered_map<int, Ui::BoardPawn*> getBoardPawnMap();
     std::unordered_map<int, Ui::BoardTransport*> getBoardTransportMap();
+    void addBoardTransport(std::shared_ptr<Common::Hex>, Ui::BoardHex*);
 
     void drawHex(std::shared_ptr<Common::Hex>, std::shared_ptr<Student::GameBoard>);
 

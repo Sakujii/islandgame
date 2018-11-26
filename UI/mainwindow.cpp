@@ -93,6 +93,18 @@ std::unordered_map<int, Ui::BoardTransport *> MainWindow::getBoardTransportMap()
     return boardTransportMap_;
 }
 
+void MainWindow::addBoardTransport(std::shared_ptr<Common::Hex> hexPtr, Ui::BoardHex* boardHex)
+{
+    std::vector<std::shared_ptr<Common::Transport>> transports = hexPtr->getTransports();
+
+    for (auto x : transports){
+        Ui::BoardTransport *boardTransport = new Ui::BoardTransport(boardHex, x->getId(), x->getTransportType());
+        if (boardTransportMap_.find(x->getId()) == boardTransportMap_.end()){
+            boardTransportMap_.insert(std::make_pair(x->getId(), boardTransport));
+        }
+    }
+}
+
 MainWindow::~MainWindow()
 {
     delete ui;
@@ -153,14 +165,8 @@ void MainWindow::drawHex(std::shared_ptr<Common::Hex> hexPtr, std::shared_ptr<St
         }
     }
 
-    std::vector<std::shared_ptr<Common::Transport>> transports = hexPtr->getTransports();
+    addBoardTransport(hexPtr, boardHex);
 
-    for (auto x : transports){
-        Ui::BoardTransport *boardTransport = new Ui::BoardTransport(boardHex, x->getId(), x->getTransportType());
-        if (boardTransportMap_.find(x->getId()) == boardTransportMap_.end()){
-            boardTransportMap_.insert(std::make_pair(x->getId(), boardTransport));
-        }
-    }
 
 
 }
