@@ -31,7 +31,7 @@ BoardHex::BoardHex(QGraphicsItem * parent,
     boardPtr_ = boardPtr;
     hexCoord_ = hexPtr->getCoordinates();
     gamePtr_ = gamePtr;
-    size_ = 18;
+    size_ = 25;
 
     QPolygonF polygon;
     double dx = qSqrt(3)/2 * size_;
@@ -91,8 +91,8 @@ void BoardHex::addActors()
         text = std::toupper(text[0]);
         QString qtext = QString::fromStdString(text);
         QGraphicsSimpleTextItem *textItem = new QGraphicsSimpleTextItem(qtext, this);
-        textItem->setFont(QFont("Colibri", 25));
-        textItem->setPos(-7, -15);
+        textItem->setFont(QFont("Colibri", 35));
+        textItem->setPos(-10, -20);
     }
 }
 
@@ -197,14 +197,13 @@ void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
                     if(hexIt->second->getTransports().size() != 0){
                         std::vector<std::shared_ptr<Common::Transport>> transports = hexIt->second->getTransports();
                         for(auto x : transports){
-                            /*
                             std::vector<std::shared_ptr<Common::Pawn>> transportPawns = x->getPawnsInTransport();
                             for (auto y : transportPawns){
                                 if (y == pawnPtr){
                                     x->removePawn(pawnPtr);
                                     parentType = "transport";
                                 }
-                            }*/
+                            }
                             capacity = x->getCapacity();
                         }
                     }
@@ -253,5 +252,5 @@ void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
         catch (Common::IllegalMoveException& e){
             std::cout << e.msg() << std::endl;
         }
-    }
+}
 }

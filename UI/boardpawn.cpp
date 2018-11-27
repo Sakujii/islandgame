@@ -40,22 +40,31 @@ void BoardPawn::drawPawn()
 
 void BoardPawn::setPosition(int pawnAmount, QString parentType)
 {
+    QPoint hex1 = QPoint(-7, -22);
+    QPoint hex2 = QPoint(-20, -14);
+    QPoint hex3 = QPoint(7, -14);
+
+    QPoint transport1 = QPoint(0, -7);
+    QPoint transport2 = QPoint(10, -7);
+    QPoint transport3 = QPoint(20, -7);
+
+
     if (parentType == "hex"){
         if (pawnAmount == 1){
-            this->setPos(-5, -16);
+            this->setPos(hex1);
         } else if (pawnAmount == 2){
-            this->setPos(-14, -9);
+            this->setPos(hex2);
         } else if (pawnAmount == 3){
-            this->setPos(4, -9);
+            this->setPos(hex3);
         }
     }
     else {
         if (pawnAmount == 3){
-            this->setPos(-1, -6);
+            this->setPos(transport1);
         } else if (pawnAmount == 2){
-            this->setPos(7, -6);
+            this->setPos(transport2);
         } else if (pawnAmount == 1){
-            this->setPos(15, -6);
+            this->setPos(transport3);
         }
     }
 }
@@ -99,7 +108,7 @@ this->show();
 
 QRectF BoardPawn::boundingRect() const
 {
-    int size = 10;
+    int size = 14;
     return QRectF(0, 0, size, size);
 }
 

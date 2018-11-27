@@ -125,15 +125,15 @@ void MainWindow::initScene()
     sceneWidget->show();
     int width = 1000;
     int height = 600;
-    int xborder = 200;
+    int xborder = 250;
     int yborder= 50;
-    sceneWidget->setGeometry(xborder, yborder, width, height);
+    sceneWidget->setGeometry(xborder, yborder, width-xborder, height);
     this->resize(width + 2*xborder, height+ 2*yborder);
 
     QGraphicsView * view = new QGraphicsView(sceneWidget);
     boardScene = new QGraphicsScene(view);
     view->setFixedSize(width, height);
-    boardScene->setSceneRect(0, 0, width-xborder, height-yborder);
+    boardScene->setSceneRect(120, 0, width-xborder, height-yborder);
     view->setScene(boardScene);
     view->setMouseTracking(true);
 

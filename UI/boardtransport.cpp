@@ -25,15 +25,15 @@ BoardTransport::BoardTransport(QGraphicsItem *parent,
     transportType_ = transportType;
     drawTransport();
     setAcceptedMouseButtons(Qt::LeftButton);
-    this->setPos(-13, 3);
+    this->setPos(-18, 3);
     setAcceptDrops(true);
 
 }
 
 QRectF BoardTransport::boundingRect() const
 {
-    int ysize = 7;
-    int xsize = 25;
+    int ysize = 10;
+    int xsize = 35;
     return QRectF(0, 0, xsize, ysize);
 }
 
