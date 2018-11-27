@@ -8,6 +8,7 @@
 #include "boardpawn.hh"
 #include "boardtransport.hh"
 #include "boardhex.hh"
+#include "boardpawn.hh"
 
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QGraphicsScene>
@@ -34,6 +35,7 @@ public:
                            std::shared_ptr<Student::GameBoard>);
 
     void drawHex(std::shared_ptr<Common::Hex>, std::shared_ptr<Student::GameBoard>);
+    void removeBoardPawn(int);
 
 public slots:
     void numberOfPlayers(int count);

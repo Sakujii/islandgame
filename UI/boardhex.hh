@@ -14,7 +14,7 @@
 
 namespace Ui{
 
-class BoardHex : public QGraphicsPolygonItem, public std::enable_shared_from_this<BoardHex>
+class BoardHex :public QGraphicsPolygonItem, public std::enable_shared_from_this<BoardHex>
 {
 
 public:
@@ -27,7 +27,6 @@ public:
     void colorHex();
     void addActors();
     void addTransports();
-    void removePawns();
 
     void mousePressEvent(QGraphicsSceneMouseEvent *) override;
     void dropEvent(QGraphicsSceneDragDropEvent *event) override;

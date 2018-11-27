@@ -8,7 +8,6 @@
 #include "player.hh"
 #include "igamerunner.hh"
 #include "initialize.hh"
-#include "boardpawn.hh"
 #include "boardtransport.hh"
 
 #include <QGraphicsView>
@@ -18,6 +17,7 @@
 #include <QDesktopWidget>
 #include <qmath.h>
 #include <iostream>
+#include <memory>
 
 namespace Student{
 
@@ -144,7 +144,6 @@ void MainWindow::drawHex(std::shared_ptr<Common::Hex> hexPtr, std::shared_ptr<St
 {
     Common::CubeCoordinate hexCoord = hexPtr->getCoordinates();
 
-    //std::shared_ptr<Ui::BoardHex> boardHex = std::make_shared<BoardHex> (0, hexPtr, boardPtr, game_);
     Ui::BoardHex *boardHex = new Ui::BoardHex(0, hexPtr, boardPtr, game_);
 
     double halfWidth = (boardScene->width())/2;
@@ -170,11 +169,19 @@ void MainWindow::drawHex(std::shared_ptr<Common::Hex> hexPtr, std::shared_ptr<St
             boardPawnMap_.insert(std::make_pair(x->getId(), boardPawn));
         }
     }
-
     addBoardTransport(hexPtr, boardHex, boardPtr);
 
 
-
 }
+
+void MainWindow::removeBoardPawn(int id)
+{
+    auto it = boardPawnMap_.find(id);
+    if (it != boardPawnMap_.end()){
+        boardScene->removeItem(it->second);
+        boardPawnMap_.erase(it);
+    }
+}
+
 }
 

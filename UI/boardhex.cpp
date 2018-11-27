@@ -97,39 +97,6 @@ void BoardHex::addActors()
 }
 
 
-void BoardHex::removePawns()
-{
-    Student::MainWindow *win = Student::MainWindow::getInstance();
-    std::unordered_map<int, std::shared_ptr<Common::Pawn>> pawnMap = boardPtr_->getPawnMap();
-    std::unordered_map<int, Ui::BoardPawn*> boardPawnMap =  win->getBoardPawnMap();
-
-    // If pawn does not exist in pawnmap, delete boardpawn
-/*
-    for (auto x : boardPawnMap){
-        auto pawnIt = pawnMap.find(x.first);
-        if (pawnIt == pawnMap.end()){
-            auto boardPawnIt = boardPawnMap.find(x.first);
-            BoardPawn* pawn = x.second;
-            delete pawn;
-            boardPawnMap.erase(boardPawnIt);
-        }
-    }*/
-
-    for (auto it = boardPawnMap.cbegin(); it != boardPawnMap.cend();)
-    {
-        auto pawnIt = pawnMap.find(it->first);
-        if (pawnIt == pawnMap.end()){
-            BoardPawn* pawn = it->second;
-            delete pawn;
-            pawn = nullptr;
-            it = boardPawnMap.erase(it);
-        } else {
-        ++it;
-        }
-    }
-
-}
-
 void BoardHex::mousePressEvent(QGraphicsSceneMouseEvent*)
 {
     Student::MainWindow *win = Student::MainWindow::getInstance();
@@ -145,11 +112,8 @@ void BoardHex::mousePressEvent(QGraphicsSceneMouseEvent*)
         std::cout<< e.msg() <<std::endl;
     }
 
-    std::unordered_map<int, std::shared_ptr<Common::Pawn>> pawnMap = boardPtr_->getPawnMap();
-    qDebug() << pawnMap.size() << "pawns on board";
-
+    // Get pawns in hex before actor doAction
     std::vector<std::shared_ptr<Common::Pawn>> oldPawns = hexPtr_->getPawns();
-
 
     std::vector<Common::CubeCoordinate> neighbours = hexPtr_->getNeighbourVector();
     std::vector<std::shared_ptr<Common::Actor>> actors = hexPtr_->getActors();
@@ -164,6 +128,7 @@ void BoardHex::mousePressEvent(QGraphicsSceneMouseEvent*)
         }
         x->doAction();
 
+        // Get pawns in hex after actor doAction
         std::vector<std::shared_ptr<Common::Pawn>> newPawns = hexPtr_->getPawns();
         if (x->getActorType() == "vortex"){
             for(auto x : neighbours){
@@ -173,17 +138,15 @@ void BoardHex::mousePressEvent(QGraphicsSceneMouseEvent*)
                 }
             }
         }
+        // Delete pawns that were cleared from hex by actor
         for (auto x : oldPawns){
             if (std::find(newPawns.begin(), newPawns.end(), x) == newPawns.end()){
-                qDebug() << "remove pawn";
-                boardPtr_->removePawn(x->getId());
+                int id = x->getId();
+                boardPtr_->removePawn(id);
+                win->removeBoardPawn(id);
             }
         }
     }
-
-    // Deleting graphic object is now crashing the program
-    // removePawns();
-
 }
 
 
