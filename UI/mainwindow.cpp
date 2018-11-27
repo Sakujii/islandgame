@@ -121,21 +121,21 @@ void MainWindow::numberOfPlayers(int count)
 
 void MainWindow::initScene()
 {
-    QWidget *sceneWidget = new QWidget(ui->centralwidget);
+    QWidget *sceneWidget = new QWidget(this);
     sceneWidget->show();
     int width = 1000;
     int height = 600;
-    int xborder = 250;
+    int xborder = 400;
     int yborder= 50;
-    sceneWidget->setGeometry(xborder, yborder, width-xborder, height);
+    int scenexborder = 100;
+    sceneWidget->setGeometry(xborder, yborder, width-xborder/2, height);
     this->resize(width + 2*xborder, height+ 2*yborder);
 
     QGraphicsView * view = new QGraphicsView(sceneWidget);
     boardScene = new QGraphicsScene(view);
-    view->setFixedSize(width, height);
-    boardScene->setSceneRect(120, 0, width-xborder, height-yborder);
+    view->resize(width, height);
+    boardScene->setSceneRect(scenexborder, 0, width-xborder, height-yborder);
     view->setScene(boardScene);
-    view->setMouseTracking(true);
 
 
 }
