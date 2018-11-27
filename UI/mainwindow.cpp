@@ -47,6 +47,8 @@ MainWindow::MainWindow(QWidget *parent) :
     game_ = Common::Initialization::getGameRunner(boardPtr, statePtr, playerVector);
 
     initScene();
+    numberOfGamephase(statePtr->currentGamePhase());
+    numberOfCurrentPlayer(statePtr->currentPlayer());
 
     std::map<Common::CubeCoordinate, std::shared_ptr<Common::Hex>> hexMap = boardPtr->getHexMap();
 
@@ -181,6 +183,16 @@ void MainWindow::removeBoardPawn(int id)
         boardScene->removeItem(it->second);
         boardPawnMap_.erase(it);
     }
+}
+
+void MainWindow::numberOfGamephase(int phaseid)
+{
+    ui->labelGamePhasenumber->setText(QString::number(phaseid));
+}
+
+void MainWindow::numberOfCurrentPlayer(int playerid)
+{
+    ui->labelCurrentPlayerNumber->setText(QString::number(playerid));
 }
 
 }
