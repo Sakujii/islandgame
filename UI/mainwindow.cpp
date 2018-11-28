@@ -38,6 +38,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     std::shared_ptr<Student::GameBoard> boardPtr = std::make_shared <GameBoard>();
     std::shared_ptr<Common::IGameState> statePtr = std::make_shared <GameState>();
+    state_=statePtr;
     std::vector<std::shared_ptr<Common::IPlayer>> playerVector;
     for (int i = 0; i < playerCount_; ++i){
         std::shared_ptr<Common::IPlayer> player = std::make_shared<Player>(i+1);
@@ -49,6 +50,7 @@ MainWindow::MainWindow(QWidget *parent) :
     initScene();
     numberOfGamephase(statePtr->currentGamePhase());
     numberOfCurrentPlayer(statePtr->currentPlayer());
+    connect(ui->pushButtonGamephase, &QPushButton::clicked, this, &MainWindow::nextGamephase);
 
     std::map<Common::CubeCoordinate, std::shared_ptr<Common::Hex>> hexMap = boardPtr->getHexMap();
 
@@ -125,8 +127,8 @@ void MainWindow::initScene()
 {
     QWidget *sceneWidget = new QWidget(this);
     sceneWidget->show();
-    int width = 1000;
-    int height = 600;
+    int width = 1200;
+    int height = 800;
     int xborder = 400;
     int yborder= 50;
     int scenexborder = 100;
@@ -193,6 +195,16 @@ void MainWindow::numberOfGamephase(int phaseid)
 void MainWindow::numberOfCurrentPlayer(int playerid)
 {
     ui->labelCurrentPlayerNumber->setText(QString::number(playerid));
+}
+
+void MainWindow::nextGamephase()
+{
+    Common::GamePhase phase = state_->currentGamePhase();
+    if(phase==Common::MOVEMENT){state_->changeGamePhase(Common::SINKING);}
+    else if(phase==Common::SINKING){state_->changeGamePhase(Common::SPINNING);}
+    else{state_->changeGamePhase(Common::MOVEMENT);}
+
+    ui->labelGamePhasenumber->setText(QString::number(state_->currentGamePhase()));
 }
 
 }

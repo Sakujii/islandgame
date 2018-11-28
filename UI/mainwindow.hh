@@ -9,6 +9,7 @@
 #include "boardtransport.hh"
 #include "boardhex.hh"
 #include "boardpawn.hh"
+#include "gamestate.hh"
 
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QGraphicsScene>
@@ -41,6 +42,7 @@ public:
 
 public slots:
     void numberOfPlayers(int count);
+    void nextGamephase();
 
 private:
     Ui::MainWindow *ui;
@@ -51,6 +53,7 @@ private:
     std::unordered_map<int, Ui::BoardTransport*> boardTransportMap_;
     void initScene();
     int playerCount_;
+    std::shared_ptr<Common::IGameState> state_;
 
 };
 }

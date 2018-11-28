@@ -92,6 +92,19 @@
      <string/>
     </property>
    </widget>
+   <widget class="QPushButton" name="pushButtonGamephase">
+    <property name="geometry">
+     <rect>
+      <x>13</x>
+      <y>450</y>
+      <width>111</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>NextGamephase</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

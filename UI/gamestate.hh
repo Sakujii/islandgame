@@ -60,6 +60,7 @@ public:
     void deletePawn(int pawn);
     int playerPawnsLeft(int playerid);
 
+
 private:
     Common::GamePhase _gamePhaseId;
     int _playerInTurn;
