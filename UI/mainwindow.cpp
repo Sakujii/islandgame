@@ -51,6 +51,7 @@ MainWindow::MainWindow(QWidget *parent) :
     numberOfGamephase(statePtr->currentGamePhase());
     numberOfCurrentPlayer(statePtr->currentPlayer());
     connect(ui->pushButtonGamephase, &QPushButton::clicked, this, &MainWindow::nextGamephase);
+    connect(ui->pushButtonSpinWheel, &QPushButton::clicked, this, &MainWindow::spinWheel);
 
     std::map<Common::CubeCoordinate, std::shared_ptr<Common::Hex>> hexMap = boardPtr->getHexMap();
 
@@ -225,6 +226,15 @@ void MainWindow::nextGamephase()
     }
 
     ui->labelGamePhaseNumber->setText(QString::number(state_->currentGamePhase()));
+}
+
+void MainWindow::spinWheel()
+{
+    std::pair<std::string,std::string> wheelresult = game_->spinWheel();
+    std::string animal = wheelresult.first;
+    std::string amount = wheelresult.second;
+    ui->labelWhatMovesId->setText(QString::fromStdString(animal));
+    ui->labelMoveAmountNumber->setText(QString::fromStdString(amount));
 }
 
 }

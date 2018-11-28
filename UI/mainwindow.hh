@@ -44,6 +44,7 @@ public:
 public slots:
     void numberOfPlayers(int count);
     void nextGamephase();
+    void spinWheel();
 
 private:
     Ui::MainWindow *ui;
