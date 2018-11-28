@@ -189,7 +189,7 @@ void MainWindow::removeBoardPawn(int id)
 
 void MainWindow::numberOfGamephase(int phaseid)
 {
-    ui->labelGamePhasenumber->setText(QString::number(phaseid));
+    ui->labelGamePhaseNumber->setText(QString::number(phaseid));
 }
 
 void MainWindow::numberOfCurrentPlayer(int playerid)
@@ -197,14 +197,34 @@ void MainWindow::numberOfCurrentPlayer(int playerid)
     ui->labelCurrentPlayerNumber->setText(QString::number(playerid));
 }
 
+void MainWindow::numberOfActionsLeft(int actionsleft)
+{
+    ui->labelActionsleftNumber->setText(QString::number(actionsleft));
+}
+
 void MainWindow::nextGamephase()
 {
     Common::GamePhase phase = state_->currentGamePhase();
     if(phase==Common::MOVEMENT){state_->changeGamePhase(Common::SINKING);}
     else if(phase==Common::SINKING){state_->changeGamePhase(Common::SPINNING);}
-    else{state_->changeGamePhase(Common::MOVEMENT);}
+    else
+    {
+        state_->changeGamePhase(Common::MOVEMENT);
+        game_->getCurrentPlayer()->setActionsLeft(3);
+        numberOfActionsLeft(3);
+        int currentplayerid = state_->currentPlayer();
+        if(currentplayerid==playerCount_)
+        {
+            state_->changePlayerTurn(1);
+        }
+        else
+        {
+            state_->changePlayerTurn(currentplayerid+1);
+        }
+        numberOfCurrentPlayer(state_->currentPlayer());
+    }
 
-    ui->labelGamePhasenumber->setText(QString::number(state_->currentGamePhase()));
+    ui->labelGamePhaseNumber->setText(QString::number(state_->currentGamePhase()));
 }
 
 }

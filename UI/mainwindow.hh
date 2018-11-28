@@ -39,6 +39,7 @@ public:
     void removeBoardPawn(int);
     void numberOfGamephase(int phaseid);
     void numberOfCurrentPlayer(int playerid);
+    void numberOfActionsLeft(int actionsleft);
 
 public slots:
     void numberOfPlayers(int count);
