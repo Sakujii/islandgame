@@ -40,7 +40,7 @@ MainWindow::MainWindow(QWidget *parent) :
     std::shared_ptr<Common::IGameState> statePtr = std::make_shared <GameState>();
     std::vector<std::shared_ptr<Common::IPlayer>> playerVector;
     for (int i = 0; i < playerCount_; ++i){
-        std::shared_ptr<Common::IPlayer> player = std::make_shared<Player>(i);
+        std::shared_ptr<Common::IPlayer> player = std::make_shared<Player>(i+1);
         playerVector.push_back(player);
     }
 

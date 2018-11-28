@@ -180,10 +180,10 @@ void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
 
 
                 // This needs Gamestates to be implemented
-                // gamePtr_->movePawn(origin, hexCoord_, pawnId);
+                gamePtr_->movePawn(origin, hexCoord_, id);
 
                 // This is unneccessary when upper row is executed
-                boardPtr_->movePawn(id, hexCoord_);
+                //boardPtr_->movePawn(id, hexCoord_);
 
                 auto iter = boardPawnMap.find(id);
                 if (iter != boardPawnMap.end()){
