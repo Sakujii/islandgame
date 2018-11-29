@@ -42,6 +42,7 @@ public:
     void drawHex(std::shared_ptr<Common::Hex>, std::shared_ptr<Student::GameBoard>);
     void removeBoardPawn(int);
     void removeBoardActor(int);
+    void removeBoardTransport(int);
     void numberOfGamephase(int phaseid);
     void numberOfCurrentPlayer(int playerid);
     void numberOfActionsLeft(int actionsleft);

@@ -48,10 +48,7 @@ BoardHex::BoardHex(QGraphicsItem * parent,
 
     setAcceptDrops(true);
     setAcceptedMouseButtons(Qt::LeftButton);
-    setAcceptHoverEvents(true);
 
-    setFlag(QGraphicsItem::ItemIsFocusable);
-    setFlag(QGraphicsItem::ItemIsSelectable);
 }
 
 int BoardHex::getSize() const
@@ -83,6 +80,75 @@ void BoardHex::colorHex()
     else{}
 }
 
+void BoardHex::actorAction(std::shared_ptr<Common::Actor> actor)
+{
+    Student::MainWindow *win = Student::MainWindow::getInstance();
+
+    // Get pawns and transports in hex before actor doAction
+    std::vector<std::shared_ptr<Common::Pawn>> pawnsBefore = hexPtr_->getPawns();
+    std::vector<std::shared_ptr<Common::Pawn>> pawnsAfter;
+    std::vector<std::shared_ptr<Common::Transport>> transportsBefore = hexPtr_->getTransports();
+    std::vector<std::shared_ptr<Common::Transport>> transportsAfter;
+
+    // If actor is vortex, also neighbour hexes have to be checked
+    if (actor->getActorType() == "vortex"){
+        std::vector<Common::CubeCoordinate> neighbours = hexPtr_->getNeighbourVector();
+        for(auto x : neighbours){
+            std::vector<std::shared_ptr<Common::Pawn>> pawns = boardPtr_->getHex(x)->getPawns();
+            for (auto y : pawns){
+                pawnsBefore.push_back(y);
+            }
+            std::vector<std::shared_ptr<Common::Transport>> transports = boardPtr_->getHex(x)->getTransports();
+            for (auto y : transports){
+                transportsBefore.push_back(y);
+            }
+        }
+        actor->doAction();
+
+        pawnsAfter = hexPtr_->getPawns();
+        for(auto x : neighbours){
+            std::vector<std::shared_ptr<Common::Pawn>> pawns = boardPtr_->getHex(x)->getPawns();
+            for (auto y : pawns){
+                pawnsAfter.push_back(y);
+            }
+        }
+        transportsAfter = hexPtr_->getTransports();
+        for (auto x : neighbours){
+            std::vector<std::shared_ptr<Common::Transport>> transports = boardPtr_->getHex(x)->getTransports();
+            for (auto y : transports){
+                transportsBefore.push_back(y);
+            }
+        }
+        // Remove also vortex itself
+        win->removeBoardActor(actor->getId());
+    }
+
+    else{
+    actor->doAction();
+
+    // Get pawns and transports in hex after actor doAction
+    pawnsAfter = hexPtr_->getPawns();
+    transportsAfter = hexPtr_->getTransports();
+    }
+
+    // Delete pawns that were cleared from hex by actor
+    for (auto x : pawnsBefore){
+        if (std::find(pawnsAfter.begin(), pawnsAfter.end(), x) == pawnsAfter.end()){
+            int id = x->getId();
+            boardPtr_->removePawn(id);
+            win->removeBoardPawn(id);
+        }
+    }
+    // Delete transports that were cleared from hex by actor
+    for (auto x : transportsBefore){
+        if (std::find(transportsAfter.begin(), transportsAfter.end(), x) == transportsAfter.end()){
+            int id = x->getId();
+            boardPtr_->removeTransport(id);
+            win->removeBoardTransport(id);
+        }
+    }
+}
+
 
 void BoardHex::mousePressEvent(QGraphicsSceneMouseEvent*)
 {
@@ -100,43 +166,9 @@ void BoardHex::mousePressEvent(QGraphicsSceneMouseEvent*)
         std::cout<< e.msg() <<std::endl;
     }
 
-    // Get pawns in hex before actor doAction
-    std::vector<std::shared_ptr<Common::Pawn>> oldPawns = hexPtr_->getPawns();
-
-    std::vector<Common::CubeCoordinate> neighbours = hexPtr_->getNeighbourVector();
     std::vector<std::shared_ptr<Common::Actor>> actors = hexPtr_->getActors();
     for (auto x : actors){
-        if (x->getActorType() == "vortex"){
-            for(auto x : neighbours){
-                std::vector<std::shared_ptr<Common::Pawn>> pawns = boardPtr_->getHex(x)->getPawns();
-                for (auto y : pawns){
-                    oldPawns.push_back(y);
-                }
-            }
-        }
-        x->doAction();
-
-        // Get pawns in hex after actor doAction
-        std::vector<std::shared_ptr<Common::Pawn>> newPawns = hexPtr_->getPawns();
-        if (x->getActorType() == "vortex"){
-            for(auto x : neighbours){
-                std::vector<std::shared_ptr<Common::Pawn>> pawns = boardPtr_->getHex(x)->getPawns();
-                for (auto y : pawns){
-                    newPawns.push_back(y);
-                }
-            }
-        }
-        // Delete pawns that were cleared from hex by actor
-        for (auto x : oldPawns){
-            if (std::find(newPawns.begin(), newPawns.end(), x) == newPawns.end()){
-                int id = x->getId();
-                boardPtr_->removePawn(id);
-                win->removeBoardPawn(id);
-            }
-        }
-        if(x->getActorType() == "vortex"){
-            win->removeBoardActor(x->getId());
-        }
+        actorAction(x);
     }
 }
 
@@ -259,21 +291,11 @@ void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
                 if (iter != boardActorMap.end()){
                     iter->second->setParentItem(this);
                 }
-
-                std::vector<std::shared_ptr<Common::Pawn>> oldPawns = hexPtr_->getPawns();
-
-                actorIt->second->doAction();
-
-                std::vector<std::shared_ptr<Common::Pawn>> newPawns = hexPtr_->getPawns();
-
-                // Delete pawns that were cleared from hex by actor
-                for (auto x : oldPawns){
-                    if (std::find(newPawns.begin(), newPawns.end(), x) == newPawns.end()){
-                        int id = x->getId();
-                        boardPtr_->removePawn(id);
-                        win->removeBoardPawn(id);
-                    }
-                }
+            }
+            // Execute actor actions after every drop to hex
+            std::vector<std::shared_ptr<Common::Actor>> actors = hexPtr_->getActors();
+            for (auto x : actors){
+                actorAction(x);
             }
         }
 

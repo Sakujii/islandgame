@@ -25,6 +25,7 @@ public:
     int getSize() const;
     void drawHex(std::shared_ptr<Common::Hex>, QGraphicsScene*, std::shared_ptr<Student::GameBoard>);
     void colorHex();
+    void actorAction(std::shared_ptr<Common::Actor>);
 
     void mousePressEvent(QGraphicsSceneMouseEvent *) override;
     void dropEvent(QGraphicsSceneDragDropEvent *event) override;

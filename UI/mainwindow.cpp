@@ -210,6 +210,15 @@ void MainWindow::removeBoardActor(int id)
     }
 }
 
+void MainWindow::removeBoardTransport(int id)
+{
+    auto it = boardTransportMap_.find(id);
+    if (it != boardTransportMap_.end()){
+        boardScene->removeItem(it->second);
+        boardTransportMap_.erase(it);
+    }
+}
+
 void MainWindow::numberOfGamephase(int phaseid)
 {
     ui->labelGamePhaseNumber->setText(QString::number(phaseid));
