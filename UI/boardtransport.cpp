@@ -27,8 +27,10 @@ BoardTransport::BoardTransport(QGraphicsItem *parent,
     }
 
     drawTransport();
+    // Draw transports on top of actors
+    this->setZValue(1);
     setAcceptedMouseButtons(Qt::LeftButton);
-    this->setPos(-18, 3);
+
     setAcceptDrops(true);
 }
 
@@ -41,6 +43,7 @@ QRectF BoardTransport::boundingRect() const
 
 void BoardTransport::drawTransport()
 {
+    this->setPos(-18, 3);
     this->setRect(boundingRect());
     this->setBrush(brush_);
 }

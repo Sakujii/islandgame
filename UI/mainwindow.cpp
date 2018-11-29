@@ -201,6 +201,15 @@ void MainWindow::removeBoardPawn(int id)
     }
 }
 
+void MainWindow::removeBoardActor(int id)
+{
+    auto it = boardActorMap_.find(id);
+    if (it != boardActorMap_.end()){
+        boardScene->removeItem(it->second);
+        boardActorMap_.erase(it);
+    }
+}
+
 void MainWindow::numberOfGamephase(int phaseid)
 {
     ui->labelGamePhaseNumber->setText(QString::number(phaseid));

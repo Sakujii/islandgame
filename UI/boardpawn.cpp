@@ -26,6 +26,8 @@ BoardPawn::BoardPawn(QGraphicsItem* parent, int id, int playerId): QGraphicsElli
     }
 
     drawPawn();
+    // Draw pawns on top of actors
+    this->setZValue(1);
     setAcceptedMouseButtons(Qt::LeftButton);
 
 }

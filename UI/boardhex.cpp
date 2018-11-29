@@ -16,6 +16,7 @@
 #include <qmath.h>
 #include <iostream>
 #include <string>
+#include <stdlib.h>
 
 
 
@@ -87,6 +88,7 @@ void BoardHex::mousePressEvent(QGraphicsSceneMouseEvent*)
 {
     Student::MainWindow *win = Student::MainWindow::getInstance();
     std::shared_ptr<Common::IGameRunner> game = win->getGame();
+
     try {
         game->flipTile(hexCoord_);
         colorHex();
@@ -132,6 +134,9 @@ void BoardHex::mousePressEvent(QGraphicsSceneMouseEvent*)
                 win->removeBoardPawn(id);
             }
         }
+        if(x->getActorType() == "vortex"){
+            win->removeBoardActor(x->getId());
+        }
     }
 }
 
@@ -169,10 +174,10 @@ void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
 
 
                 // This needs Gamestates to be implemented
-                gamePtr_->movePawn(origin, hexCoord_, id);
+                //gamePtr_->movePawn(origin, hexCoord_, id);
 
                 // This is unneccessary when upper row is executed
-                //boardPtr_->movePawn(id, hexCoord_);
+                boardPtr_->movePawn(id, hexCoord_);
 
                 auto iter = boardPawnMap.find(id);
                 if (iter != boardPawnMap.end()){
@@ -225,10 +230,10 @@ void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
                 }
 
                 // This needs Gamestates to be implemented
-                gamePtr_->moveTransport(origin, hexCoord_, id);
+                //gamePtr_->moveTransport(origin, hexCoord_, id);
 
                 // This is unneccessary when upper row is executed
-                //boardPtr_->moveTransport(id, hexCoord_);
+                boardPtr_->moveTransport(id, hexCoord_);
 
                 auto iter = boardTransportMap.find(id);
                 if (iter != boardTransportMap.end()){
@@ -237,7 +242,7 @@ void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
 
             }
             else{
-                // Get actor origin coordinates from transport map
+                // Get actor origin coordinates from actor map
                 Common::CubeCoordinate origin;
                 auto actorIt = actorMap.find(id);
                 if (actorIt != actorMap.end()){
@@ -253,6 +258,21 @@ void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
                 auto iter = boardActorMap.find(id);
                 if (iter != boardActorMap.end()){
                     iter->second->setParentItem(this);
+                }
+
+                std::vector<std::shared_ptr<Common::Pawn>> oldPawns = hexPtr_->getPawns();
+
+                actorIt->second->doAction();
+
+                std::vector<std::shared_ptr<Common::Pawn>> newPawns = hexPtr_->getPawns();
+
+                // Delete pawns that were cleared from hex by actor
+                for (auto x : oldPawns){
+                    if (std::find(newPawns.begin(), newPawns.end(), x) == newPawns.end()){
+                        int id = x->getId();
+                        boardPtr_->removePawn(id);
+                        win->removeBoardPawn(id);
+                    }
                 }
             }
         }
