@@ -34,6 +34,7 @@ private:
     int transportId_;
     std::string transportType_;
     std::shared_ptr<Student::GameBoard> boardPtr_;
+    QBrush brush_;
 };
 
 }

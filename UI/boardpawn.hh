@@ -28,6 +28,7 @@ public:
 private:
     int pawnId_;
     int playerId_;
+    QBrush brush_;
 };
 
 }

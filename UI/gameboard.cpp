@@ -218,4 +218,9 @@ std::unordered_map<int, std::shared_ptr<Common::Transport> > GameBoard::getTrans
     return transportMap_;
 }
 
+std::unordered_map<int, std::shared_ptr<Common::Actor> > GameBoard::getActorMap()
+{
+    return actorMap_;
+}
+
 }

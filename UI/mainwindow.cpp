@@ -1,14 +1,12 @@
 #include "mainwindow.hh"
 #include "ui_mainwindow.h"
 #include "dialog.hh"
-#include "boardhex.hh"
 #include "gameboard.hh"
 #include "coordinateconvert.hh"
 #include "gamestate.hh"
 #include "player.hh"
 #include "igamerunner.hh"
 #include "initialize.hh"
-#include "boardtransport.hh"
 
 #include <QGraphicsView>
 #include <QHBoxLayout>
@@ -74,16 +72,14 @@ MainWindow::MainWindow(QWidget *parent) :
             }
         }
         std::shared_ptr<Common::Hex> hex = x.second;
-         //Ui::BoardHex * boardHex = new Ui::BoardHex();
-
-        // Shared pointer goes out from scope at the end of MainWindow constructor
-        // Should we use smart pointers here or not?
-        // std::shared_ptr<Ui::BoardHex> boardHex = std::make_shared<Ui::BoardHex>();
-
-         //boardHex->drawHex(hex, boardScene, boardPtr_);
         drawHex(hex, boardPtr);
 
     }
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
 }
 
 
@@ -107,6 +103,11 @@ std::unordered_map<int, Ui::BoardTransport *> MainWindow::getBoardTransportMap()
     return boardTransportMap_;
 }
 
+std::unordered_map<int, Ui::BoardActor *> MainWindow::getBoardActorMap()
+{
+    return boardActorMap_;
+}
+
 void MainWindow::addBoardTransport(std::shared_ptr<Common::Hex> hexPtr,
                                    Ui::BoardHex* boardHex,
                                    std::shared_ptr<Student::GameBoard> boardPtr)
@@ -122,10 +123,20 @@ void MainWindow::addBoardTransport(std::shared_ptr<Common::Hex> hexPtr,
     }
 }
 
-MainWindow::~MainWindow()
+void MainWindow::addBoardActor(std::shared_ptr<Common::Hex> hexPtr,
+                               Ui::BoardHex *boardHex)
 {
-    delete ui;
+    std::vector<std::shared_ptr<Common::Actor>> actors = hexPtr->getActors();
+
+    for (auto x : actors){
+        Ui::BoardActor *boardActor =
+                new Ui::BoardActor(boardHex, x->getId(), x->getActorType());
+        if (boardActorMap_.find(x->getId()) == boardActorMap_.end());
+            boardActorMap_.insert(std::make_pair(x->getId(), boardActor));
+    }
+
 }
+
 
 void MainWindow::numberOfPlayers(int count)
 {
@@ -137,18 +148,19 @@ void MainWindow::initScene()
 {
     QWidget *sceneWidget = new QWidget(this);
     sceneWidget->show();
-    int width = 1200;
-    int height = 800;
-    int xborder = 400;
+    int mainWidth = 1300;
+    int mainHeight = 900;
+    int xborder = 300;
     int yborder= 50;
-    int scenexborder = 100;
-    sceneWidget->setGeometry(xborder, yborder, width-xborder/2, height);
-    this->resize(width + 2*xborder, height+ 2*yborder);
+    int sceneWidth = 1500;
+    int sceneHeight = 1200;
+    sceneWidget->setGeometry(xborder, yborder, mainWidth-1.5*xborder, mainHeight- 4*yborder);
+    this->resize(mainWidth, mainHeight);
 
     QGraphicsView * view = new QGraphicsView(sceneWidget);
     boardScene = new QGraphicsScene(view);
-    view->resize(width, height);
-    boardScene->setSceneRect(scenexborder, 0, width-xborder, height-yborder);
+    view->resize(sceneWidget->width(), sceneWidget->height());
+    boardScene->setSceneRect(0, 0, sceneWidth, sceneHeight);
     view->setScene(boardScene);
 
 
@@ -169,7 +181,6 @@ void MainWindow::drawHex(std::shared_ptr<Common::Hex> hexPtr, std::shared_ptr<St
     boardHex->setPos(halfWidth + axial.x(), halfHeight + axial.y());
     boardHex->setToolTip(QString::number(hexCoord.x) + "," + QString::number(hexCoord.z));
     boardHex->colorHex();
-    boardHex->addActors();
 
     std::vector<std::shared_ptr<Common::Pawn>> pawns = hexPtr->getPawns();
     QString parentType = "hex";
