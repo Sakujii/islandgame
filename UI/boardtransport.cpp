@@ -12,9 +12,6 @@
 
 namespace Ui {
 
-QColor color4 = QColor(110, 30, 5);
-QColor color5 = Qt::gray;
-
 BoardTransport::BoardTransport(QGraphicsItem *parent,
                                int id,
                                std::string transportType,
@@ -23,11 +20,16 @@ BoardTransport::BoardTransport(QGraphicsItem *parent,
     boardPtr_ = boardPtr;
     transportId_ = id;
     transportType_ = transportType;
+    if (transportType_ == "boat"){
+        brush_ = QBrush(QColor(110, 30, 5)); // Brown for boat
+    } else if (transportType_ == "dolphin"){
+        brush_ = QBrush(QColor(Qt::gray));
+    }
+
     drawTransport();
     setAcceptedMouseButtons(Qt::LeftButton);
     this->setPos(-18, 3);
     setAcceptDrops(true);
-
 }
 
 QRectF BoardTransport::boundingRect() const
@@ -40,12 +42,7 @@ QRectF BoardTransport::boundingRect() const
 void BoardTransport::drawTransport()
 {
     this->setRect(boundingRect());
-
-    if (transportType_ == "boat"){
-        this->setBrush(QBrush(color4));
-    } else if (transportType_ == "dolphin"){
-        this->setBrush(QBrush(color5));
-    }
+    this->setBrush(brush_);
 }
 
 
@@ -59,11 +56,7 @@ void BoardTransport::mousePressEvent(QGraphicsSceneMouseEvent *event)
         QPixmap pixmap(boundingRect().size().toSize());
         QPainter painter(&pixmap);
         painter.setRenderHint(QPainter::HighQualityAntialiasing);
-        if (transportType_ == "boat"){
-            pixmap.fill(color4);
-        } else if (transportType_ == "dolphin"){
-            pixmap.fill(color5);
-        }
+        painter.setBrush(brush_);
         painter.drawRect(boundingRect());
         painter.end();
 

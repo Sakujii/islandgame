@@ -82,20 +82,6 @@ void BoardHex::colorHex()
     else{}
 }
 
-void BoardHex::addActors()
-{
-    // Get actors under the tile and draw first letter on the hex
-    std::vector<std::shared_ptr<Common::Actor>> actors = hexPtr_->getActors();
-    for (auto x : actors){
-        std::string text = (x->getActorType());
-        text = std::toupper(text[0]);
-        QString qtext = QString::fromStdString(text);
-        QGraphicsSimpleTextItem *textItem = new QGraphicsSimpleTextItem(qtext, this);
-        textItem->setFont(QFont("Colibri", 35));
-        textItem->setPos(-10, -20);
-    }
-}
-
 
 void BoardHex::mousePressEvent(QGraphicsSceneMouseEvent*)
 {
@@ -105,7 +91,6 @@ void BoardHex::mousePressEvent(QGraphicsSceneMouseEvent*)
         game->flipTile(hexCoord_);
         colorHex();
 
-        //this->addActors();
         win->addBoardActor(hexPtr_, this);
         win->addBoardTransport(hexPtr_, this, boardPtr_);
     }
@@ -240,10 +225,10 @@ void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
                 }
 
                 // This needs Gamestates to be implemented
-                // gamePtr_->moveTransport(origin, hexCoord_, id);
+                gamePtr_->moveTransport(origin, hexCoord_, id);
 
                 // This is unneccessary when upper row is executed
-                boardPtr_->moveTransport(id, hexCoord_);
+                //boardPtr_->moveTransport(id, hexCoord_);
 
                 auto iter = boardTransportMap.find(id);
                 if (iter != boardTransportMap.end()){
@@ -259,8 +244,8 @@ void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
                     origin = actorIt->second->getHex()->getCoordinates();
                 }
 
-                // This needs Gamestates to be implemented
-                // gamePtr_->moveTransport(origin, hexCoord_, id);
+                // This needs spinner "moves" as parameter
+                // gamePtr_->moveActor(origin, hexCoord_, id, "3");
 
                 // This is unneccessary when upper row is executed
                 boardPtr_->moveActor(id, hexCoord_);

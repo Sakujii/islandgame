@@ -139,18 +139,19 @@ void MainWindow::initScene()
 {
     QWidget *sceneWidget = new QWidget(this);
     sceneWidget->show();
-    int width = 1200;
-    int height = 800;
-    int xborder = 400;
+    int mainWidth = 1300;
+    int mainHeight = 900;
+    int xborder = 300;
     int yborder= 50;
-    int scenexborder = 100;
-    sceneWidget->setGeometry(xborder, yborder, width-xborder/2, height);
-    this->resize(width + 2*xborder, height+ 2*yborder);
+    int sceneWidth = 1500;
+    int sceneHeight = 1200;
+    sceneWidget->setGeometry(xborder, yborder, mainWidth-1.5*xborder, mainHeight- 4*yborder);
+    this->resize(mainWidth, mainHeight);
 
     QGraphicsView * view = new QGraphicsView(sceneWidget);
     boardScene = new QGraphicsScene(view);
-    view->resize(width, height);
-    boardScene->setSceneRect(scenexborder, 0, width-xborder, height-yborder);
+    view->resize(sceneWidget->width(), sceneWidget->height());
+    boardScene->setSceneRect(0, 0, sceneWidth, sceneHeight);
     view->setScene(boardScene);
 
 
@@ -171,7 +172,6 @@ void MainWindow::drawHex(std::shared_ptr<Common::Hex> hexPtr, std::shared_ptr<St
     boardHex->setPos(halfWidth + axial.x(), halfHeight + axial.y());
     boardHex->setToolTip(QString::number(hexCoord.x) + "," + QString::number(hexCoord.z));
     boardHex->colorHex();
-    boardHex->addActors();
 
     std::vector<std::shared_ptr<Common::Pawn>> pawns = hexPtr->getPawns();
     QString parentType = "hex";

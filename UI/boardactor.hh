@@ -26,6 +26,7 @@ public:
 private:
     int size_;
     int actorId_;
+    QBrush brush_;
     std::string actorType_;
     QPolygonF polygon_;
 };
