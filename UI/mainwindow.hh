@@ -40,6 +40,7 @@ public:
     void numberOfGamephase(int phaseid);
     void numberOfCurrentPlayer(int playerid);
     void numberOfActionsLeft(int actionsleft);
+    void updatePointsList();
 
 public slots:
     void numberOfPlayers(int count);
@@ -55,7 +56,7 @@ private:
     std::unordered_map<int, Ui::BoardTransport*> boardTransportMap_;
     void initScene();
     int playerCount_;
-    std::shared_ptr<Common::IGameState> state_;
+    std::shared_ptr<Student::GameState> state_;
 
 };
 }

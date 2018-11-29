@@ -196,6 +196,16 @@
      <string/>
     </property>
    </widget>
+   <widget class="QListWidget" name="listWidgetPoints">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>270</y>
+      <width>161</width>
+      <height>141</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

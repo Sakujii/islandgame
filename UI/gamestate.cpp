@@ -44,17 +44,28 @@ void GameState::changePlayerTurn(int nextPlayer)
 
 void GameState::addPointsToPlayer(int playerid, int points)
 {
-    bool a = false;
     for(auto s:_playerPointVector)
         if(s.first==playerid)
         {
-            s.second+= points;
-            a = true;
+            _playerPointVector.at(playerid-1) = std::make_pair(s.first,s.second+points);
         }
-    if(a==false)
+}
+
+void GameState::initPoints(int playercount)
+{
+    for(int playerid=1; playerid<playercount+1; playerid++)
+        _playerPointVector.push_back(std::make_pair(playerid,0));
+}
+
+std::vector<std::string> GameState::getPointsVectorForPlot()
+{
+    std::vector<std::string> plotvector;
+    for(auto s:_playerPointVector)
     {
-        _playerPointVector.push_back(std::make_pair(playerid,points));
+        std::string row = "Player: " + std::to_string(s.first) + "   Points: " + std::to_string(s.second);
+        plotvector.push_back(row);
     }
+    return plotvector;
 }
 
 

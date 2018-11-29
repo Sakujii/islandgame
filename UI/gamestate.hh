@@ -59,6 +59,8 @@ public:
     int getPawnPerPlayer();
     void deletePawn(int pawn);
     int playerPawnsLeft(int playerid);
+    void initPoints(int playercount);
+    std::vector<std::string> getPointsVectorForPlot();
 
 
 private:

@@ -37,7 +37,7 @@ MainWindow::MainWindow(QWidget *parent) :
     dialog.exec();
 
     std::shared_ptr<Student::GameBoard> boardPtr = std::make_shared <GameBoard>();
-    std::shared_ptr<Common::IGameState> statePtr = std::make_shared <GameState>();
+    std::shared_ptr<Student::GameState> statePtr = std::make_shared <GameState>();
     state_=statePtr;
     std::vector<std::shared_ptr<Common::IPlayer>> playerVector;
     for (int i = 0; i < playerCount_; ++i){
@@ -52,6 +52,15 @@ MainWindow::MainWindow(QWidget *parent) :
     numberOfCurrentPlayer(statePtr->currentPlayer());
     connect(ui->pushButtonGamephase, &QPushButton::clicked, this, &MainWindow::nextGamephase);
     connect(ui->pushButtonSpinWheel, &QPushButton::clicked, this, &MainWindow::spinWheel);
+
+    state_->initPoints(playerCount_);
+//    std::vector<std::string> v = {"7", "5", "16", "8"};
+//    std::string s = "test3";
+//    ui->listWidgetPoints->addItem("Test");
+//    ui->listWidgetPoints->addItem("Test2");
+//    ui->listWidgetPoints->addItem(QString::fromStdString(s));
+//    mainInstance->updatePointsList();
+
 
     std::map<Common::CubeCoordinate, std::shared_ptr<Common::Hex>> hexMap = boardPtr->getHexMap();
 
@@ -226,6 +235,8 @@ void MainWindow::nextGamephase()
     }
 
     ui->labelGamePhaseNumber->setText(QString::number(state_->currentGamePhase()));
+    mainInstance->updatePointsList();
+    state_->addPointsToPlayer(1,2);
 }
 
 void MainWindow::spinWheel()
@@ -235,6 +246,14 @@ void MainWindow::spinWheel()
     std::string amount = wheelresult.second;
     ui->labelWhatMovesId->setText(QString::fromStdString(animal));
     ui->labelMoveAmountNumber->setText(QString::fromStdString(amount));
+}
+
+void MainWindow::updatePointsList()
+{
+    ui->listWidgetPoints->clear();
+    std::vector<std::string> pointslist = state_->getPointsVectorForPlot();
+    for(auto s : pointslist)
+        ui->listWidgetPoints->addItem(QString::fromStdString(s));
 }
 
 }
