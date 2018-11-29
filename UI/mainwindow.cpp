@@ -1,14 +1,12 @@
 #include "mainwindow.hh"
 #include "ui_mainwindow.h"
 #include "dialog.hh"
-#include "boardhex.hh"
 #include "gameboard.hh"
 #include "coordinateconvert.hh"
 #include "gamestate.hh"
 #include "player.hh"
 #include "igamerunner.hh"
 #include "initialize.hh"
-#include "boardtransport.hh"
 
 #include <QGraphicsView>
 #include <QHBoxLayout>
@@ -65,16 +63,14 @@ MainWindow::MainWindow(QWidget *parent) :
             }
         }
         std::shared_ptr<Common::Hex> hex = x.second;
-         //Ui::BoardHex * boardHex = new Ui::BoardHex();
-
-        // Shared pointer goes out from scope at the end of MainWindow constructor
-        // Should we use smart pointers here or not?
-        // std::shared_ptr<Ui::BoardHex> boardHex = std::make_shared<Ui::BoardHex>();
-
-         //boardHex->drawHex(hex, boardScene, boardPtr_);
         drawHex(hex, boardPtr);
 
     }
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
 }
 
 
@@ -98,6 +94,11 @@ std::unordered_map<int, Ui::BoardTransport *> MainWindow::getBoardTransportMap()
     return boardTransportMap_;
 }
 
+std::unordered_map<int, Ui::BoardActor *> MainWindow::getBoardActorMap()
+{
+    return boardActorMap_;
+}
+
 void MainWindow::addBoardTransport(std::shared_ptr<Common::Hex> hexPtr,
                                    Ui::BoardHex* boardHex,
                                    std::shared_ptr<Student::GameBoard> boardPtr)
@@ -113,10 +114,20 @@ void MainWindow::addBoardTransport(std::shared_ptr<Common::Hex> hexPtr,
     }
 }
 
-MainWindow::~MainWindow()
+void MainWindow::addBoardActor(std::shared_ptr<Common::Hex> hexPtr,
+                               Ui::BoardHex *boardHex)
 {
-    delete ui;
+    std::vector<std::shared_ptr<Common::Actor>> actors = hexPtr->getActors();
+
+    for (auto x : actors){
+        Ui::BoardActor *boardActor =
+                new Ui::BoardActor(boardHex, x->getId(), x->getActorType());
+        if (boardActorMap_.find(x->getId()) == boardActorMap_.end());
+            boardActorMap_.insert(std::make_pair(x->getId(), boardActor));
+    }
+
 }
+
 
 void MainWindow::numberOfPlayers(int count)
 {

@@ -105,7 +105,8 @@ void BoardHex::mousePressEvent(QGraphicsSceneMouseEvent*)
         game->flipTile(hexCoord_);
         colorHex();
 
-        this->addActors();
+        //this->addActors();
+        win->addBoardActor(hexPtr_, this);
         win->addBoardTransport(hexPtr_, this, boardPtr_);
     }
     catch (Common::GameException& e) {
@@ -163,8 +164,11 @@ void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
     std::unordered_map<int, std::shared_ptr<Common::Pawn>> pawnMap = boardPtr_->getPawnMap();
     std::map<Common::CubeCoordinate, std::shared_ptr<Common::Hex> > hexMap = boardPtr_->getHexMap();
     std::unordered_map<int, std::shared_ptr<Common::Transport>> transportMap = boardPtr_->getTransportMap();
+    std::unordered_map<int, std::shared_ptr<Common::Actor>> actorMap = boardPtr_->getActorMap();
     std::unordered_map<int, Ui::BoardPawn*> boardPawnMap =  win->getBoardPawnMap();
     std::unordered_map<int, Ui::BoardTransport*> boardTransportMap = win->getBoardTransportMap();
+    std::unordered_map<int, Ui::BoardActor*> boardActorMap = win->getBoardActorMap();
+
 
         try {
             if (type == "pawn"){
@@ -227,7 +231,7 @@ void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
                     }
                 }
             }
-            else{
+            else if (type == "boat" || type == "dolphin"){
                 // Get transport origin coordinates from transport map
                 Common::CubeCoordinate origin;
                 auto transportIt = transportMap.find(id);
@@ -246,6 +250,25 @@ void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
                     iter->second->setParentItem(this);
                 }
 
+            }
+            else{
+                // Get actor origin coordinates from transport map
+                Common::CubeCoordinate origin;
+                auto actorIt = actorMap.find(id);
+                if (actorIt != actorMap.end()){
+                    origin = actorIt->second->getHex()->getCoordinates();
+                }
+
+                // This needs Gamestates to be implemented
+                // gamePtr_->moveTransport(origin, hexCoord_, id);
+
+                // This is unneccessary when upper row is executed
+                boardPtr_->moveActor(id, hexCoord_);
+
+                auto iter = boardActorMap.find(id);
+                if (iter != boardActorMap.end()){
+                    iter->second->setParentItem(this);
+                }
             }
         }
 
