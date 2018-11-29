@@ -52,13 +52,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->pushButtonSpinWheel, &QPushButton::clicked, this, &MainWindow::spinWheel);
 
     state_->initPoints(playerCount_);
-//    std::vector<std::string> v = {"7", "5", "16", "8"};
-//    std::string s = "test3";
-//    ui->listWidgetPoints->addItem("Test");
-//    ui->listWidgetPoints->addItem("Test2");
-//    ui->listWidgetPoints->addItem(QString::fromStdString(s));
-//    mainInstance->updatePointsList();
-
 
     std::map<Common::CubeCoordinate, std::shared_ptr<Common::Hex>> hexMap = boardPtr->getHexMap();
 
