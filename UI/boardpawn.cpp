@@ -16,6 +16,7 @@ BoardPawn::BoardPawn(QGraphicsItem* parent, int id, int playerId): QGraphicsElli
 {
     pawnId_ = id;
     playerId_ = playerId;
+    inTransport_ = false;
 
     if (playerId_ == 1){
         brush_ = QBrush(Qt::black);
@@ -29,7 +30,6 @@ BoardPawn::BoardPawn(QGraphicsItem* parent, int id, int playerId): QGraphicsElli
     // Draw pawns on top of actors
     this->setZValue(1);
     setAcceptedMouseButtons(Qt::LeftButton);
-
 }
 
 void BoardPawn::drawPawn()
@@ -38,7 +38,7 @@ void BoardPawn::drawPawn()
     this->setBrush(brush_);
 }
 
-void BoardPawn::setPosition(int pawnAmount, QString parentType)
+void BoardPawn::setPosition(int pawnAmount)
 {
     QPoint hex1 = QPoint(-7, -22);
     QPoint hex2 = QPoint(-20, -14);
@@ -49,7 +49,7 @@ void BoardPawn::setPosition(int pawnAmount, QString parentType)
     QPoint transport3 = QPoint(20, -7);
 
 
-    if (parentType == "hex"){
+    if (inTransport_ == false){
         if (pawnAmount == 1){
             this->setPos(hex1);
         } else if (pawnAmount == 2){
@@ -96,7 +96,17 @@ void BoardPawn::mousePressEvent(QGraphicsSceneMouseEvent *event)
         drag->exec();
 
     }
-this->show();
+    this->show();
+}
+
+void BoardPawn::setInTransport(bool value)
+{
+    inTransport_ = value;
+}
+
+bool BoardPawn::getInTransport()
+{
+    return inTransport_;
 }
 
 

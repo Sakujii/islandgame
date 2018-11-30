@@ -86,6 +86,11 @@ std::shared_ptr<Common::IGameRunner> MainWindow::getGame()
     return game_;
 }
 
+std::map<Common::CubeCoordinate, Ui::BoardHex *> MainWindow::getBoardHexMap()
+{
+    return boardHexMap_;
+}
+
 std::unordered_map<int, Ui::BoardPawn *> MainWindow::getBoardPawnMap()
 {
     return boardPawnMap_;
@@ -165,6 +170,10 @@ void MainWindow::drawHex(std::shared_ptr<Common::Hex> hexPtr, std::shared_ptr<St
 
     Ui::BoardHex *boardHex = new Ui::BoardHex(0, hexPtr, boardPtr, game_);
 
+    if(boardHexMap_.find(hexCoord) == boardHexMap_.end()){
+        boardHexMap_.insert(std::make_pair(hexCoord, boardHex));
+    }
+
     double halfWidth = (boardScene->width())/2;
     double halfHeight = (boardScene->height()/2);
 
@@ -176,12 +185,11 @@ void MainWindow::drawHex(std::shared_ptr<Common::Hex> hexPtr, std::shared_ptr<St
     boardHex->colorHex();
 
     std::vector<std::shared_ptr<Common::Pawn>> pawns = hexPtr->getPawns();
-    QString parentType = "hex";
 
     int i = 1;
     for (auto x : pawns){
         Ui::BoardPawn *boardPawn = new Ui::BoardPawn(boardHex, x->getId(), x->getPlayerId());
-        boardPawn->setPosition(i, parentType);
+        boardPawn->setPosition(i);
         ++i;
         if (boardPawnMap_.find(x->getId()) == boardPawnMap_.end()){
             boardPawnMap_.insert(std::make_pair(x->getId(), boardPawn));

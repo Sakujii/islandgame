@@ -30,6 +30,7 @@ public:
     ~MainWindow();
     static MainWindow* getInstance();
     std::shared_ptr<Common::IGameRunner> getGame();
+    std::map<Common::CubeCoordinate, Ui::BoardHex*> getBoardHexMap();
     std::unordered_map<int, Ui::BoardPawn*> getBoardPawnMap();
     std::unordered_map<int, Ui::BoardTransport*> getBoardTransportMap();
     std::unordered_map<int, Ui::BoardActor*> getBoardActorMap();
@@ -58,6 +59,7 @@ private:
     static MainWindow *mainInstance;
     QGraphicsScene *boardScene;
     std::shared_ptr<Common::IGameRunner> game_;
+    std::map<Common::CubeCoordinate, Ui::BoardHex*> boardHexMap_;
     std::unordered_map<int, Ui::BoardPawn*> boardPawnMap_;
     std::unordered_map<int, Ui::BoardTransport*> boardTransportMap_;
     std::unordered_map<int, Ui::BoardActor*> boardActorMap_;

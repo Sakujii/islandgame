@@ -26,6 +26,7 @@ public:
     void drawHex(std::shared_ptr<Common::Hex>, QGraphicsScene*, std::shared_ptr<Student::GameBoard>);
     void colorHex();
     void actorAction(std::shared_ptr<Common::Actor>);
+    void reArrangePawns(std::shared_ptr<Common::Hex>);
 
     void mousePressEvent(QGraphicsSceneMouseEvent *) override;
     void dropEvent(QGraphicsSceneDragDropEvent *event) override;

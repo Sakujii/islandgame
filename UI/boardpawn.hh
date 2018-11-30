@@ -21,14 +21,17 @@ public:
 
     QRectF boundingRect() const override;
     void drawPawn();
-    void setPosition(int, QString parentType);
+    void setPosition(int);
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+    void setInTransport(bool);
+    bool getInTransport();
 
 
 private:
     int pawnId_;
     int playerId_;
     QBrush brush_;
+    bool inTransport_;
 };
 
 }

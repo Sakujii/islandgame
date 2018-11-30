@@ -92,6 +92,9 @@ void BoardTransport::dropEvent(QGraphicsSceneDragDropEvent *event)
     std::map<Common::CubeCoordinate, std::shared_ptr<Common::Hex> > hexMap = boardPtr_->getHexMap();
     std::unordered_map<int, std::shared_ptr<Common::Transport>> transportMap = boardPtr_->getTransportMap();
     std::unordered_map<int, Ui::BoardPawn*> boardPawnMap =  win->getBoardPawnMap();
+    std::map<Common::CubeCoordinate, Ui::BoardHex*> boardHexMap = win->getBoardHexMap();
+
+
 
     Common::CubeCoordinate coord;
     int capacity = -1;
@@ -110,13 +113,14 @@ void BoardTransport::dropEvent(QGraphicsSceneDragDropEvent *event)
                 // Get pawn origin coordinates from pawn map
                 Common::CubeCoordinate origin;
                 auto pawnIt = pawnMap.find(id);
+                std::shared_ptr<Common::Pawn> pawn = pawnIt->second;
                 if (pawnIt != pawnMap.end()){
-                    origin = pawnIt->second->getCoordinates();
+                    origin = pawn->getCoordinates();
                 }
 
                 std::vector<std::shared_ptr<Common::Pawn>> pawns = transportIt->second->getPawnsInTransport();
                 for (auto x : pawns){
-                    if (x == pawnIt->second){
+                    if (x == pawn){
                         throw Common::IllegalMoveException("Moving pawn inside same transport") ;
                     }
                 }
@@ -130,21 +134,19 @@ void BoardTransport::dropEvent(QGraphicsSceneDragDropEvent *event)
                 transportIt->second->addPawn(pawnIt->second);
 
                 auto iter = boardPawnMap.find(id);
+                BoardPawn* boardPawn;
                 if (iter != boardPawnMap.end()){
-                    iter->second->setParentItem(this);
-                    iter->second->setPosition(capacity, parentType);
+                    boardPawn = iter->second;
+                    boardPawn->setParentItem(this);
+                    boardPawn->setInTransport(true);
+                    boardPawn->setPosition(capacity);
                 }
 
                 // Get origin hex pawns and update positions
                 auto hexIt = hexMap.find(origin);
-                if (hexIt != hexMap.end()){
-                    std::vector<std::shared_ptr<Common::Pawn>> oldPawns = hexIt->second->getPawns();
-                    int i = 1;
-                    for (auto x : oldPawns){
-                        auto boardPawnIt = boardPawnMap.find(x->getId());
-                        boardPawnIt->second->setPosition(i, "hex");
-                        ++i;
-                    }
+                auto boardHexIt = boardHexMap.find(origin);
+                if (boardHexIt != boardHexMap.end()){
+                    boardHexIt->second->reArrangePawns(hexIt->second);
                 }
             }
         }

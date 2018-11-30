@@ -149,6 +149,31 @@ void BoardHex::actorAction(std::shared_ptr<Common::Actor> actor)
     }
 }
 
+void BoardHex::reArrangePawns(std::shared_ptr<Common::Hex> hex)
+{
+    Student::MainWindow *win = Student::MainWindow::getInstance();
+    std::unordered_map<int, Ui::BoardPawn*> boardPawnMap =  win->getBoardPawnMap();
+
+    std::vector<std::shared_ptr<Common::Pawn>> pawns = hex->getPawns();
+    std::vector<std::shared_ptr<Common::Transport>> transports = hex->getTransports();
+    std::vector<std::shared_ptr<Common::Pawn>> transportPawns;
+
+    int i = 1;
+    int j = 3;
+    for (auto x : pawns){
+        auto pawnIt = boardPawnMap.find(x->getId());
+        BoardPawn *boardPawn = pawnIt->second;
+        if (boardPawn->getInTransport()){
+            boardPawn->setPosition(j);
+            --j;
+        }
+        else{
+            boardPawn->setPosition(i);
+            ++i;
+        }
+    }
+}
+
 
 void BoardHex::mousePressEvent(QGraphicsSceneMouseEvent*)
 {
@@ -196,14 +221,12 @@ void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
             if (type == "pawn"){
                 // Get pawn origin coordinates from pawn map
                 Common::CubeCoordinate origin;
-                int capacity = -1;
                 std::shared_ptr<Common::Pawn> pawnPtr;
                 auto pawnIt = pawnMap.find(id);
                 if (pawnIt != pawnMap.end()){
                     origin = pawnIt->second->getCoordinates();
                     pawnPtr = pawnIt->second;
                 }
-
 
                 // This needs Gamestates to be implemented
                 //gamePtr_->movePawn(origin, hexCoord_, id);
@@ -214,43 +237,26 @@ void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
                 auto iter = boardPawnMap.find(id);
                 if (iter != boardPawnMap.end()){
                     iter->second->setParentItem(this);
-                    iter->second->setPosition(hexPtr_->getPawnAmount(), parentType);
+                    iter->second->setInTransport(false);
+                    iter->second->setPosition(hexPtr_->getPawnAmount());
                 }
 
                 auto hexIt = hexMap.find(origin);
                 if (hexIt != hexMap.end()){
+
                     // If pawn was in transport, remove it from there
-                    if(hexIt->second->getTransports().size() != 0){
-                        std::vector<std::shared_ptr<Common::Transport>> transports = hexIt->second->getTransports();
+                    std::vector<std::shared_ptr<Common::Transport>> transports = hexIt->second->getTransports();
+                    if(transports.size() != 0){
                         for(auto x : transports){
                             std::vector<std::shared_ptr<Common::Pawn>> transportPawns = x->getPawnsInTransport();
                             for (auto y : transportPawns){
                                 if (y == pawnPtr){
                                     x->removePawn(pawnPtr);
-                                    parentType = "transport";
                                 }
                             }
-                            capacity = x->getCapacity();
                         }
                     }
-                    // Get origin hex pawns and update positions
-                    std::vector<std::shared_ptr<Common::Pawn>> oldPawns = hexIt->second->getPawns();
-                    int i = 1;
-                    if (parentType == "hex"){
-                        for (auto x : oldPawns){
-                            auto pawnIt = boardPawnMap.find(x->getId());
-                            pawnIt->second->setPosition(i, parentType);
-                            ++i;
-                        }
-                    }
-                    else{
-                        int j = 3;
-                        for (auto x : oldPawns){
-                            auto pawnIt = boardPawnMap.find(x->getId());
-                            pawnIt->second->setPosition(j, parentType);
-                            --j;
-                        }
-                    }
+                    reArrangePawns(hexIt->second);
                 }
             }
             else if (type == "boat" || type == "dolphin"){
@@ -281,7 +287,7 @@ void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
                     origin = actorIt->second->getHex()->getCoordinates();
                 }
 
-                // This needs spinner "moves" as parameter
+//************* This needs spinner "moves" as parameter
                 // gamePtr_->moveActor(origin, hexCoord_, id, "3");
 
                 // This is unneccessary when upper row is executed
