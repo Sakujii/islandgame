@@ -39,7 +39,7 @@ BoardActor::BoardActor(QGraphicsItem *parent, int id, std::string actorType):
         brush_ = (QBrush(Qt::darkGreen));
     } else if (actorType_ == "shark"){
         brush_ = (QBrush(Qt::darkGray));
-    }
+    } else{}
 
     drawActor();
     setAcceptedMouseButtons(Qt::LeftButton);
@@ -63,7 +63,7 @@ void BoardActor::drawActor()
         textItem_ = new QGraphicsSimpleTextItem("M", this);
     } else if (actorType_ == "shark"){
         textItem_ = new QGraphicsSimpleTextItem("M", this);
-    }
+    } else{}
 
     this->setBrush(brush_);
     textItem_->setBrush(textColor);

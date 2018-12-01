@@ -24,7 +24,7 @@ BoardTransport::BoardTransport(QGraphicsItem *parent,
         brush_ = QBrush(QColor(110, 30, 5)); // Brown for boat
     } else if (transportType_ == "dolphin"){
         brush_ = QBrush(QColor(Qt::gray));
-    }
+    } else{}
 
     drawTransport();
     // Draw transports on top of actors

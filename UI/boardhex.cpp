@@ -74,8 +74,7 @@ void BoardHex::colorHex()
     }
     else if (type == "Coral") {
         this->setBrush(QBrush(Qt::magenta));
-    }
-    else{}
+    } else{}
 }
 
 void BoardHex::actorAction(std::shared_ptr<Common::Actor> actor)

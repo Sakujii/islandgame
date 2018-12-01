@@ -24,7 +24,7 @@ BoardPawn::BoardPawn(QGraphicsItem* parent, int id, int playerId): QGraphicsElli
         brush_ = (QBrush(Qt::red));
     } else if (playerId_ == 3){
         brush_ = (QBrush(Qt::darkGreen));
-    }
+    } else{}
 
     drawPawn();
     // Draw pawns on top of actors
@@ -56,7 +56,7 @@ void BoardPawn::setPosition(int pawnAmount)
             this->setPos(hex2);
         } else if (pawnAmount == 3){
             this->setPos(hex3);
-        }
+        } else{}
     }
     else {
         if (pawnAmount == 3){
@@ -65,7 +65,7 @@ void BoardPawn::setPosition(int pawnAmount)
             this->setPos(transport2);
         } else if (pawnAmount == 1){
             this->setPos(transport3);
-        }
+        } else{}
     }
 }
 
