@@ -189,6 +189,7 @@ void BoardHex::mousePressEvent(QGraphicsSceneMouseEvent*)
     }
     catch (Common::GameException& e) {
         std::cout<< e.msg() <<std::endl;
+        win->setGameMessage(e.msg());
     }
 
     std::vector<std::shared_ptr<Common::Actor>> actors = hexPtr_->getActors();
@@ -245,10 +246,12 @@ void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
                 if (hexIt != hexMap.end()){
 
                     // If pawn was in transport, remove it from there
-                    std::vector<std::shared_ptr<Common::Transport>> transports = hexIt->second->getTransports();
+                    std::vector<std::shared_ptr<Common::Transport>> transports =
+                            hexIt->second->getTransports();
                     if(transports.size() != 0){
                         for(auto x : transports){
-                            std::vector<std::shared_ptr<Common::Pawn>> transportPawns = x->getPawnsInTransport();
+                            std::vector<std::shared_ptr<Common::Pawn>> transportPawns =
+                                    x->getPawnsInTransport();
                             for (auto y : transportPawns){
                                 if (y == pawnPtr){
                                     x->removePawn(pawnPtr);
@@ -260,6 +263,10 @@ void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
                 }
             }
             else if (type == "boat" || type == "dolphin"){
+                if(hexPtr_->getTransports().size() > 0){
+                    throw Common::IllegalMoveException
+                            ("There is already a transport in the hex!");
+                }
                 // Get transport origin coordinates from transport map
                 Common::CubeCoordinate origin;
                 auto transportIt = transportMap.find(id);
@@ -280,6 +287,11 @@ void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
 
             }
             else{
+                if(hexPtr_->getActors().size() > 0){
+                    throw Common::IllegalMoveException
+                            ("There is already an actor in the hex!");
+                }
+
                 // Get actor origin coordinates from actor map
                 Common::CubeCoordinate origin;
                 auto actorIt = actorMap.find(id);
@@ -307,6 +319,7 @@ void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
 
         catch (Common::IllegalMoveException& e){
             std::cout << e.msg() << std::endl;
+            win->setGameMessage(e.msg());
         }
 }
 }

@@ -13,7 +13,8 @@
 
 namespace Ui{
 
-BoardActor::BoardActor(QGraphicsItem *parent, int id, std::string actorType): QGraphicsPolygonItem (parent)
+BoardActor::BoardActor(QGraphicsItem *parent, int id, std::string actorType):
+    QGraphicsPolygonItem (parent)
 {
     actorId_ = id;
     actorType_ = actorType;
@@ -80,7 +81,6 @@ void BoardActor::drawActor()
         textItem->setPos(textPos);
     }
 
-
 }
 
 void BoardActor::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -108,6 +108,7 @@ void BoardActor::mousePressEvent(QGraphicsSceneMouseEvent *event)
         drag->setHotSpot(QPoint(30, 30));
         drag->setPixmap(pixmap);
         drag->exec();
+        delete drag;
 
     }
     this->show();

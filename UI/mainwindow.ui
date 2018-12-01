@@ -206,6 +206,39 @@
      </rect>
     </property>
    </widget>
+   <widget class="QLabel" name="labelGameMessageText">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>10</y>
+      <width>321</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelGameMessage">
+    <property name="geometry">
+     <rect>
+      <x>350</x>
+      <y>10</y>
+      <width>101</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Game message:</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -213,9 +246,15 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>25</height>
+     <height>22</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuIslandGame">
+    <property name="title">
+     <string>IslandGame</string>
+    </property>
+   </widget>
+   <addaction name="menuIslandGame"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>

@@ -73,6 +73,7 @@ void BoardTransport::mousePressEvent(QGraphicsSceneMouseEvent *event)
         drag->setHotSpot(QPoint(5, 7));
         drag->setPixmap(pixmap);
         drag->exec();
+        delete drag;
 
     }
     this->show();
@@ -152,6 +153,7 @@ void BoardTransport::dropEvent(QGraphicsSceneDragDropEvent *event)
         }
         catch (Common::IllegalMoveException& e){
             std::cout << e.msg() << std::endl;
+            win->setGameMessage(e.msg());
         }
 }
 

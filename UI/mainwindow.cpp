@@ -129,8 +129,9 @@ void MainWindow::addBoardActor(std::shared_ptr<Common::Hex> hexPtr,
     for (auto x : actors){
         Ui::BoardActor *boardActor =
                 new Ui::BoardActor(boardHex, x->getId(), x->getActorType());
-        if (boardActorMap_.find(x->getId()) == boardActorMap_.end());
+        if (boardActorMap_.find(x->getId()) == boardActorMap_.end()){
             boardActorMap_.insert(std::make_pair(x->getId(), boardActor));
+        }
     }
 
 }
@@ -284,6 +285,12 @@ void MainWindow::updatePointsList()
     std::vector<std::string> pointslist = state_->getPointsVectorForPlot();
     for(auto s : pointslist)
         ui->listWidgetPoints->addItem(QString::fromStdString(s));
+}
+
+void MainWindow::setGameMessage(std::string msg)
+{
+    QString message = QString::fromStdString(msg);
+    ui->labelGameMessageText->setText(message);
 }
 
 }

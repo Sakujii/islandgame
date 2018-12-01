@@ -94,6 +94,7 @@ void BoardPawn::mousePressEvent(QGraphicsSceneMouseEvent *event)
         drag->setHotSpot(QPoint(5, 7));
         drag->setPixmap(pixmap);
         drag->exec();
+        delete drag;
 
     }
     this->show();

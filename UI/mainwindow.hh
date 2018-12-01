@@ -48,6 +48,7 @@ public:
     void numberOfCurrentPlayer(int playerid);
     void numberOfActionsLeft(int actionsleft);
     void updatePointsList();
+    void setGameMessage(std::string);
 
 public slots:
     void numberOfPlayers(int count);
