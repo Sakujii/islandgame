@@ -212,9 +212,8 @@ void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
     std::unordered_map<int, Ui::BoardTransport*> boardTransportMap = win->getBoardTransportMap();
     std::unordered_map<int, Ui::BoardActor*> boardActorMap = win->getBoardActorMap();
 
-
         try {
-            if (type == "pawn"){
+            if (type == "pawn" and gamePtr_->currentGamePhase()==Common::GamePhase::MOVEMENT){
                 // Get pawn origin coordinates from pawn map
                 Common::CubeCoordinate origin;
                 std::shared_ptr<Common::Pawn> pawnPtr;
@@ -225,10 +224,12 @@ void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
                 }
 
                 // This needs Gamestates to be implemented
-                //gamePtr_->movePawn(origin, hexCoord_, id);
+                gamePtr_->movePawn(origin, hexCoord_, id);
+                win->numberOfActionsLeft(gamePtr_->getCurrentPlayer()->getActionsLeft());
+
 
                 // This is unneccessary when upper row is executed
-                boardPtr_->movePawn(id, hexCoord_);
+                //boardPtr_->movePawn(id, hexCoord_);
 
                 auto boardPawnIt = boardPawnMap.find(id);
                 BoardPawn* boardPawn;
@@ -265,10 +266,10 @@ void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
                 }
 
                 // This needs Gamestates to be implemented
-                //gamePtr_->moveTransport(origin, hexCoord_, id);
+                gamePtr_->moveTransport(origin, hexCoord_, id);
 
                 // This is unneccessary when upper row is executed
-                boardPtr_->moveTransport(id, hexCoord_);
+                //boardPtr_->moveTransport(id, hexCoord_);
 
                 auto iter = boardTransportMap.find(id);
                 if (iter != boardTransportMap.end()){

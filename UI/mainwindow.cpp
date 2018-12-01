@@ -48,6 +48,7 @@ MainWindow::MainWindow(QWidget *parent) :
     initScene();
     numberOfGamephase(statePtr->currentGamePhase());
     numberOfCurrentPlayer(statePtr->currentPlayer());
+    numberOfActionsLeft(game_->getCurrentPlayer()->getActionsLeft());
     connect(ui->pushButtonGamephase, &QPushButton::clicked, this, &MainWindow::nextGamephase);
     connect(ui->pushButtonSpinWheel, &QPushButton::clicked, this, &MainWindow::spinWheel);
 
