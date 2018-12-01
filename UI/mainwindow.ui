@@ -96,13 +96,13 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>200</y>
-      <width>111</width>
+      <y>140</y>
+      <width>131</width>
       <height>41</height>
      </rect>
     </property>
     <property name="text">
-     <string>NextGamephase</string>
+     <string>Next gamephase</string>
     </property>
    </widget>
    <widget class="QLabel" name="labelActionsleft">
@@ -135,13 +135,13 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>150</y>
-      <width>84</width>
-      <height>28</height>
+      <y>190</y>
+      <width>131</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
-     <string>Spinwheel</string>
+     <string>Spin wheel</string>
     </property>
    </widget>
    <widget class="QLabel" name="labelWhatMoves">
@@ -149,12 +149,12 @@
      <rect>
       <x>20</x>
       <y>90</y>
-      <width>101</width>
+      <width>121</width>
       <height>20</height>
      </rect>
     </property>
     <property name="text">
-     <string>WhatMoves</string>
+     <string>What moves          :</string>
     </property>
    </widget>
    <widget class="QLabel" name="labelMoveAmount">
@@ -162,12 +162,12 @@
      <rect>
       <x>20</x>
       <y>110</y>
-      <width>91</width>
+      <width>121</width>
       <height>20</height>
      </rect>
     </property>
     <property name="text">
-     <string>MoveAmount</string>
+     <string>Move amount        :</string>
     </property>
    </widget>
    <widget class="QLabel" name="labelWhatMovesId">
@@ -230,7 +230,7 @@
     <property name="geometry">
      <rect>
       <x>350</x>
-      <y>10</y>
+      <y>20</y>
       <width>101</width>
       <height>16</height>
      </rect>

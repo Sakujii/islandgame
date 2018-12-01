@@ -109,7 +109,7 @@ void BoardTransport::dropEvent(QGraphicsSceneDragDropEvent *event)
         try {
             if (type == "pawn"){
                 if (capacity <= 0){
-                    throw Common::IllegalMoveException("Transport is full") ;
+                    throw Common::IllegalMoveException("The transport is full!") ;
                 }
                 // Get pawn origin coordinates from pawn map
                 Common::CubeCoordinate origin;
@@ -122,7 +122,7 @@ void BoardTransport::dropEvent(QGraphicsSceneDragDropEvent *event)
                 std::vector<std::shared_ptr<Common::Pawn>> pawns = transportIt->second->getPawnsInTransport();
                 for (auto x : pawns){
                     if (x == pawn){
-                        throw Common::IllegalMoveException("Moving pawn inside same transport") ;
+                        throw Common::IllegalMoveException("Moving pawn inside the same transport!") ;
                     }
                 }
 

@@ -29,6 +29,7 @@ private:
     QBrush brush_;
     std::string actorType_;
     QPolygonF polygon_;
+    QGraphicsSimpleTextItem *textItem_;
 };
 
 }

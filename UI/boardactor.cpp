@@ -56,31 +56,19 @@ void BoardActor::drawActor()
     QColor textColor = QColor(Qt::white);
 
     if (actorType_ == "vortex"){
-        this->setBrush(brush_);
-        QGraphicsSimpleTextItem *textItem = new QGraphicsSimpleTextItem("V", this);
-        textItem->setBrush(textColor);
-        textItem->setFont(font);
-        textItem->setPos(textPos);
+        textItem_ = new QGraphicsSimpleTextItem("V", this);
     } else if (actorType_ == "kraken"){
-        this->setBrush(brush_);
-        QGraphicsSimpleTextItem *textItem = new QGraphicsSimpleTextItem("K", this);
-        textItem->setBrush(textColor);
-        textItem->setFont(font);
-        textItem->setPos(textPos);
+        textItem_ = new QGraphicsSimpleTextItem("K", this);
     } else if (actorType_ == "seamunster"){
-        this->setBrush(brush_);
-        QGraphicsSimpleTextItem *textItem = new QGraphicsSimpleTextItem("M", this);
-        textItem->setBrush(textColor);
-        textItem->setFont(font);
-        textItem->setPos(textPos);
+        textItem_ = new QGraphicsSimpleTextItem("M", this);
     } else if (actorType_ == "shark"){
-        this->setBrush(brush_);
-        QGraphicsSimpleTextItem *textItem = new QGraphicsSimpleTextItem("S", this);
-        textItem->setBrush(textColor);
-        textItem->setFont(font);
-        textItem->setPos(textPos);
+        textItem_ = new QGraphicsSimpleTextItem("M", this);
     }
 
+    this->setBrush(brush_);
+    textItem_->setBrush(textColor);
+    textItem_->setFont(font);
+    textItem_->setPos(textPos);
 }
 
 void BoardActor::mousePressEvent(QGraphicsSceneMouseEvent *event)
