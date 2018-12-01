@@ -49,11 +49,13 @@ public:
     void numberOfActionsLeft(int actionsleft);
     void updatePointsList();
     void setGameMessage(std::string);
+    void spinWheelMovie();
 
 public slots:
     void numberOfPlayers(int count);
     void nextGamephase();
     void spinWheel();
+    void stopWheelMovie();
 
 private:
     Ui::MainWindow *ui;
@@ -67,6 +69,7 @@ private:
     void initScene();
     int playerCount_;
     std::shared_ptr<Student::GameState> state_;
+    QMovie *movie_;
 
 };
 }

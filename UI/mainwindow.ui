@@ -200,7 +200,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>270</y>
+      <y>300</y>
       <width>161</width>
       <height>141</height>
      </rect>
@@ -239,22 +239,19 @@
      <string>Game message:</string>
     </property>
    </widget>
-  </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>800</width>
-     <height>22</height>
-    </rect>
-   </property>
-   <widget class="QMenu" name="menuIslandGame">
-    <property name="title">
-     <string>IslandGame</string>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>240</y>
+      <width>131</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Stop wheel</string>
     </property>
    </widget>
-   <addaction name="menuIslandGame"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>

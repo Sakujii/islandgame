@@ -75,3 +75,8 @@ POST_TARGETDEPS += copyfiles
 FORMS += \
     mainwindow.ui \
     dialog.ui
+
+DISTFILES +=
+
+RESOURCES += \
+    images.qrc

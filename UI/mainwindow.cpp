@@ -277,6 +277,7 @@ void MainWindow::spinWheel()
     std::string amount = wheelresult.second;
     ui->labelWhatMovesId->setText(QString::fromStdString(animal));
     ui->labelMoveAmountNumber->setText(QString::fromStdString(amount));
+    spinWheelMovie();
 }
 
 void MainWindow::updatePointsList()
@@ -291,6 +292,28 @@ void MainWindow::setGameMessage(std::string msg)
 {
     QString message = QString::fromStdString(msg);
     ui->labelGameMessageText->setText(message);
+}
+
+void MainWindow::stopWheelMovie()
+{
+    movie_->stop();
+    //movie_->jumpToFrame("animal-amount combo");
+}
+
+void MainWindow::spinWheelMovie()
+{
+    movie_ = new QMovie(":/c.gif");
+    if (!movie_->isValid())
+        {
+         qDebug() << "njet";
+        }
+
+    QLabel *label = new QLabel(this);
+    label->setGeometry(20, 450, 250, 250);
+    label->setScaledContents(true);
+    label->setMovie(movie_);
+    movie_->start();
+    label->show();
 }
 
 }
