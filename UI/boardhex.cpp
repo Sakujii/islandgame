@@ -16,8 +16,6 @@
 #include <qmath.h>
 #include <iostream>
 #include <string>
-#include <stdlib.h>
-
 
 
 namespace Ui{
@@ -106,21 +104,21 @@ void BoardHex::actorAction(std::shared_ptr<Common::Actor> actor)
         actor->doAction();
 
         pawnsAfter = hexPtr_->getPawns();
+        transportsAfter = hexPtr_->getTransports();
         for(auto x : neighbours){
             std::vector<std::shared_ptr<Common::Pawn>> pawns = boardPtr_->getHex(x)->getPawns();
-            for (auto y : pawns){
-                pawnsAfter.push_back(y);
-            }
-        }
-        transportsAfter = hexPtr_->getTransports();
-        for (auto x : neighbours){
             std::vector<std::shared_ptr<Common::Transport>> transports = boardPtr_->getHex(x)->getTransports();
             for (auto y : transports){
-                transportsBefore.push_back(y);
+                transportsAfter.push_back(y);
+            }
+            for (auto z : pawns){
+                pawnsAfter.push_back(z);
             }
         }
+
         // Remove also vortex itself
         win->removeBoardActor(actor->getId());
+        win->setGameMessage("Vortex destroyed everything around it!");
     }
 
     else{
@@ -205,8 +203,6 @@ void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
     QStringList data = event->mimeData()->text().split(";");
     int id = data[1].toInt();
     QString type = data[0];
-    QString parentType = "hex";
-    qDebug() << "Got a drop to" << hexCoord_.x << hexCoord_.z << "from" << type << "id" << id;
 
     Student::MainWindow *win = Student::MainWindow::getInstance();
     std::unordered_map<int, std::shared_ptr<Common::Pawn>> pawnMap = boardPtr_->getPawnMap();
@@ -235,30 +231,25 @@ void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
                 // This is unneccessary when upper row is executed
                 boardPtr_->movePawn(id, hexCoord_);
 
-                auto iter = boardPawnMap.find(id);
-                if (iter != boardPawnMap.end()){
-                    iter->second->setParentItem(this);
-                    iter->second->setInTransport(false);
-                    iter->second->setPosition(hexPtr_->getPawnAmount());
+                auto boardPawnIt = boardPawnMap.find(id);
+                BoardPawn* boardPawn;
+                if (boardPawnIt != boardPawnMap.end()){
+                    boardPawn = boardPawnIt->second;
+                    boardPawn->setParentItem(this);
                 }
 
                 auto hexIt = hexMap.find(origin);
                 if (hexIt != hexMap.end()){
-
                     // If pawn was in transport, remove it from there
                     std::vector<std::shared_ptr<Common::Transport>> transports =
                             hexIt->second->getTransports();
-                    if(transports.size() != 0){
-                        for(auto x : transports){
-                            std::vector<std::shared_ptr<Common::Pawn>> transportPawns =
-                                    x->getPawnsInTransport();
-                            for (auto y : transportPawns){
-                                if (y == pawnPtr){
-                                    x->removePawn(pawnPtr);
-                                }
-                            }
+                    if (boardPawn->getInTransport() == true){
+                        for (auto x : transports){
+                            x->removePawn(pawnPtr);
                         }
                     }
+                    boardPawn->setInTransport(false);
+                    reArrangePawns(hexPtr_);
                     reArrangePawns(hexIt->second);
                 }
             }

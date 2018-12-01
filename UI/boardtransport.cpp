@@ -85,8 +85,6 @@ void BoardTransport::dropEvent(QGraphicsSceneDragDropEvent *event)
     QStringList data = event->mimeData()->text().split(";");
     int id = data[1].toInt();
     QString type = data[0];
-    QString parentType ="transport";
-    qDebug() << "Got a drop to" << parentType << transportId_ << "from" << type << "id" << id;
 
     Student::MainWindow *win = Student::MainWindow::getInstance();
     std::unordered_map<int, std::shared_ptr<Common::Pawn>> pawnMap = boardPtr_->getPawnMap();
