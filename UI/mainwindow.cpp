@@ -46,7 +46,7 @@ MainWindow::MainWindow(QWidget *parent) :
     game_ = Common::Initialization::getGameRunner(boardPtr, statePtr, playerVector);
 
     initScene();
-    numberOfGamephase(statePtr->currentGamePhase());
+    numberOfGamephase();
     numberOfCurrentPlayer(statePtr->currentPlayer());
     numberOfActionsLeft(game_->getCurrentPlayer()->getActionsLeft());
     connect(ui->pushButtonGamephase, &QPushButton::clicked, this, &MainWindow::nextGamephase);
@@ -229,9 +229,9 @@ void MainWindow::removeBoardTransport(int id)
     }
 }
 
-void MainWindow::numberOfGamephase(int phaseid)
+void MainWindow::numberOfGamephase()
 {
-    ui->labelGamePhaseNumber->setText(QString::number(phaseid));
+     ui->labelGamePhaseNumber->setText(QString::fromStdString(state_->currentGamePhaseString()));
 }
 
 void MainWindow::numberOfCurrentPlayer(int playerid)
@@ -266,9 +266,8 @@ void MainWindow::nextGamephase()
         numberOfCurrentPlayer(state_->currentPlayer());
     }
 
-    ui->labelGamePhaseNumber->setText(QString::number(state_->currentGamePhase()));
+    ui->labelGamePhaseNumber->setText(QString::fromStdString(state_->currentGamePhaseString()));
     mainInstance->updatePointsList();
-    state_->addPointsToPlayer(1,2);
 }
 
 void MainWindow::spinWheel()

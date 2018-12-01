@@ -44,7 +44,7 @@ public:
     void removeBoardPawn(int);
     void removeBoardActor(int);
     void removeBoardTransport(int);
-    void numberOfGamephase(int phaseid);
+    void numberOfGamephase();
     void numberOfCurrentPlayer(int playerid);
     void numberOfActionsLeft(int actionsleft);
     void updatePointsList();

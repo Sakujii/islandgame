@@ -178,11 +178,15 @@ void BoardHex::mousePressEvent(QGraphicsSceneMouseEvent*)
     std::shared_ptr<Common::IGameRunner> game = win->getGame();
 
     try {
-        game->flipTile(hexCoord_);
-        colorHex();
+        if(gamePtr_->currentGamePhase() == Common::GamePhase::SINKING)
+        {
+            game->flipTile(hexCoord_);
+            colorHex();
 
-        win->addBoardActor(hexPtr_, this);
-        win->addBoardTransport(hexPtr_, this, boardPtr_);
+            win->addBoardActor(hexPtr_, this);
+            win->addBoardTransport(hexPtr_, this, boardPtr_);
+            win->nextGamephase();
+        }
     }
     catch (Common::GameException& e) {
         std::cout<< e.msg() <<std::endl;
@@ -213,7 +217,7 @@ void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
     std::unordered_map<int, Ui::BoardActor*> boardActorMap = win->getBoardActorMap();
 
         try {
-            if (type == "pawn" and gamePtr_->currentGamePhase()==Common::GamePhase::MOVEMENT){
+            if (type == "pawn" && gamePtr_->currentGamePhase()==Common::GamePhase::MOVEMENT){
                 // Get pawn origin coordinates from pawn map
                 Common::CubeCoordinate origin;
                 std::shared_ptr<Common::Pawn> pawnPtr;

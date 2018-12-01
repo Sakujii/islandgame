@@ -61,6 +61,7 @@ public:
     int playerPawnsLeft(int playerid);
     void initPoints(int playercount);
     std::vector<std::string> getPointsVectorForPlot();
+    std::string currentGamePhaseString();
 
 
 private:

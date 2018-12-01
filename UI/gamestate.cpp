@@ -68,6 +68,24 @@ std::vector<std::string> GameState::getPointsVectorForPlot()
     return plotvector;
 }
 
+std::string GameState::currentGamePhaseString()
+{
+    std::string string;
+    if(_gamePhaseId==Common::GamePhase::MOVEMENT)
+    {
+        string = "Movement";
+    }
+    else if(_gamePhaseId==Common::GamePhase::SINKING)
+    {
+        string = "Sinking";
+    }
+    else
+    {
+        string = "Spinning";
+    }
+    return string;
+}
+
 
 
 
