@@ -104,6 +104,30 @@ std::string GameState::getSpinAnimal()
     return _spinAnimal;
 }
 
+std::string GameState::getWinner()
+{
+    std::string winnerId = "";
+    int maxpoints = 0;
+    std::string winmessage = "";
+    for(auto s : _playerPointVector)
+    {
+        if(s.second > maxpoints)
+        {
+            winnerId = std::to_string(winnerId);
+            maxpoints = s.second;
+        }
+    }
+    if(winnerId == "")
+    {
+        winmessage = "Game ended in a tie";
+    }
+    else
+    {
+        winmessage = "Player " + winnerId + " wins!";
+    }
+    return winmessage;
+}
+
 
 
 }

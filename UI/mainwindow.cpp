@@ -292,6 +292,11 @@ void MainWindow::updatePointsList()
     std::vector<std::string> pointslist = state_->getPointsVectorForPlot();
     for(auto s : pointslist)
         ui->listWidgetPoints->addItem(QString::fromStdString(s));
+
+    if(boardPawnMap_.size()==0)
+    {
+        setGameMessage(state_->getWinner());
+    }
 }
 
 void MainWindow::setGameMessage(std::string msg)

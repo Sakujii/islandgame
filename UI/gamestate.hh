@@ -65,6 +65,7 @@ public:
     void setSpinResult(std::pair<std::string, std::string> spinresult);
     std::string getSpinMovecount();
     std::string getSpinAnimal();
+    std::string getWinner();
 
 
 private:
