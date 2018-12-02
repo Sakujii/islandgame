@@ -30,7 +30,7 @@ BoardHex::BoardHex(QGraphicsItem * parent,
     boardPtr_ = boardPtr;
     hexCoord_ = hexPtr->getCoordinates();
     gamePtr_ = gamePtr;
-    size_ = 25;
+    size_ = 35;
 
     QPolygonF polygon;
     double dx = qSqrt(3)/2 * size_;

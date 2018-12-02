@@ -38,14 +38,14 @@ BoardTransport::BoardTransport(QGraphicsItem *parent,
 
 QRectF BoardTransport::boundingRect() const
 {
-    int ysize = 10;
-    int xsize = 35;
+    int ysize = 15;
+    int xsize = 50;
     return QRectF(0, 0, xsize, ysize);
 }
 
 void BoardTransport::drawTransport()
 {
-    this->setPos(-18, 3);
+    this->setPos(-25, 3);
     this->setRect(boundingRect());
     this->setBrush(brush_);
 }

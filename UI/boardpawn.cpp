@@ -40,13 +40,13 @@ void BoardPawn::drawPawn()
 
 void BoardPawn::setPosition(int pawnAmount)
 {
-    QPoint hex1 = QPoint(-7, -22);
-    QPoint hex2 = QPoint(-20, -14);
-    QPoint hex3 = QPoint(7, -14);
+    QPoint hex1 = QPoint(-7, -25);
+    QPoint hex2 = QPoint(-22, -14);
+    QPoint hex3 = QPoint(9, -14);
 
     QPoint transport1 = QPoint(0, -7);
-    QPoint transport2 = QPoint(10, -7);
-    QPoint transport3 = QPoint(20, -7);
+    QPoint transport2 = QPoint(17, -7);
+    QPoint transport3 = QPoint(34, -7);
 
 
     if (inTransport_ == false){
@@ -113,7 +113,7 @@ bool BoardPawn::getInTransport()
 
 QRectF BoardPawn::boundingRect() const
 {
-    int size = 14;
+    int size = 16;
     return QRectF(0, 0, size, size);
 }
 
