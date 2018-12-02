@@ -253,6 +253,14 @@ void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
                     boardPawn = boardPawnIt->second;
                     boardPawn->setParentItem(this);
                 }
+                if(hexPtr_->getPieceType() == "Coral")
+                {
+                    state->addPointsToPlayer(state->currentPlayer(), 10);
+                    hexPtr_->clearPawnsFromTerrain();
+                    win->removeBoardPawn(id);
+                    win->updatePointsList();
+                    win->setGameMessage("Pawn rescued! Points added");
+                }
 
                 auto hexIt = hexMap.find(origin);
                 if (hexIt != hexMap.end()){
