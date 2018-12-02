@@ -49,6 +49,7 @@ void GameState::addPointsToPlayer(int playerid, int points)
 
 void GameState::initPoints(int playercount)
 {
+    _playerPointVector.clear();
     for(int playerid=1; playerid<playercount+1; playerid++)
         _playerPointVector.push_back(std::make_pair(playerid,0));
 }
@@ -130,6 +131,13 @@ int GameState::getSpinsLeft()
 void GameState::setSpinsLeft(int spincount)
 {
     _spinsLeft = spincount;
+}
+
+int GameState::getPlayerPoints(int playerid)
+{
+    std::pair<int,int> pointpair = _playerPointVector.at(playerid-1);
+    int points = pointpair.second;
+    return points;
 }
 
 

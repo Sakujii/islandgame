@@ -65,6 +65,7 @@ public:
     std::string getWinner();
     int getSpinsLeft();
     void setSpinsLeft(int spincount);
+    int getPlayerPoints(int playerid);
 
 
 private:
