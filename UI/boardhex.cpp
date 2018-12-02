@@ -269,7 +269,7 @@ void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
                     reArrangePawns(hexIt->second);
                 }
             }
-            else if (type == "boat" || type == "dolphin"){
+            else if ((type == "boat" || type == "dolphin")){
                 if(hexPtr_->getTransports().size() > 0){
                     throw Common::IllegalMoveException
                             ("There is already a transport in the hex!");
@@ -282,15 +282,27 @@ void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
                 }
 
                 // This needs Gamestates to be implemented
-                gamePtr_->moveTransport(origin, hexCoord_, id);
+                if(gamePtr_->currentGamePhase()==Common::GamePhase::MOVEMENT)
+                {
+                    gamePtr_->moveTransport(origin, hexCoord_, id);
+                    auto iter = boardTransportMap.find(id);
+                    if (iter != boardTransportMap.end()){
+                        iter->second->setParentItem(this);
+                    }
+                }
+                else if(gamePtr_->currentGamePhase()==Common::GamePhase::SPINNING && type == "dolphin")
+                {
+                    gamePtr_->moveTransportWithSpinner(origin, hexCoord_, id, state->getSpinMovecount());
+                    auto iter = boardTransportMap.find(id);
+                    if (iter != boardTransportMap.end()){
+                        iter->second->setParentItem(this);
+                    }
+                }
+
 
                 // This is unneccessary when upper row is executed
                 //boardPtr_->moveTransport(id, hexCoord_);
 
-                auto iter = boardTransportMap.find(id);
-                if (iter != boardTransportMap.end()){
-                    iter->second->setParentItem(this);
-                }
 
             }
             else if(actortype == state->getSpinAnimal()){
