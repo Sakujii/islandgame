@@ -51,6 +51,7 @@ MainWindow::MainWindow(QWidget *parent) :
     numberOfActionsLeft(game_->getCurrentPlayer()->getActionsLeft());
     connect(ui->pushButtonGamephase, &QPushButton::clicked, this, &MainWindow::nextGamephase);
     connect(ui->pushButtonSpinWheel, &QPushButton::clicked, this, &MainWindow::spinWheel);
+    connect(ui->pushButtonStopWheel, &QPushButton::clicked, this, &MainWindow::stopWheelMovie);
 
     state_->initPoints(playerCount_);
 
@@ -288,7 +289,7 @@ void MainWindow::spinWheel()
         std::string amount = wheelresult.second;
         ui->labelWhatMovesId->setText(QString::fromStdString(animal));
         ui->labelMoveAmountNumber->setText(QString::fromStdString(amount));
-        //spinWheelMovie();
+        spinWheelMovie();
     }
     else
     {
@@ -326,15 +327,14 @@ void MainWindow::spinWheelMovie()
     movie_ = new QMovie(":/c.gif");
     if (!movie_->isValid())
         {
-         qDebug() << "njet";
+         qDebug() << "Not valid";
         }
 
-    QLabel *label = new QLabel(this);
-    label->setGeometry(20, 450, 250, 250);
-    label->setScaledContents(true);
-    label->setMovie(movie_);
+    wheelLabel_ = new QLabel(this);
+    wheelLabel_->setGeometry(20, 450, 250, 250);
+    wheelLabel_->setScaledContents(true);
+    wheelLabel_->setMovie(movie_);
     movie_->start();
-    label->show();
 }
 
 }

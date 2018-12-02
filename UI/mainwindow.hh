@@ -71,6 +71,7 @@ private:
     int playerCount_;
     std::shared_ptr<Student::GameState> state_;
     QMovie *movie_;
+    QLabel *wheelLabel_;
 
 };
 }

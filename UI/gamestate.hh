@@ -3,6 +3,7 @@
 
 #include "igamestate.hh"
 #include <vector>
+#include <iostream>
 
 namespace Student{
 
