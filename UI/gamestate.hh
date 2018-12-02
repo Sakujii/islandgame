@@ -56,10 +56,6 @@ public:
      * @post Points are added to player. Exception quarantee: basic
      */
     void addPointsToPlayer(int playerid, int points);
-
-    int getPawnPerPlayer();
-    void deletePawn(int pawn);
-    int playerPawnsLeft(int playerid);
     void initPoints(int playercount);
     std::vector<std::string> getPointsVectorForPlot();
     std::string currentGamePhaseString();
@@ -74,9 +70,7 @@ public:
 private:
     Common::GamePhase _gamePhaseId;
     int _playerInTurn;
-    int _pawnPerPlayer;
     std::vector<std::pair<int,int>> _playerPointVector;
-    std::vector<std::pair<int,int>> _playerPawnVector;
     std::string _spinAnimal;
     std::string _spinMoveCount;
     int _spinsLeft;
