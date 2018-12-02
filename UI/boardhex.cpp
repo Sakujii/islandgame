@@ -327,12 +327,8 @@ void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
                     origin = actorIt->second->getHex()->getCoordinates();
                 }
 
-//************* This needs spinner "moves" as parameter
                 gamePtr_->moveActor(origin, hexCoord_, id, state->getSpinMovecount());
                 win->nextGamephase();
-
-                // This is unneccessary when upper row is executed
-                //boardPtr_->moveActor(id, hexCoord_);
 
                 auto iter = boardActorMap.find(id);
                 if (iter != boardActorMap.end()){

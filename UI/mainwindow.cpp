@@ -121,7 +121,7 @@ void MainWindow::addBoardTransport(std::shared_ptr<Common::Hex> hexPtr,
 
     for (auto x : transports){
         Ui::BoardTransport *boardTransport =
-                new Ui::BoardTransport(boardHex, x->getId(), x->getTransportType(), boardPtr);
+                new Ui::BoardTransport(boardHex, x->getId(), x->getTransportType(), boardPtr, game_);
         if (boardTransportMap_.find(x->getId()) == boardTransportMap_.end()){
             boardTransportMap_.insert(std::make_pair(x->getId(), boardTransport));
         }
@@ -335,6 +335,7 @@ void MainWindow::spinWheelMovie()
     wheelLabel_->setScaledContents(true);
     wheelLabel_->setMovie(movie_);
     movie_->start();
+    wheelLabel_->show();
 }
 
 }

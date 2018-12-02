@@ -15,9 +15,11 @@ namespace Ui {
 BoardTransport::BoardTransport(QGraphicsItem *parent,
                                int id,
                                std::string transportType,
-                               std::shared_ptr<Student::GameBoard> boardPtr): QGraphicsRectItem(parent)
+                               std::shared_ptr<Student::GameBoard> boardPtr,
+                               std::shared_ptr<Common::IGameRunner> gamePtr): QGraphicsRectItem(parent)
 {
     boardPtr_ = boardPtr;
+    gamePtr_ = gamePtr;
     transportId_ = id;
     transportType_ = transportType;
     if (transportType_ == "boat"){
@@ -124,11 +126,7 @@ void BoardTransport::dropEvent(QGraphicsSceneDragDropEvent *event)
                     }
                 }
 
-                // This needs Gamestates to be implemented
-                // gamePtr_->movePawn(origin, hexCoord_, pawnId);
-
-                // This is unneccessary when upper row is executed
-                boardPtr_->movePawn(id, coord);
+                gamePtr_->movePawn(origin, coord, pawn->getId());
 
                 transportIt->second->addPawn(pawnIt->second);
 
