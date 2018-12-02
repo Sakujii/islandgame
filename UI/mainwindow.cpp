@@ -51,7 +51,6 @@ MainWindow::MainWindow(QWidget *parent) :
     numberOfActionsLeft(game_->getCurrentPlayer()->getActionsLeft());
     connect(ui->pushButtonGamephase, &QPushButton::clicked, this, &MainWindow::nextGamephase);
     connect(ui->pushButtonSpinWheel, &QPushButton::clicked, this, &MainWindow::spinWheel);
-    connect(ui->pushButtonStopWheel, &QPushButton::clicked, this, &MainWindow::stopWheelMovie);
 
     state_->initPoints(playerCount_);
 
@@ -156,11 +155,11 @@ void MainWindow::initScene()
     sceneWidget->show();
     int mainWidth = 1300;
     int mainHeight = 900;
-    int xborder = 300;
+    int xborder = 400;
     int yborder= 50;
     int sceneWidth = 1500;
     int sceneHeight = 1200;
-    sceneWidget->setGeometry(xborder, yborder, mainWidth-1.5*xborder, mainHeight- 4*yborder);
+    sceneWidget->setGeometry(xborder, yborder, mainWidth-1.5*xborder, mainHeight- 5*yborder);
     this->resize(mainWidth, mainHeight);
 
     QGraphicsView * view = new QGraphicsView(sceneWidget);
@@ -280,21 +279,73 @@ void MainWindow::nextGamephase()
 
 void MainWindow::spinWheel()
 {
-    if(state_->getSpinsLeft()>0)
-    {
+    if(state_->getSpinsLeft()>0){
+        spinWheelMovie();
+
+        std::string animal;
+        std::string amount;
+
         std::pair<std::string,std::string> wheelresult = game_->spinWheel();
         state_->setSpinResult(wheelresult);
         state_->setSpinsLeft(0);
-        std::string animal = wheelresult.first;
-        std::string amount = wheelresult.second;
+        animal = wheelresult.first;
+        amount = wheelresult.second;
         ui->labelWhatMovesId->setText(QString::fromStdString(animal));
         ui->labelMoveAmountNumber->setText(QString::fromStdString(amount));
-        spinWheelMovie();
+
+        int endFrame = 0;
+        if (amount == "dive"){
+            if (animal == "kraken"){
+                endFrame = 0;
+            } else if (animal == "shark") {
+                endFrame = 1;
+            } else if (animal == "seamunster"){
+                endFrame = 2;
+            } else if (animal == "dolphin"){
+                endFrame = 3;
+            } else {}
+        } else if (amount == "3"){
+            if (animal == "kraken"){
+                endFrame = 4;
+            } else if (animal == "shark") {
+                endFrame = 5;
+            } else if (animal == "seamunster"){
+                endFrame = 6;
+            } else if (animal == "dolphin"){
+                endFrame = 7;
+            } else {}
+        } else if (amount == "2"){
+            if (animal == "kraken"){
+                endFrame = 8;
+            } else if (animal == "shark") {
+                endFrame = 9;
+            } else if (animal == "seamunster"){
+                endFrame = 10;
+            } else if (animal == "dolphin"){
+                endFrame = 11;
+            } else {}
+        } else if  (amount == "1"){
+            if (animal == "kraken"){
+                endFrame = 12;
+            } else if (animal == "shark") {
+                endFrame = 13;
+            } else if (animal == "seamunster"){
+                endFrame = 14;
+            } else if (animal == "dolphin"){
+                endFrame = 15;
+            } else {}
+        }
+        connect(movie_, &QMovie::frameChanged, [=](int frameNumber){
+            if(frameNumber == endFrame){
+                movie_->stop();
+            }
+        });
+
+    } else {
+        setGameMessage("You are not allowed to spin!");
     }
-    else
-    {
-        setGameMessage("Only one spin allowed");
-    }
+
+
 }
 
 void MainWindow::updatePointsList()
@@ -316,23 +367,16 @@ void MainWindow::setGameMessage(std::string msg)
     ui->labelGameMessageText->setText(message);
 }
 
-void MainWindow::stopWheelMovie()
-{
-    movie_->stop();
-    //movie_->jumpToFrame("animal-amount combo");
-}
-
 void MainWindow::spinWheelMovie()
 {
-    movie_ = new QMovie(":/c.gif");
+    movie_ = new QMovie(":/wheel.gif");
     if (!movie_->isValid())
         {
          qDebug() << "Not valid";
         }
 
     wheelLabel_ = new QLabel(this);
-    wheelLabel_->setGeometry(20, 450, 250, 250);
-    wheelLabel_->setScaledContents(true);
+    wheelLabel_->setGeometry(40, 370, 320, 350);
     wheelLabel_->setMovie(movie_);
     movie_->start();
     wheelLabel_->show();

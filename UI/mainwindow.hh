@@ -56,7 +56,6 @@ public slots:
     void numberOfPlayers(int count);
     void nextGamephase();
     void spinWheel();
-    void stopWheelMovie();
 
 private:
     Ui::MainWindow *ui;

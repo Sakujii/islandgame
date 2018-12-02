@@ -10,6 +10,11 @@
     <height>600</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <pointsize>14</pointsize>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
@@ -202,7 +207,7 @@
       <x>10</x>
       <y>300</y>
       <width>161</width>
-      <height>141</height>
+      <height>81</height>
      </rect>
     </property>
    </widget>
@@ -211,13 +216,13 @@
      <rect>
       <x>470</x>
       <y>10</y>
-      <width>321</width>
+      <width>331</width>
       <height>20</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>16</pointsize>
+      <pointsize>14</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>

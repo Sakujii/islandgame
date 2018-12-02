@@ -1,5 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>c.gif</file>
+        <file>wheel.gif</file>
     </qresource>
 </RCC>
