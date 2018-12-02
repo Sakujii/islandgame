@@ -301,6 +301,7 @@ void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
                 else if(gamePtr_->currentGamePhase()==Common::GamePhase::SPINNING && type == "dolphin")
                 {
                     gamePtr_->moveTransportWithSpinner(origin, hexCoord_, id, state->getSpinMovecount());
+                    win->nextGamephase();
                     auto iter = boardTransportMap.find(id);
                     if (iter != boardTransportMap.end()){
                         iter->second->setParentItem(this);
@@ -328,6 +329,7 @@ void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
 
 //************* This needs spinner "moves" as parameter
                 gamePtr_->moveActor(origin, hexCoord_, id, state->getSpinMovecount());
+                win->nextGamephase();
 
                 // This is unneccessary when upper row is executed
                 //boardPtr_->moveActor(id, hexCoord_);

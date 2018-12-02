@@ -113,7 +113,7 @@ std::string GameState::getWinner()
     {
         if(s.second > maxpoints)
         {
-            winnerId = std::to_string(winnerId);
+            winnerId = std::to_string(s.first);
             maxpoints = s.second;
         }
     }
