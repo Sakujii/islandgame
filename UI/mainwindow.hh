@@ -50,6 +50,7 @@ public:
     void updatePointsList();
     void setGameMessage(std::string);
     void spinWheelMovie();
+    std::shared_ptr<Student::GameState> getState();
 
 public slots:
     void numberOfPlayers(int count);

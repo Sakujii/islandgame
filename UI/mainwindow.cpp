@@ -87,6 +87,11 @@ std::shared_ptr<Common::IGameRunner> MainWindow::getGame()
     return game_;
 }
 
+std::shared_ptr<Student::GameState> MainWindow::getState()
+{
+    return state_;
+}
+
 std::map<Common::CubeCoordinate, Ui::BoardHex *> MainWindow::getBoardHexMap()
 {
     return boardHexMap_;
@@ -273,11 +278,12 @@ void MainWindow::nextGamephase()
 void MainWindow::spinWheel()
 {
     std::pair<std::string,std::string> wheelresult = game_->spinWheel();
+    state_->setSpinResult(wheelresult);
     std::string animal = wheelresult.first;
     std::string amount = wheelresult.second;
     ui->labelWhatMovesId->setText(QString::fromStdString(animal));
     ui->labelMoveAmountNumber->setText(QString::fromStdString(amount));
-    spinWheelMovie();
+    //spinWheelMovie();
 }
 
 void MainWindow::updatePointsList()

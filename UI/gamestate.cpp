@@ -9,6 +9,8 @@ GameState::GameState ()
     _playerInTurn = 1;
     _pawnPerPlayer= 5;
     _gamePhaseId = Common::GamePhase::MOVEMENT;
+    _spinAnimal = "nada";
+    _spinMoveCount = "0";
 
 }
 
@@ -86,6 +88,21 @@ std::string GameState::currentGamePhaseString()
     return string;
 }
 
+void GameState::setSpinResult(std::pair<std::string, std::string> spinresult)
+{
+    _spinAnimal = spinresult.first;
+    _spinMoveCount = spinresult.second;
+}
+
+std::string GameState::getSpinMovecount()
+{
+    return _spinMoveCount;
+}
+
+std::string GameState::getSpinAnimal()
+{
+    return _spinAnimal;
+}
 
 
 

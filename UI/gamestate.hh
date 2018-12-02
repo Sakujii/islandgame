@@ -62,6 +62,9 @@ public:
     void initPoints(int playercount);
     std::vector<std::string> getPointsVectorForPlot();
     std::string currentGamePhaseString();
+    void setSpinResult(std::pair<std::string, std::string> spinresult);
+    std::string getSpinMovecount();
+    std::string getSpinAnimal();
 
 
 private:
@@ -70,6 +73,8 @@ private:
     int _pawnPerPlayer;
     std::vector<std::pair<int,int>> _playerPointVector;
     std::vector<std::pair<int,int>> _playerPawnVector;
+    std::string _spinAnimal;
+    std::string _spinMoveCount;
 
 };
 }

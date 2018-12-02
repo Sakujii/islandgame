@@ -1,4 +1,4 @@
-#include "boardhex.hh"
+﻿#include "boardhex.hh"
 #include "coordinateconvert.hh"
 #include "mainwindow.hh"
 #include "gameexception.hh"
@@ -215,6 +215,18 @@ void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
     std::unordered_map<int, Ui::BoardPawn*> boardPawnMap =  win->getBoardPawnMap();
     std::unordered_map<int, Ui::BoardTransport*> boardTransportMap = win->getBoardTransportMap();
     std::unordered_map<int, Ui::BoardActor*> boardActorMap = win->getBoardActorMap();
+    std::shared_ptr<Student::GameState> state = win->getState();
+    std::string actortype = "0";
+    auto actor = actorMap.find(id);
+    if(actor != actorMap.end())
+    {
+        std::shared_ptr<Common::Actor> actor = actorMap.at(id);
+        actortype = actor->getActorType();
+    }
+
+
+
+
 
         try {
             if (type == "pawn" && gamePtr_->currentGamePhase()==Common::GamePhase::MOVEMENT){
@@ -281,7 +293,7 @@ void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
                 }
 
             }
-            else{
+            else if(actortype == state->getSpinAnimal()){
                 if(hexPtr_->getActors().size() > 0){
                     throw Common::IllegalMoveException
                             ("There is already an actor in the hex!");
@@ -295,10 +307,10 @@ void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
                 }
 
 //************* This needs spinner "moves" as parameter
-                // gamePtr_->moveActor(origin, hexCoord_, id, "3");
+                gamePtr_->moveActor(origin, hexCoord_, id, state->getSpinMovecount());
 
                 // This is unneccessary when upper row is executed
-                boardPtr_->moveActor(id, hexCoord_);
+                //boardPtr_->moveActor(id, hexCoord_);
 
                 auto iter = boardActorMap.find(id);
                 if (iter != boardActorMap.end()){
