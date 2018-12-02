@@ -66,6 +66,8 @@ public:
     std::string getSpinMovecount();
     std::string getSpinAnimal();
     std::string getWinner();
+    int getSpinsLeft();
+    void setSpinsLeft(int spincount);
 
 
 private:
@@ -76,6 +78,7 @@ private:
     std::vector<std::pair<int,int>> _playerPawnVector;
     std::string _spinAnimal;
     std::string _spinMoveCount;
+    int _spinsLeft;
 
 };
 }

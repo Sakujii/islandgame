@@ -128,6 +128,16 @@ std::string GameState::getWinner()
     return winmessage;
 }
 
+int GameState::getSpinsLeft()
+{
+    return _spinsLeft;
+}
+
+void GameState::setSpinsLeft(int spincount)
+{
+    _spinsLeft = spincount;
+}
+
 
 
 }

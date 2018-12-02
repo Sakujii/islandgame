@@ -273,17 +273,27 @@ void MainWindow::nextGamephase()
 
     ui->labelGamePhaseNumber->setText(QString::fromStdString(state_->currentGamePhaseString()));
     mainInstance->updatePointsList();
+    state_->setSpinResult(std::make_pair("nada", "0"));
+    state_->setSpinsLeft(1);
 }
 
 void MainWindow::spinWheel()
 {
-    std::pair<std::string,std::string> wheelresult = game_->spinWheel();
-    state_->setSpinResult(wheelresult);
-    std::string animal = wheelresult.first;
-    std::string amount = wheelresult.second;
-    ui->labelWhatMovesId->setText(QString::fromStdString(animal));
-    ui->labelMoveAmountNumber->setText(QString::fromStdString(amount));
-    //spinWheelMovie();
+    if(state_->getSpinsLeft()>0)
+    {
+        std::pair<std::string,std::string> wheelresult = game_->spinWheel();
+        state_->setSpinResult(wheelresult);
+        state_->setSpinsLeft(0);
+        std::string animal = wheelresult.first;
+        std::string amount = wheelresult.second;
+        ui->labelWhatMovesId->setText(QString::fromStdString(animal));
+        ui->labelMoveAmountNumber->setText(QString::fromStdString(amount));
+        //spinWheelMovie();
+    }
+    else
+    {
+        setGameMessage("Only one spin allowed");
+    }
 }
 
 void MainWindow::updatePointsList()
