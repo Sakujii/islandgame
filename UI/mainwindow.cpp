@@ -7,12 +7,10 @@
 #include "player.hh"
 #include "igamerunner.hh"
 #include "initialize.hh"
+#include "ioexception.hh"
 
 #include <QGraphicsView>
 #include <QHBoxLayout>
-#include <QGraphicsPolygonItem>
-#include <QPolygonF>
-#include <QDesktopWidget>
 #include <qmath.h>
 #include <iostream>
 #include <memory>
@@ -34,28 +32,30 @@ MainWindow::MainWindow(QWidget *parent) :
     dialog.setModal(true);
     dialog.exec();
 
+    // Create shared pointers needed for the game
     std::shared_ptr<Student::GameBoard> boardPtr = std::make_shared <GameBoard>();
     std::shared_ptr<Student::GameState> statePtr = std::make_shared <GameState>();
-    state_=statePtr;
+    state_ = statePtr;
     std::vector<std::shared_ptr<Common::IPlayer>> playerVector;
     for (int i = 0; i < playerCount_; ++i){
         std::shared_ptr<Common::IPlayer> player = std::make_shared<Player>(i+1);
         playerVector.push_back(player);
     }
-
+    // Call gamerunner initialization
     game_ = Common::Initialization::getGameRunner(boardPtr, statePtr, playerVector);
 
+    // Connect ui buttons to slots
+    connect(ui->pushButtonGamephase, &QPushButton::clicked, this, &MainWindow::nextGamephase);
+    connect(ui->pushButtonSpinWheel, &QPushButton::clicked, this, &MainWindow::spinWheel);
+
+    // Initialize ui objects
     initScene();
     numberOfGamephase();
     numberOfCurrentPlayer(statePtr->currentPlayer());
     numberOfActionsLeft(game_->getCurrentPlayer()->getActionsLeft());
-    connect(ui->pushButtonGamephase, &QPushButton::clicked, this, &MainWindow::nextGamephase);
-    connect(ui->pushButtonSpinWheel, &QPushButton::clicked, this, &MainWindow::spinWheel);
-
     state_->initPoints(playerCount_);
 
     std::map<Common::CubeCoordinate, std::shared_ptr<Common::Hex>> hexMap = boardPtr->getHexMap();
-
     int pawnId = 0;
     for (auto x : hexMap){
         // Adding pawns to hex
@@ -65,9 +65,9 @@ MainWindow::MainWindow(QWidget *parent) :
                 ++pawnId;
             }
         }
+        // Adding hex graphics
         std::shared_ptr<Common::Hex> hex = x.second;
         drawHex(hex, boardPtr);
-
     }
 }
 
@@ -80,11 +80,6 @@ MainWindow::~MainWindow()
 MainWindow* MainWindow::getInstance()
 {
     return mainInstance;
-}
-
-std::shared_ptr<Common::IGameRunner> MainWindow::getGame()
-{
-    return game_;
 }
 
 std::shared_ptr<Student::GameState> MainWindow::getState()
@@ -175,8 +170,8 @@ void MainWindow::drawHex(std::shared_ptr<Common::Hex> hexPtr, std::shared_ptr<St
 {
     Common::CubeCoordinate hexCoord = hexPtr->getCoordinates();
 
+    // Create new graphical hex and insert it to it's map
     Ui::BoardHex *boardHex = new Ui::BoardHex(0, hexPtr, boardPtr, game_);
-
     if(boardHexMap_.find(hexCoord) == boardHexMap_.end()){
         boardHexMap_.insert(std::make_pair(hexCoord, boardHex));
     }
@@ -184,15 +179,15 @@ void MainWindow::drawHex(std::shared_ptr<Common::Hex> hexPtr, std::shared_ptr<St
     double halfWidth = (boardScene->width())/2;
     double halfHeight = (boardScene->height()/2);
 
+    // Convert hex coordinates to axial and draw move graphics to it's spot
     QPointF axial = Student::cubeToAxial(hexCoord, boardHex->getSize());
-
     boardScene->addItem(boardHex);
     boardHex->setPos(halfWidth + axial.x(), halfHeight + axial.y());
     boardHex->setToolTip(QString::number(hexCoord.x) + "," + QString::number(hexCoord.z));
     boardHex->colorHex();
 
+    // If there are pawns on the hex, add pawn graphics on top of the hex
     std::vector<std::shared_ptr<Common::Pawn>> pawns = hexPtr->getPawns();
-
     int i = 1;
     for (auto x : pawns){
         Ui::BoardPawn *boardPawn = new Ui::BoardPawn(boardHex, x->getId(), x->getPlayerId());
@@ -202,6 +197,7 @@ void MainWindow::drawHex(std::shared_ptr<Common::Hex> hexPtr, std::shared_ptr<St
             boardPawnMap_.insert(std::make_pair(x->getId(), boardPawn));
         }
     }
+    // If there is transport on the hex, add transport graphics
     addBoardTransport(hexPtr, boardHex, boardPtr);
 
 
@@ -261,8 +257,8 @@ void MainWindow::numberOfActionsLeft(int actionsleft)
 void MainWindow::nextGamephase()
 {
     Common::GamePhase phase = state_->currentGamePhase();
-    if(phase==Common::MOVEMENT){state_->changeGamePhase(Common::SINKING);}
-    else if(phase==Common::SINKING){state_->changeGamePhase(Common::SPINNING);}
+    if (phase==Common::MOVEMENT) {state_->changeGamePhase(Common::SINKING);}
+    else if (phase==Common::SINKING) {state_->changeGamePhase(Common::SPINNING);}
     else
     {
         state_->changeGamePhase(Common::MOVEMENT);
@@ -288,7 +284,7 @@ void MainWindow::nextGamephase()
 
 void MainWindow::spinWheel()
 {
-    if(state_->getSpinsLeft()>0){
+    if(state_->getSpinsLeft() > 0){
         spinWheelMovie();
 
         std::string animal;
@@ -302,6 +298,7 @@ void MainWindow::spinWheel()
         ui->labelWhatMovesId->setText(QString::fromStdString(animal));
         ui->labelMoveAmountNumber->setText(QString::fromStdString(amount));
 
+        // If conditions to stop the movie at the right frame
         int endFrame = 0;
         if (amount == "dive"){
             if (animal == "kraken"){
@@ -345,6 +342,7 @@ void MainWindow::spinWheel()
             } else {}
         } else {}
 
+        // Connect movie to stop when at the right frame
         connect(movie_, &QMovie::frameChanged, [=](int frameNumber){
             if(frameNumber == endFrame){
                 movie_->stop();
@@ -379,17 +377,23 @@ void MainWindow::setGameMessage(std::string msg)
 
 void MainWindow::spinWheelMovie()
 {
-    movie_ = new QMovie(":/wheel.gif");
-    if (!movie_->isValid())
-        {
-         qDebug() << "Movie file not valid";
+    try{
+        movie_ = new QMovie(":/wheel.gif");
+
+        if (!movie_->isValid()) {
+            throw Common::IoException
+                    ("There was a problem reading the movie file");
         }
 
-    wheelLabel_ = new QLabel(this);
-    wheelLabel_->setGeometry(40, 370, 320, 350);
-    wheelLabel_->setMovie(movie_);
-    movie_->start();
-    wheelLabel_->show();
+        wheelLabel_ = new QLabel(this);
+        wheelLabel_->setGeometry(40, 370, 320, 350);
+        wheelLabel_->setMovie(movie_);
+        movie_->start();
+        wheelLabel_->show();
+    }
+    catch (Common::IoException& e){
+        setGameMessage(e.msg());
+    }
 }
 
 }

@@ -24,7 +24,8 @@ namespace Ui{
 BoardHex::BoardHex(QGraphicsItem * parent,
                    std::shared_ptr<Common::Hex> hexPtr,
                    std::shared_ptr<Student::GameBoard> boardPtr,
-                   std::shared_ptr<Common::IGameRunner> gamePtr): QGraphicsPolygonItem(parent)
+                   std::shared_ptr<Common::IGameRunner> gamePtr):
+    QGraphicsPolygonItem(parent)
 {
     hexPtr_ = hexPtr;
     boardPtr_ = boardPtr;
@@ -175,12 +176,11 @@ void BoardHex::reArrangePawns(std::shared_ptr<Common::Hex> hex)
 void BoardHex::mousePressEvent(QGraphicsSceneMouseEvent*)
 {
     Student::MainWindow *win = Student::MainWindow::getInstance();
-    std::shared_ptr<Common::IGameRunner> game = win->getGame();
 
     try {
         if(gamePtr_->currentGamePhase() == Common::GamePhase::SINKING)
         {
-            game->flipTile(hexCoord_);
+            gamePtr_->flipTile(hexCoord_);
             colorHex();
 
             win->addBoardActor(hexPtr_, this);

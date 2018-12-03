@@ -39,7 +39,7 @@ public:
 public slots:
     /**
      * @brief Virtual slot for changing player amount
-     * @post ui of Dialog is deleted
+     * @post Value from spinbox is read and emitted
      */
     virtual void playersSignal();
 

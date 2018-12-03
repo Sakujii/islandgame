@@ -4,7 +4,7 @@
 #include "gameboard.hh"
 #include "igamerunner.hh"
 
-#include <QtWidgets/QGraphicsRectItem>
+#include <QGraphicsRectItem>
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsSceneDragDropEvent>
 #include <QGraphicsObject>
@@ -62,23 +62,6 @@ public:
      */
     void drawTransport();
 
-    /**
-     * @brief overrided QT mousePressEvent tracks clicking of transport graphics
-     * @param event QT scene mouse event
-     * @post Drag event sends valid mimedata to item transport was dropped to
-     * @post Exception quarantee: strong
-     */
-    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
-
-    /**
-     * @brief overrided QT dropEvent tracks drops to transport graphics
-     * @param QT scene mouse event
-     * @post State of an object dropped succesfully to transport is changed
-     * @throw Common::IllegalMoveException if illegal move was attempted
-     * @post Exception quarantee: basic
-     */
-    void dropEvent(QGraphicsSceneDragDropEvent *event) override;
-
 
 private:
     //! Transport identification number
@@ -95,6 +78,23 @@ private:
 
     //! Qt Brush to color the transport with
     QBrush brush_;
+
+    /**
+     * @brief overrided QT mousePressEvent tracks clicking of transport graphics
+     * @param event QT scene mouse event
+     * @post Drag event sends valid mimedata to item transport was dropped to
+     * @post Exception quarantee: strong
+     */
+    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+
+    /**
+     * @brief overrided QT dropEvent tracks drops to transport graphics
+     * @param QT scene mouse event
+     * @post State of an object dropped succesfully to transport is changed
+     * @throw Common::IllegalMoveException if illegal move was attempted
+     * @post Exception quarantee: basic
+     */
+    void dropEvent(QGraphicsSceneDragDropEvent *event) override;
 };
 
 }

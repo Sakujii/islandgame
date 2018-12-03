@@ -1,7 +1,7 @@
 #ifndef BOARDPAWN_HH
 #define BOARDPAWN_HH
 
-#include <QtWidgets/QGraphicsEllipseItem>
+#include <QGraphicsEllipseItem>
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsSceneDragDropEvent>
 #include <QGraphicsObject>
@@ -62,14 +62,6 @@ public:
     void setPosition(int);
 
     /**
-     * @brief overrided QT mousePressEvent tracks clicking of pawn graphics
-     * @param event QT scene mouse event
-     * @post Drag event sends valid mimedata to item pawn was dropped to
-     * @post Exception quarantee: strong
-     */
-    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
-
-    /**
      * @brief setInTransport sets private variable inTransport_
      * @param inTransport value as bool
      * @post inTransport_ is set to parameter value
@@ -97,6 +89,14 @@ private:
 
     //! Bool variable which tells if pawn is in transport
     bool inTransport_;
+
+    /**
+     * @brief overrided QT mousePressEvent tracks clicking of pawn graphics
+     * @param event QT scene mouse event
+     * @post Drag event sends valid mimedata to item pawn was dropped to
+     * @post Exception quarantee: strong
+     */
+    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 };
 
 }

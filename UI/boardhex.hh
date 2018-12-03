@@ -6,7 +6,7 @@
 #include <boardpawn.hh>
 #include <igamerunner.hh>
 
-#include <QtWidgets/QGraphicsPolygonItem>
+#include <QGraphicsPolygonItem>
 #include <memory>
 #include <map>
 #include <unordered_map>
@@ -73,6 +73,22 @@ public:
      */
     void reArrangePawns(std::shared_ptr<Common::Hex> hex);
 
+private:
+    //! Size of the hex graphics
+    int size_;
+
+    //! Coordinates of the hex
+    Common::CubeCoordinate hexCoord_;
+
+    //! Shared pointer to common hex object
+    std::shared_ptr<Common::Hex> hexPtr_;
+
+    //! Shared pointer to gameboard object
+    std::shared_ptr<Student::GameBoard> boardPtr_;
+
+    //! Shared pointer to game object
+    std::shared_ptr<Common::IGameRunner> gamePtr_;
+
     /**
      * @brief overrided QT mousepressevent tracks clicking of hex graphics
      * @param event QT scene mouse event
@@ -91,22 +107,6 @@ public:
      * @post Exception quarantee: basic
      */
     void dropEvent(QGraphicsSceneDragDropEvent *event) override;
-
-private:
-    //! Size of the hex graphics
-    int size_;
-
-    //! Coordinates of the hex
-    Common::CubeCoordinate hexCoord_;
-
-    //! Shared pointer to common hex object
-    std::shared_ptr<Common::Hex> hexPtr_;
-
-    //! Shared pointer to gameboard object
-    std::shared_ptr<Student::GameBoard> boardPtr_;
-
-    //! Shared pointer to game object
-    std::shared_ptr<Common::IGameRunner> gamePtr_;
 };
 }
 

@@ -8,9 +8,18 @@ namespace Student{
 class Player : public Common::IPlayer
 {
 public:
-    explicit Player(int id);
-    ~Player() = default;
 
+    /**
+     * @brief Constructor
+     * @param id Identification number of the player
+     * @post Private variables are initialized
+     */
+    explicit Player(int id);
+
+    /**
+     * @brief Default destructor
+     */
+    ~Player() = default;
 
     /**
      * @brief getPlayer gets the player id.
@@ -34,10 +43,12 @@ public:
     unsigned int getActionsLeft() const;
 
 private:
+    //! Identification number of the player
     int playerid_;
+
+    //! Number of actions left on current gamephase
     unsigned int actionsLeft_;
-    int pawnLeft_;
-    int totalPawnCount_;
+
 };
 }
 

@@ -16,7 +16,8 @@ BoardTransport::BoardTransport(QGraphicsItem *parent,
                                int id,
                                std::string transportType,
                                std::shared_ptr<Student::GameBoard> boardPtr,
-                               std::shared_ptr<Common::IGameRunner> gamePtr): QGraphicsRectItem(parent)
+                               std::shared_ptr<Common::IGameRunner> gamePtr):
+    QGraphicsRectItem(parent)
 {
     boardPtr_ = boardPtr;
     gamePtr_ = gamePtr;
