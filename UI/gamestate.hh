@@ -67,78 +67,56 @@ public:
     void addPointsToPlayer(int playerid, int points);
 
     /**
-     * @brief initPoints initializes the points of players
-     * @param playerCount Number of the players
-     * @post playerPointVector is initialized
-     * @post Exception guarantee: no throw
+     * @brief initPoints initializes playerpointvector.
+     * @param playercount number of players.
      */
-    void initPoints(int playerCount);
-
+    void initPoints(int playercount);
     /**
-     * @brief getPointsVectorForPlot gets the point vector
-     * @return vector of strings containing player points
-     * @post Exception guarantee: no throw
+     * @brief getPointsVectorForPlot transforms pointvector to strings
+     * @return vector containing strings of player and points
      */
     std::vector<std::string> getPointsVectorForPlot();
-
     /**
-     * @brief currentGamePhaseString gets the current gamephase
-     * @return string containing current gamephase
-     * @post Exception guarantee: no throw
+     * @brief currentGamePhaseString transforms current gamephase to string
+     * @return string of the gamephase
      */
     std::string currentGamePhaseString();
-
     /**
-     * @brief setSpinResult sets the spin result
-     * @param spinResult Pair of strings containing animal and amount of moves
-     * @post Sets the spinResult in private variables
-     * @post Exception guarantee: no throw
+     * @brief setSpinresult saves spinresult to object
+     * @param pair of spinresult animal, movecount
      */
-    void setSpinResult(std::pair<std::string, std::string> spinResult);
-
+    void setSpinResult(std::pair<std::string, std::string> spinresult);
     /**
-     * @brief getSpinMoveCount gets spin moves left
-     * @return string containing the amount of spinner moves
-     * @post Exception guarantee: no throw
+     * @brief getSpinMovecount returns spinresult movecount
+     * @return string of animal
      */
     std::string getSpinMovecount();
-
     /**
-     * @brief getSpinAnimal gets the spin animal
-     * @return string containing the animal moving with spinner
-     * @post Exception guarantee: no throw
+     * @brief getSpinMoveAnimal returns spinresult animal
+     * @return string of animal
      */
     std::string getSpinAnimal();
-
     /**
-     * @brief getWinner gets the winner of the game
-     * @return string of player who won the game
-     * @post Exception guarantee: no throw
+     * @brief getWinner finds player with most points and return result
+     * @return string of winnertext
      */
     std::string getWinner();
-
     /**
-     * @brief getSpinsLeft gets the amount of spins left
-     * @return Number of spins left for current phase
-     * @post Exception guarantee: no throw
+     * @brief getSpinsLeft returns spins left
+     * @return amount of spins as int
      */
     int getSpinsLeft();
-
     /**
-     * @brief setSpinsLeft sets the amount of spins left
-     * @param Number of spins left for current phase
-     * @post Exception guarantee: no throw
+     * @brief setSpinsLeft sets spins left
+     * @param amount of spins as int
      */
     void setSpinsLeft(int spincount);
-
     /**
-     * @brief getPlayerPoints gets the points of the player
-     * @param playerId Id of the player
-     * @return Number of points of the player
-     * @post Exception guarantee: no throw
+     * @brief getPlayerPoints gets players' points
+     * @param playerid int
+     * @return amount of points player has as int
      */
-    int getPlayerPoints(int playerId);
-
+    int getPlayerPoints(int playerid);
 
 private:
     //! Current gamephase
