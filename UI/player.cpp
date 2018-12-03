@@ -4,27 +4,25 @@ namespace Student{
 
 Player::Player(int id)
 {
-    _playerid=id;
-    _actionsLeft = 3;
-    _pawnLeft = 1;
-    _totalPawnCount = 1;
+    playerid_ = id;
+    actionsLeft_ = 3;
+    pawnLeft_ = 1;
+    totalPawnCount_ = 1;
 }
-
-Player::~Player(){}
 
 int Player::getPlayerId()const
 {
-    return _playerid;
+    return playerid_;
 }
 
 void Player::setActionsLeft(unsigned int actionsLeft)
 {
-    _actionsLeft = actionsLeft;
+    actionsLeft_ = actionsLeft;
 }
 
 unsigned int Player::getActionsLeft() const
 {
-    return _actionsLeft;
+    return actionsLeft_;
 }
 
 

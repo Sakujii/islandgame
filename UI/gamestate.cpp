@@ -6,65 +6,62 @@ namespace Student{
 
 GameState::GameState ()
 {
-    _playerInTurn = 1;
-    _gamePhaseId = Common::GamePhase::MOVEMENT;
-    _spinAnimal = "nada";
-    _spinMoveCount = "0";
-
-}
-
-GameState::~GameState()
-{
+    playerInTurn_ = 1;
+    gamePhaseId_ = Common::GamePhase::MOVEMENT;
+    spinAnimal_ = "nada";
+    spinMoveCount_ = "0";
 
 }
 
 int GameState::getPlayerPoints(int playerid)
 {
-    std::pair<int,int> pointpair = _playerPointVector.at(playerid-1);
+    std::pair<int,int> pointpair = playerPointVector_.at(playerid-1);
     int points = pointpair.second;
     return points;
 }
 
 Common::GamePhase GameState::currentGamePhase() const
 {
-    return _gamePhaseId;
+    return gamePhaseId_;
 }
 
 int GameState::currentPlayer() const
 {
-    return _playerInTurn;
+    return playerInTurn_;
 }
 
 void GameState::changeGamePhase(Common::GamePhase nextPhase)
 {
-    _gamePhaseId = nextPhase;
+    gamePhaseId_ = nextPhase;
 }
 
 void GameState::changePlayerTurn(int nextPlayer)
 {
-    _playerInTurn=nextPlayer;
+    playerInTurn_=nextPlayer;
 }
 
 void GameState::addPointsToPlayer(int playerid, int points)
 {
-    for(auto s:_playerPointVector)
+    for(auto s : playerPointVector_){
         if(s.first==playerid)
         {
-            _playerPointVector.at(playerid-1) = std::make_pair(s.first,s.second+points);
+            playerPointVector_.at(playerid-1) = std::make_pair(s.first,s.second+points);
         }
+    }
 }
 
 void GameState::initPoints(int playercount)
 {
-    _playerPointVector.clear();
-    for(int playerid=1; playerid<playercount+1; playerid++)
-        _playerPointVector.push_back(std::make_pair(playerid,0));
+    playerPointVector_.clear();
+    for(int playerid=1; playerid<playercount+1; playerid++){
+        playerPointVector_.push_back(std::make_pair(playerid,0));
+    }
 }
 
 std::vector<std::string> GameState::getPointsVectorForPlot()
 {
     std::vector<std::string> plotvector;
-    for(auto s:_playerPointVector)
+    for(auto s : playerPointVector_)
     {
         std::string row = "Player: " + std::to_string(s.first) + "   Points: " + std::to_string(s.second);
         plotvector.push_back(row);
@@ -75,11 +72,11 @@ std::vector<std::string> GameState::getPointsVectorForPlot()
 std::string GameState::currentGamePhaseString()
 {
     std::string string;
-    if(_gamePhaseId==Common::GamePhase::MOVEMENT)
+    if(gamePhaseId_==Common::GamePhase::MOVEMENT)
     {
         string = "Movement";
     }
-    else if(_gamePhaseId==Common::GamePhase::SINKING)
+    else if(gamePhaseId_==Common::GamePhase::SINKING)
     {
         string = "Sinking";
     }
@@ -92,18 +89,18 @@ std::string GameState::currentGamePhaseString()
 
 void GameState::setSpinResult(std::pair<std::string, std::string> spinresult)
 {
-    _spinAnimal = spinresult.first;
-    _spinMoveCount = spinresult.second;
+    spinAnimal_ = spinresult.first;
+    spinMoveCount_ = spinresult.second;
 }
 
 std::string GameState::getSpinMovecount()
 {
-    return _spinMoveCount;
+    return spinMoveCount_;
 }
 
 std::string GameState::getSpinAnimal()
 {
-    return _spinAnimal;
+    return spinAnimal_;
 }
 
 std::string GameState::getWinner()
@@ -111,7 +108,7 @@ std::string GameState::getWinner()
     std::string winnerId = "";
     int maxpoints = 0;
     std::string winmessage = "";
-    for(auto s : _playerPointVector)
+    for(auto s : playerPointVector_)
     {
         if(s.second > maxpoints)
         {
@@ -132,12 +129,12 @@ std::string GameState::getWinner()
 
 int GameState::getSpinsLeft()
 {
-    return _spinsLeft;
+    return spinsLeft_;
 }
 
 void GameState::setSpinsLeft(int spincount)
 {
-    _spinsLeft = spincount;
+    spinsLeft_ = spincount;
 }
 
 

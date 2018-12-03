@@ -8,8 +8,8 @@ namespace Student{
 class Player : public Common::IPlayer
 {
 public:
-    Player(int id);
-    ~Player();
+    explicit Player(int id);
+    ~Player() = default;
 
 
     /**
@@ -34,10 +34,10 @@ public:
     unsigned int getActionsLeft() const;
 
 private:
-    int _playerid;
-    unsigned int _actionsLeft;
-    int _pawnLeft;
-    int _totalPawnCount;
+    int playerid_;
+    unsigned int actionsLeft_;
+    int pawnLeft_;
+    int totalPawnCount_;
 };
 }
 

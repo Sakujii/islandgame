@@ -29,7 +29,7 @@ BoardTransport::BoardTransport(QGraphicsItem *parent,
     } else{}
 
     drawTransport();
-    // Draw transports on top of actors
+    // Arrange transports on top of actors
     this->setZValue(1);
     setAcceptedMouseButtons(Qt::LeftButton);
 
@@ -95,11 +95,10 @@ void BoardTransport::dropEvent(QGraphicsSceneDragDropEvent *event)
     std::unordered_map<int, Ui::BoardPawn*> boardPawnMap =  win->getBoardPawnMap();
     std::map<Common::CubeCoordinate, Ui::BoardHex*> boardHexMap = win->getBoardHexMap();
 
-
-
     Common::CubeCoordinate coord;
     int capacity = -1;
 
+    // Get transport coordinates and capacity
     auto transportIt = transportMap.find(transportId_);
     if (transportIt != transportMap.end()){
         coord = transportIt->second->getHex()->getCoordinates();
@@ -118,7 +117,7 @@ void BoardTransport::dropEvent(QGraphicsSceneDragDropEvent *event)
                 if (pawnIt != pawnMap.end()){
                     origin = pawn->getCoordinates();
                 }
-
+                // Check if movement was made inside same transport, no need to go further
                 std::vector<std::shared_ptr<Common::Pawn>> pawns = transportIt->second->getPawnsInTransport();
                 for (auto x : pawns){
                     if (x == pawn){
@@ -127,9 +126,12 @@ void BoardTransport::dropEvent(QGraphicsSceneDragDropEvent *event)
                 }
 
                 gamePtr_->movePawn(origin, coord, pawn->getId());
-
+                // Update actions left label
+                win->numberOfActionsLeft(gamePtr_->getCurrentPlayer()->getActionsLeft());
+                // Add pawn to transport
                 transportIt->second->addPawn(pawnIt->second);
 
+                // Find pawn graphics and set attributes
                 auto iter = boardPawnMap.find(id);
                 BoardPawn* boardPawn;
                 if (iter != boardPawnMap.end()){
@@ -148,7 +150,6 @@ void BoardTransport::dropEvent(QGraphicsSceneDragDropEvent *event)
             }
         }
         catch (Common::IllegalMoveException& e){
-            std::cout << e.msg() << std::endl;
             win->setGameMessage(e.msg());
         }
 }

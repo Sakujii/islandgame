@@ -334,7 +334,8 @@ void MainWindow::spinWheel()
             } else if (animal == "dolphin"){
                 endFrame = 15;
             } else {}
-        }
+        } else {}
+
         connect(movie_, &QMovie::frameChanged, [=](int frameNumber){
             if(frameNumber == endFrame){
                 movie_->stop();
@@ -352,9 +353,9 @@ void MainWindow::updatePointsList()
 {
     ui->listWidgetPoints->clear();
     std::vector<std::string> pointslist = state_->getPointsVectorForPlot();
-    for(auto s : pointslist)
+    for(auto s : pointslist){
         ui->listWidgetPoints->addItem(QString::fromStdString(s));
-
+    }
     if(boardPawnMap_.size()==0)
     {
         setGameMessage(state_->getWinner());

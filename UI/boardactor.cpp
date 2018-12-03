@@ -20,7 +20,7 @@ BoardActor::BoardActor(QGraphicsItem *parent, int id, std::string actorType):
     actorType_ = actorType;
     size_ = 30;
 
-    double dx = qSqrt(3)/2 * size_;
+    double dx = (qSqrt(3))/2 * size_;
     polygon_
             << QPointF(dx, -size_/2)
             << QPointF(0, -size_)

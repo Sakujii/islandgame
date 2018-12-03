@@ -33,7 +33,7 @@ BoardHex::BoardHex(QGraphicsItem * parent,
     size_ = 35;
 
     QPolygonF polygon;
-    double dx = qSqrt(3)/2 * size_;
+    double dx = (qSqrt(3))/2 * size_;
     polygon
             << QPointF(dx, -size_/2)
             << QPointF(0, -size_)
@@ -235,13 +235,9 @@ void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
                     pawnPtr = pawnIt->second;
                 }
 
-                // This needs Gamestates to be implemented
                 gamePtr_->movePawn(origin, hexCoord_, id);
+                // Update actions left label
                 win->numberOfActionsLeft(gamePtr_->getCurrentPlayer()->getActionsLeft());
-
-
-                // This is unneccessary when upper row is executed
-                //boardPtr_->movePawn(id, hexCoord_);
 
                 auto boardPawnIt = boardPawnMap.find(id);
                 BoardPawn* boardPawn;
@@ -285,30 +281,18 @@ void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
                     origin = transportIt->second->getHex()->getCoordinates();
                 }
 
-                // This needs Gamestates to be implemented
                 if(gamePtr_->currentGamePhase()==Common::GamePhase::MOVEMENT)
                 {
                     gamePtr_->moveTransport(origin, hexCoord_, id);
-                    auto iter = boardTransportMap.find(id);
-                    if (iter != boardTransportMap.end()){
-                        iter->second->setParentItem(this);
-                    }
                 }
                 else if(gamePtr_->currentGamePhase()==Common::GamePhase::SPINNING && type == "dolphin")
                 {
                     gamePtr_->moveTransportWithSpinner(origin, hexCoord_, id, state->getSpinMovecount());
-                    win->nextGamephase();
-                    auto iter = boardTransportMap.find(id);
-                    if (iter != boardTransportMap.end()){
-                        iter->second->setParentItem(this);
-                    }
                 }
-
-
-                // This is unneccessary when upper row is executed
-                //boardPtr_->moveTransport(id, hexCoord_);
-
-
+                auto iter = boardTransportMap.find(id);
+                if (iter != boardTransportMap.end()){
+                    iter->second->setParentItem(this);
+                }
             }
             else if(actortype == state->getSpinAnimal()){
                 if(hexPtr_->getActors().size() > 0){
@@ -324,13 +308,13 @@ void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
                 }
 
                 gamePtr_->moveActor(origin, hexCoord_, id, state->getSpinMovecount());
-                win->nextGamephase();
 
                 auto iter = boardActorMap.find(id);
                 if (iter != boardActorMap.end()){
                     iter->second->setParentItem(this);
                 }
-            }
+            } else {}
+
             // Execute actor actions after every drop to hex
             std::vector<std::shared_ptr<Common::Actor>> actors = hexPtr_->getActors();
             for (auto x : actors){
@@ -339,7 +323,6 @@ void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
         }
 
         catch (Common::IllegalMoveException& e){
-            std::cout << e.msg() << std::endl;
             win->setGameMessage(e.msg());
         }
 }

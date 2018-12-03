@@ -14,12 +14,12 @@ public:
     /**
      * @brief Constructor, exists solely for documentation.
      */
-    GameState();
+    explicit GameState();
 
     /**
      * @brief Virtual destructor. Does nothing, since this is an interface class.
      */
-    ~GameState();
+    ~GameState() = default;
 
     /**
      * @brief currentGamePhase tells the phase of the game.
@@ -69,12 +69,12 @@ public:
 
 
 private:
-    Common::GamePhase _gamePhaseId;
-    int _playerInTurn;
-    std::vector<std::pair<int,int>> _playerPointVector;
-    std::string _spinAnimal;
-    std::string _spinMoveCount;
-    int _spinsLeft;
+    Common::GamePhase gamePhaseId_;
+    int playerInTurn_;
+    std::vector<std::pair<int,int>> playerPointVector_;
+    std::string spinAnimal_;
+    std::string spinMoveCount_;
+    int spinsLeft_;
 
 };
 }
