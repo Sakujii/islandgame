@@ -56,15 +56,56 @@ public:
      * @post Points are added to player. Exception quarantee: basic
      */
     void addPointsToPlayer(int playerid, int points);
+    /**
+     * @brief initPoints initializes playerpointvector.
+     * @param playercount number of players.
+     */
     void initPoints(int playercount);
+    /**
+     * @brief getPointsVectorForPlot transforms pointvector to strings
+     * @return vector containing strings of player and points
+     */
     std::vector<std::string> getPointsVectorForPlot();
+    /**
+     * @brief currentGamePhaseString transforms current gamephase to string
+     * @return string of the gamephase
+     */
     std::string currentGamePhaseString();
+    /**
+     * @brief setSpinresult saves spinresult to object
+     * @param pair of spinresult animal, movecount
+     */
     void setSpinResult(std::pair<std::string, std::string> spinresult);
+    /**
+     * @brief getSpinMovecount returns spinresult movecount
+     * @return string of animal
+     */
     std::string getSpinMovecount();
+    /**
+     * @brief getSpinMoveAnimal returns spinresult animal
+     * @return string of animal
+     */
     std::string getSpinAnimal();
+    /**
+     * @brief getWinner finds player with most points and return result
+     * @return string of winnertext
+     */
     std::string getWinner();
+    /**
+     * @brief getSpinsLeft returns spins left
+     * @return amount of spins as int
+     */
     int getSpinsLeft();
+    /**
+     * @brief setSpinsLeft sets spins left
+     * @param amount of spins as int
+     */
     void setSpinsLeft(int spincount);
+    /**
+     * @brief getPlayerPoints gets players' points
+     * @param playerid int
+     * @return amount of points player has as int
+     */
     int getPlayerPoints(int playerid);
 
 
