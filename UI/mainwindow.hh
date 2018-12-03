@@ -40,7 +40,15 @@ public:
     void addBoardActor(std::shared_ptr<Common::Hex>,
                        Ui::BoardHex*);
 
-    void drawHex(std::shared_ptr<Common::Hex>, std::shared_ptr<Student::GameBoard>);
+    /**
+     * @brief drawhex draws the graphical hex on board
+     * @param hex Shared pointer to hex object we are drawing
+     * @param board Shared pointer to gameboard object
+     * @post Hex object is drawn on the screen
+     * @post Exception quarantee: strong
+     */
+    void drawHex(std::shared_ptr<Common::Hex> hex,
+                 std::shared_ptr<Student::GameBoard> board);
     void removeBoardPawn(int);
     void removeBoardActor(int);
     void removeBoardTransport(int);

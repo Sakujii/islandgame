@@ -224,10 +224,6 @@ void BoardHex::dropEvent(QGraphicsSceneDragDropEvent *event)
         actortype = actor->getActorType();
     }
 
-
-
-
-
         try {
             if (type == "pawn" && gamePtr_->currentGamePhase()==Common::GamePhase::MOVEMENT){
                 // Get pawn origin coordinates from pawn map
