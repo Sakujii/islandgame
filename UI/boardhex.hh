@@ -39,6 +39,11 @@ public:
                       std::shared_ptr<Student::GameBoard> board = nullptr,
                       std::shared_ptr<Common::IGameRunner> game = nullptr);
     /**
+    * @brief Default destructor
+    */
+    ~BoardHex() = default;
+
+    /**
      * @brief getSize gets the size of graphical hex
      * @return returns size of hex as int
      * @post Exception guarantee: no throw
@@ -88,10 +93,19 @@ public:
     void dropEvent(QGraphicsSceneDragDropEvent *event) override;
 
 private:
+    //! Size of the hex graphics
     int size_;
+
+    //! Coordinates of the hex
     Common::CubeCoordinate hexCoord_;
+
+    //! Shared pointer to common hex object
     std::shared_ptr<Common::Hex> hexPtr_;
+
+    //! Shared pointer to gameboard object
     std::shared_ptr<Student::GameBoard> boardPtr_;
+
+    //! Shared pointer to game object
     std::shared_ptr<Common::IGameRunner> gamePtr_;
 };
 }

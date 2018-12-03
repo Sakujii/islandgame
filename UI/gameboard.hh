@@ -14,12 +14,22 @@
 
 namespace Student{
 
+/**
+ * @brief Offers a class for gameboard object management
+ * @inherits from common IGameBoard
+ */
 class GameBoard : public Common::IGameBoard
 {
 public:
+    /**
+     * @brief Default constructor
+     */
+    GameBoard() = default;
 
-    GameBoard();
-    ~GameBoard();
+    /**
+     * @brief Default destructor
+     */
+    ~GameBoard() = default;
 
     /**
      * @brief checkTileOccupation Checks the current amount of pawns on the tile
@@ -27,7 +37,6 @@ public:
      * @return The number of the pawns in the tile or -1 if the tile does not exist.
      * @post Exception quarantee: strong
      */
-
     int checkTileOccupation(Common::CubeCoordinate tileCoord) const;
 
     /**
@@ -134,22 +143,49 @@ public:
     void moveTransport(int id, Common::CubeCoordinate coord);
 
     /**
-     * @brief removeTransport removes an transport.
-     * @param id The identifier of the transport.
-     * @post transport removed from the gameboard. Exception quarantee: basic
+     * @brief removeTransport removes an transport
+     * @param id The identifier of the transport
+     * @post transport removed from the gameboard.
+     * @post Exception quarantee: basic
      */
     void removeTransport(int id);
 
+    /**
+     * @brief getHexMap gets the map of hex objects
+     * @return Map of hex objects searchable with hex coordinates
+     */
     std::map<Common::CubeCoordinate, std::shared_ptr<Common::Hex>> getHexMap();
+
+    /**
+     * @brief getPawnMap gets the map of pawn objects
+     * @return Unordered map of pawn objects searchable with pawn ID
+     */
     std::unordered_map<int, std::shared_ptr<Common::Pawn>> getPawnMap();
+
+    /**
+     * @brief getTransportMap gets the map of transport objects
+     * @return Unordered map of transport objects searchable with transport ID
+     */
     std::unordered_map<int, std::shared_ptr<Common::Transport>> getTransportMap();
+
+    /**
+     * @brief getActorMap gets the map of actor objects
+     * @return Unordered map of actor objects searchable with actor ID
+     */
     std::unordered_map<int, std::shared_ptr<Common::Actor>> getActorMap();
 
 
 private:
-    std::unordered_map<int, std::shared_ptr<Common::Pawn>> pawnMap_;
+    //! Map of hex objects searchable with hex coordinates
     std::map<Common::CubeCoordinate, std::shared_ptr<Common::Hex>> hexMap_;
+
+    //! Unordered map of pawn objects searchable with pawn ID
+    std::unordered_map<int, std::shared_ptr<Common::Pawn>> pawnMap_;
+
+    //! Unordered map of actor objects searchable with actor ID
     std::unordered_map<int, std::shared_ptr<Common::Actor>> actorMap_;
+
+    //! Unordered map of transport objects searchable with transport ID
     std::unordered_map<int, std::shared_ptr<Common::Transport>> transportMap_;
 
 };

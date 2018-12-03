@@ -7,10 +7,6 @@
 
 namespace Student{
 
-GameBoard::GameBoard() = default;
-
-GameBoard::~GameBoard() = default;
-
 
 int GameBoard::checkTileOccupation(Common::CubeCoordinate tileCoord) const
 {
