@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>1200</width>
+    <height>800</height>
    </rect>
   </property>
   <property name="font">
@@ -89,7 +89,7 @@
      <rect>
       <x>170</x>
       <y>50</y>
-      <width>31</width>
+      <width>71</width>
       <height>20</height>
      </rect>
     </property>
@@ -178,7 +178,7 @@
    <widget class="QLabel" name="labelWhatMovesId">
     <property name="geometry">
      <rect>
-      <x>160</x>
+      <x>170</x>
       <y>90</y>
       <width>63</width>
       <height>20</height>
@@ -191,7 +191,7 @@
    <widget class="QLabel" name="labelMoveAmountNumber">
     <property name="geometry">
      <rect>
-      <x>160</x>
+      <x>170</x>
       <y>110</y>
       <width>63</width>
       <height>20</height>
@@ -214,9 +214,9 @@
    <widget class="QLabel" name="labelGameMessageText">
     <property name="geometry">
      <rect>
-      <x>470</x>
+      <x>550</x>
       <y>10</y>
-      <width>331</width>
+      <width>391</width>
       <height>20</height>
      </rect>
     </property>
@@ -234,7 +234,7 @@
    <widget class="QLabel" name="labelGameMessage">
     <property name="geometry">
      <rect>
-      <x>350</x>
+      <x>420</x>
       <y>10</y>
       <width>101</width>
       <height>16</height>

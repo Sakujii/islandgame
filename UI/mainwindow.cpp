@@ -241,7 +241,16 @@ void MainWindow::numberOfGamephase()
 
 void MainWindow::numberOfCurrentPlayer(int playerid)
 {
-    ui->labelCurrentPlayerNumber->setText(QString::number(playerid));
+    QString player = QString::number(playerid);
+    if (playerid == 1){
+        player.append(" : black");
+    } else if (playerid == 2){
+        player.append(" : red");
+    } else if (playerid == 3){
+        player.append(" : green");
+    } else{}
+
+    ui->labelCurrentPlayerNumber->setText(player);
 }
 
 void MainWindow::numberOfActionsLeft(int actionsleft)
@@ -339,7 +348,7 @@ void MainWindow::spinWheel()
         connect(movie_, &QMovie::frameChanged, [=](int frameNumber){
             if(frameNumber == endFrame){
                 movie_->stop();
-            }
+            } else{}
         });
 
     } else {
@@ -373,7 +382,7 @@ void MainWindow::spinWheelMovie()
     movie_ = new QMovie(":/wheel.gif");
     if (!movie_->isValid())
         {
-         qDebug() << "Not valid";
+         qDebug() << "Movie file not valid";
         }
 
     wheelLabel_ = new QLabel(this);
